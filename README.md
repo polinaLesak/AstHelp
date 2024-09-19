@@ -3,12 +3,12 @@
 
  [Макет дизайна Программного средства](https://www.figma.com/design/8CPJnddexH57UAMTKLGtJ4/%D0%B4%D0%B8%D0%BF%D0%BB%D0%BE%D0%BC?node-id=0-1&t=XpH2bcQ2ieBZyz36-1)
 
- [Class diadram](https://github.com/polinaLesak/AstHelp/doc/images/class.png)
+ [Class diadram](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/class.png)
 
 
 В системе AstHelp реализован комплексный подход к управлению заказами и оборудованием, используя несколько ключевых веб-приложений и серверное приложение. Система предназначена для сотрудников Aston и включает в себя три основных веб-приложения: AstHelp Client, AstHelp Operator и AstHelp Picker. Эти приложения взаимодействуют между собой и с сервером через REST API, обеспечивая эффективное выполнение бизнес-процессов.
 
-![C4-container](https://github.com/polinaLesak/AstHelp/doc/images/C4_container.jpg)
+![C4-container](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/C4_component.jpg)
  
  Web-приложение AstHelp Client предназначено для сотрудников, желающих получить новое оборудование. Оно предоставляет пользователям возможность просматривать каталог товаров, оформлять заказы и отслеживать их статус.
 
@@ -18,7 +18,7 @@ Web-приложение AstHelp Picker предназначено для ком
 
 Серверное приложение AstHelp Backend реализует бизнес-логику и управляет взаимодействием между веб-приложениями и базой данных PostgreSQL. Оно обрабатывает запросы от клиентских приложений и обеспечивает хранение и обновление данных о заказах, пользователях и товарах. База данных PostgreSQL используется для хранения всех необходимых данных, что позволяет системе функционировать бесперебойно и эффективно управлять информацией.
 
-![C4-component](https://github.com/polinaLesak/AstHelp/doc/images/C4_component.jpg)
+![C4-component](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/C4_component.jpg)
 
 Система AstHelp организована с использованием архитектуры Domain-Driven Design (DDD) и Command Query Responsibility Segregation (CQRS), что позволяет эффективно управлять сложными бизнес-процессами и обеспечивать масштабируемость. Основные компоненты системы включают различные веб-приложения, серверное приложение, сервисы и брокер сообщений.
 
