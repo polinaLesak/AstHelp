@@ -19,4 +19,4 @@
 Архитектура системы основана на принципах DDD и CQRS. 
 
 ##  Архитектура
-![C4-component](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/ERD.png)
+![ERD](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/ERD.png)
