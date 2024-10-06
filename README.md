@@ -19,4 +19,18 @@
 Архитектура системы основана на принципах DDD и CQRS. 
 
 ##  Архитектура
+
+#### ERD
 ![ERD](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/ERD.png)
+
+#### Диаграмма состояний
+
+![state](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/state_1.png)
+
+#### Диаграмма последовательности
+
+![sequence](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/sequence.png)
+
+#### Алгоритм
+
+![algoritm](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/algoritm.png)
