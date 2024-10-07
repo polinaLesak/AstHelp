@@ -25,12 +25,16 @@
 
 #### Диаграмма состояний
 
-![state](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/state_1.png)
+![state](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/state.png)
 
 #### Диаграмма последовательности
 
 ![sequence](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/sequence.png)
 
+#### Диаграмма деятельности
+
+![activity](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/activity.png)
+
 #### Алгоритм
 
-![algoritm](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/algoritm.png)
+![algoritm](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/algoritm.jpg)
