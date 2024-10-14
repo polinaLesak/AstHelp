@@ -1,0 +1,14 @@
+{
+  "SwaggerEndPoints": [
+    {
+      "Key": "identity.microservice.api",
+      "Config": [
+        {
+          "Name": "identity.microservice.api",
+          "Version": "v1",
+          "Url": "http://identity.microservice.api/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
+}

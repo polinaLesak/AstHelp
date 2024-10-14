@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <UserSecretsId>9bad42a6-4a86-4157-b4e3-0d285a407942</UserSecretsId>
+        <DockerComposeProjectPath>..\docker\dev\ast-help-dev.dcproj</DockerComposeProjectPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Include="Routes\ocelot.SwaggerEndPoints.Development.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+      <PackageReference Include="MMLib.SwaggerForOcelot" Version="8.3.0" />
+      <PackageReference Include="Ocelot" Version="23.3.3" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
+    </ItemGroup>
+
+</Project>
