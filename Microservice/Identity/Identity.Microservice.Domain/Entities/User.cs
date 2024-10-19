@@ -8,6 +8,7 @@
         public string Password { get; set; } = "";
         public bool IsActive { get; set; } = true;
 
+        public Profile? Profile { get; set; }
         public ICollection<UserRole> UserRoles { get; set; } = [];
     }
 }

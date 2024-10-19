@@ -33,6 +33,7 @@ namespace Identity.Microservice.Application.Handlers
             return new UserLoginResponseDto()
             {
                 Username = user.Username,
+                Fullname = user.Profile.Fullname,
                 JwtToken = _tokenService.GenerateToken(user)
             };
         }

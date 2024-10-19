@@ -6,15 +6,18 @@ namespace Identity.Microservice.Infrastructure.Persistence
     {
         private readonly EFDBContext _context;
         public IUserRepository Users { get; }
+        public IProfileRepository Profiles { get; }
         public IRoleRepository Roles { get; }
 
         public UnitOfWork(
             EFDBContext context,
             IUserRepository users,
+            IProfileRepository prosiles,
             IRoleRepository roles)
         {
             _context = context;
             Users = users;
+            Profiles = prosiles;
             Roles = roles;
         }
 

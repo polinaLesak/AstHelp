@@ -95,6 +95,26 @@ namespace Identity.Microservice.API.Controllers
             }
         }
 
+        // PUT: api/User/Update/Profile
+        [HttpPut("Update/Profile")]
+        [Authorize(Roles = "1, 2, 3")]
+        public async Task<IActionResult> UpdateUserProfile(UpdateUserProfileCommand command)
+        {
+            try
+            {
+                var result = await _mediator.Send(command);
+                return Ok(result);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Произошла ошибка.", details = ex.Message });
+            }
+        }
+
         // POST: api/User/Delete?id=
         [HttpDelete("Delete")]
         [Authorize(Roles = "1")]

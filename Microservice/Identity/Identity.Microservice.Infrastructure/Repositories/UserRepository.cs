@@ -20,6 +20,7 @@ namespace Identity.Microservice.Infrastructure.Repositories
         {
             return await _context.Users
                 .Include(x => x.UserRoles)
+                .Include(x => x.Profile)
                 .SingleOrDefaultAsync(x => x.Username == username);
         }
     }

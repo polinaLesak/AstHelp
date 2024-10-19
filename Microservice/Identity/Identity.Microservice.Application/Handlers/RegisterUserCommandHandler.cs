@@ -35,8 +35,14 @@ namespace Identity.Microservice.Application.Handlers
                 User = user,
                 Role = await _unitOfWork.Roles.GetByIdAsync(3)
             });
+            user.Profile = new Profile
+            {
+                Fullname = request.Fullname,
+                Position = request.Position,
+                User = user
+            };
 
-            await _unitOfWork.Users.AddAsync(user);
+            await _unitOfWork.Profiles.AddAsync(user.Profile);
             await _unitOfWork.CommitAsync();
 
             return user != null;

@@ -24,6 +24,7 @@ namespace Identity.Microservice.Application.Handlers
             }
 
             user.Username = request.Username;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
             user.Email = request.Email;
 
             await _unitOfWork.CommitAsync();
