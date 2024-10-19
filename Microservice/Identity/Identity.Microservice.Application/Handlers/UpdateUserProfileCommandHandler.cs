@@ -3,11 +3,6 @@ using Identity.Microservice.Application.Exceptions;
 using Identity.Microservice.Domain.Entities;
 using Identity.Microservice.Domain.Repositories;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Identity.Microservice.Application.Handlers
 {

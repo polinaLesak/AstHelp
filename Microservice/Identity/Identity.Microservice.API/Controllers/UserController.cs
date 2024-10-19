@@ -1,5 +1,6 @@
 ﻿using Identity.Microservice.Application.Commands;
 using Identity.Microservice.Application.Exceptions;
+using Identity.Microservice.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,47 @@ namespace Identity.Microservice.API.Controllers
         public UserController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        // Get: api/User/AllUsers
+        [HttpGet("AllUsers")]
+        [Authorize(Roles = "1")]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetAllUsersQuery());
+                return Ok(result);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Произошла ошибка.", details = ex.Message });
+            }
+        }
+
+        // Get: api/User
+        [HttpGet]
+        [Authorize(Roles = "1, 2, 3")]
+        public async Task<IActionResult> GetUserById(
+            [FromQuery] int id)
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetUserByIdQuery { Id = id });
+                return Ok(result);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Произошла ошибка.", details = ex.Message });
+            }
         }
 
         // POST: api/User/Register
