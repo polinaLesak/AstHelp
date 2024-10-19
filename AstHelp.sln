@@ -13,6 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{2D
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{530E9DF8-29D1-43EA-AA5A-3C2F376B19ED}"
+	ProjectSection(SolutionItems) = preProject
+		Microservice\Catalog\README.md = Microservice\Catalog\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Microservice.API", "Microservice\Identity\Identity.Microservice.API\Identity.Microservice.API.csproj", "{A0AC1EC8-30D0-4403-8D8D-05302474F0B1}"
 EndProject
