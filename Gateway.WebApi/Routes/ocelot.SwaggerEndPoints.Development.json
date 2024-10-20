@@ -19,6 +19,26 @@
           "Url": "http://localhost:5101/swagger/v1/swagger.json"
         }
       ]
+    },
+    {
+      "Key": "cart.microservice.api",
+      "Config": [
+        {
+          "Name": "cart.microservice.api",
+          "Version": "v1",
+          "Url": "http://localhost:5102/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "orders.microservice.api",
+      "Config": [
+        {
+          "Name": "orders.microservice.api",
+          "Version": "v1",
+          "Url": "http://localhost:5103/swagger/v1/swagger.json"
+        }
+      ]
     }
   ]
 }

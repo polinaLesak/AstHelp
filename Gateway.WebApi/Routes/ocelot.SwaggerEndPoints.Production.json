@@ -9,6 +9,36 @@
           "Url": "http://identity.microservice.api/swagger/v1/swagger.json"
         }
       ]
+    },
+    {
+      "Key": "catalog.microservice.api",
+      "Config": [
+        {
+          "Name": "catalog.microservice.api",
+          "Version": "v1",
+          "Url": "http://catalog.microservice.api/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "cart.microservice.api",
+      "Config": [
+        {
+          "Name": "cart.microservice.api",
+          "Version": "v1",
+          "Url": "http://cart.microservice.api/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "orders.microservice.api",
+      "Config": [
+        {
+          "Name": "orders.microservice.api",
+          "Version": "v1",
+          "Url": "http://orders.microservice.api/swagger/v1/swagger.json"
+        }
+      ]
     }
   ]
 }
