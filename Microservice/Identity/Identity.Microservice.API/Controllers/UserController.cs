@@ -34,18 +34,12 @@ namespace Identity.Microservice.API.Controllers
             return Ok(await _mediator.Send(new GetUserByIdQuery { Id = id }));
         }
 
-        // POST: api/User/Register
-        [HttpPost("Register")]
-        public async Task<IActionResult> Register(RegisterUserCommand command)
+        // GET: api/User/Managers
+        [HttpGet("Managers")]
+        [Authorize(Roles = "0, 1, 2, 3")]
+        public async Task<IActionResult> GetAllManagers()
         {
-            return Ok(await _mediator.Send(command));
-        }
-
-        // POST: api/User/Login
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginUserCommand command)
-        {
-            return Ok(await _mediator.Send(command));
+            return Ok(await _mediator.Send(new GetUsersByRoleIdQuery(2)));
         }
 
         // POST: api/User/Deactivate?id=

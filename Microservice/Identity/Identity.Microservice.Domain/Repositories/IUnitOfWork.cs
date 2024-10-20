@@ -5,6 +5,8 @@
         IUserRepository Users { get; }
         IProfileRepository Profiles { get; }
         IRoleRepository Roles { get; }
+        IMachineAccountRepository MachineAccounts { get; }
+
         Task<int> CommitAsync();
     }
 }

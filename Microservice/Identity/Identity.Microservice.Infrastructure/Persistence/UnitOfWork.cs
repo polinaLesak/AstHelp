@@ -8,17 +8,20 @@ namespace Identity.Microservice.Infrastructure.Persistence
         public IUserRepository Users { get; }
         public IProfileRepository Profiles { get; }
         public IRoleRepository Roles { get; }
+        public IMachineAccountRepository MachineAccounts { get; }
 
         public UnitOfWork(
             EFDBContext context,
             IUserRepository users,
             IProfileRepository prosiles,
-            IRoleRepository roles)
+            IRoleRepository roles,
+            IMachineAccountRepository machineAccounts)
         {
             _context = context;
             Users = users;
             Profiles = prosiles;
             Roles = roles;
+            MachineAccounts = machineAccounts;
         }
 
         public async Task<int> CommitAsync()

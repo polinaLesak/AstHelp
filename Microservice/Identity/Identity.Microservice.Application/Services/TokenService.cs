@@ -16,6 +16,18 @@ namespace Identity.Microservice.Application.Services
             _configuration = configuration;
         }
 
+        public string GenerateMachineToken(string serviceName)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, serviceName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Role, "0")
+            };
+
+            return CreateToken(claims);
+        }
+
         public string GenerateToken(User user)
         {
             var claims = new List<Claim>
@@ -29,6 +41,11 @@ namespace Identity.Microservice.Application.Services
                 claims.Add(new Claim(ClaimTypes.Role, role.RoleId.ToString()));
             }
 
+            return CreateToken(claims);
+        }
+
+        private string CreateToken(IEnumerable<Claim> claims)
+        {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

@@ -24,5 +24,14 @@ namespace Identity.Microservice.Infrastructure.Repositories
                 .Include(x => x.Profile)
                 .SingleOrDefaultAsync(x => x.Username == username);
         }
+
+        public async Task<IEnumerable<User>> GetUsersByRoleIdAsync(int roleId)
+        {
+            return await _context.Users
+                .Include(x => x.UserRoles)
+                .Include(x => x.Profile)
+                .Where(x => x.UserRoles.Any(r => r.RoleId == roleId))
+                .ToListAsync();
+        }
     }
 }

@@ -6,5 +6,6 @@ namespace Identity.Microservice.Domain.Repositories
     {
         Task<User> GetByIdAsync(int id);
         Task<User> GetUserByUsernameAsync(string username);
+        Task<IEnumerable<User>> GetUsersByRoleIdAsync(int roleId);
     }
 }
