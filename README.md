@@ -38,3 +38,16 @@
 #### Алгоритм
 
 ![algoritm](https://github.com/polinaLesak/AstHelp/blob/main/doc/images/algoritm.jpg)
+
+##  Пользовательский интерфейс
+
+#### Первая страница
+
+![1](https://github.com/polinaLesak/AstHelp/blob/main/doc/interface/1.jpg)
+
+#### Каталог товаров
+
+![1](https://github.com/polinaLesak/AstHelp/blob/main/doc/interface/katalog.jpg)
+
+
+
