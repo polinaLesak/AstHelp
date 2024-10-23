@@ -11,8 +11,9 @@ namespace Catalog.Microservice.Application.DI
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
+            Console.WriteLine("Catalog: " + configuration["ConnectionStrings:DefaultConnection"]);
             services.AddDbContext<EFDBContext>(options =>
-                options.UseNpgsql(configuration["DefaultConnection"]));
+                options.UseNpgsql(configuration["ConnectionStrings:DefaultConnection"]));
 
             services.AddScoped<IAttributeRepository, AttributeRepository>();
             services.AddScoped<IAttributeTypeRepository, AttributeTypeRepository>();

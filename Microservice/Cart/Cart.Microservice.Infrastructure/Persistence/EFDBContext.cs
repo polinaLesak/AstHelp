@@ -8,7 +8,10 @@ namespace Cart.Microservice.Infrastructure.Persistence
         public DbSet<Domain.Entities.Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
 
-        public EFDBContext(DbContextOptions options) : base(options) { }
+        public EFDBContext(DbContextOptions options) : base(options)
+        {
+            Database.Migrate();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

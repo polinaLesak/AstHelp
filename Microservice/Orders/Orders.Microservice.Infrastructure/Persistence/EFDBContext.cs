@@ -8,7 +8,10 @@ namespace Orders.Microservice.Infrastructure.Persistence
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
 
-        public EFDBContext(DbContextOptions options) : base(options) { }
+        public EFDBContext(DbContextOptions options) : base(options)
+        {
+            Database.Migrate();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

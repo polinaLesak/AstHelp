@@ -12,6 +12,7 @@ namespace Identity.Microservice.Application.DI
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
+            Console.WriteLine("Identity: " + configuration["ConnectionStrings:DefaultConnection"]);
             services.AddDbContext<EFDBContext>(options =>
                 options.UseNpgsql(configuration["ConnectionStrings:DefaultConnection"]));
 

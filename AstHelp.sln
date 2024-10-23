@@ -56,13 +56,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orders", "Orders", "{F0513E
 		Microservice\Orders\README.md = Microservice\Orders\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders.Microservice.API", "Microservice\Orders\Orders.Microservice.API\Orders.Microservice.API.csproj", "{7A48461F-FDDA-4862-84C4-2D80A3AF6F05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orders.Microservice.API", "Microservice\Orders\Orders.Microservice.API\Orders.Microservice.API.csproj", "{7A48461F-FDDA-4862-84C4-2D80A3AF6F05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders.Microservice.Application", "Microservice\Orders\Orders.Microservice.Application\Orders.Microservice.Application.csproj", "{EAAF512C-F285-420F-8AC1-12DE4A6275FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orders.Microservice.Application", "Microservice\Orders\Orders.Microservice.Application\Orders.Microservice.Application.csproj", "{EAAF512C-F285-420F-8AC1-12DE4A6275FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders.Microservice.Domain", "Microservice\Orders\Orders.Microservice.Domain\Orders.Microservice.Domain.csproj", "{158EA75B-EFFA-4A36-A91B-2E20D5AE3504}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orders.Microservice.Domain", "Microservice\Orders\Orders.Microservice.Domain\Orders.Microservice.Domain.csproj", "{158EA75B-EFFA-4A36-A91B-2E20D5AE3504}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orders.Microservice.Infrastructure", "Microservice\Orders\Orders.Microservice.Infrastructure\Orders.Microservice.Infrastructure.csproj", "{267FF087-E4CE-4749-B169-FA93DAE7FDFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orders.Microservice.Infrastructure", "Microservice\Orders\Orders.Microservice.Infrastructure\Orders.Microservice.Infrastructure.csproj", "{267FF087-E4CE-4749-B169-FA93DAE7FDFC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".docker", ".docker", "{EACACCF4-1DD7-47EF-8A66-C35280376843}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dev", "dev", "{A7D00CB1-139A-4B73-B165-B461DA07B3C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prod", "prod", "{E0819811-8F36-48B5-82FC-72AE31E1BA82}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "dev.asthelp", ".docker\dev\dev.asthelp.dcproj", "{8CC8A2DF-C146-43DC-89AD-87F1E92C4E91}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "prod.asthelp", ".docker\prod\prod.asthelp.dcproj", "{578D5FA2-10F9-4FDD-B3F4-0A183B607354}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,6 +148,14 @@ Global
 		{267FF087-E4CE-4749-B169-FA93DAE7FDFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{267FF087-E4CE-4749-B169-FA93DAE7FDFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{267FF087-E4CE-4749-B169-FA93DAE7FDFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CC8A2DF-C146-43DC-89AD-87F1E92C4E91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CC8A2DF-C146-43DC-89AD-87F1E92C4E91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CC8A2DF-C146-43DC-89AD-87F1E92C4E91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CC8A2DF-C146-43DC-89AD-87F1E92C4E91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{578D5FA2-10F9-4FDD-B3F4-0A183B607354}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{578D5FA2-10F9-4FDD-B3F4-0A183B607354}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{578D5FA2-10F9-4FDD-B3F4-0A183B607354}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{578D5FA2-10F9-4FDD-B3F4-0A183B607354}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,6 +181,10 @@ Global
 		{EAAF512C-F285-420F-8AC1-12DE4A6275FA} = {F0513E5A-3886-4F80-BC4B-2EB8D6CE215D}
 		{158EA75B-EFFA-4A36-A91B-2E20D5AE3504} = {F0513E5A-3886-4F80-BC4B-2EB8D6CE215D}
 		{267FF087-E4CE-4749-B169-FA93DAE7FDFC} = {F0513E5A-3886-4F80-BC4B-2EB8D6CE215D}
+		{A7D00CB1-139A-4B73-B165-B461DA07B3C0} = {EACACCF4-1DD7-47EF-8A66-C35280376843}
+		{E0819811-8F36-48B5-82FC-72AE31E1BA82} = {EACACCF4-1DD7-47EF-8A66-C35280376843}
+		{8CC8A2DF-C146-43DC-89AD-87F1E92C4E91} = {A7D00CB1-139A-4B73-B165-B461DA07B3C0}
+		{578D5FA2-10F9-4FDD-B3F4-0A183B607354} = {E0819811-8F36-48B5-82FC-72AE31E1BA82}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4DB89EA9-2712-40FD-8360-DF79F7BF7CB6}

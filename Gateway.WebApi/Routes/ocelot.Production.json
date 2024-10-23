@@ -32,7 +32,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "cart.microservice.api",
-          "Port": 5102
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/cart/{everything}",
@@ -45,7 +45,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "orders.microservice.api",
-          "Port": 5103
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/orders/{everything}",

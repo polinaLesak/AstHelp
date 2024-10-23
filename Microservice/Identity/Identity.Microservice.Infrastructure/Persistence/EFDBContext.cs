@@ -11,7 +11,10 @@ namespace Identity.Microservice.Infrastructure.Persistence
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<MachineAccount> MachineAccounts { get; set; }
 
-        public EFDBContext(DbContextOptions options) : base(options) { }
+        public EFDBContext(DbContextOptions options) : base(options)
+        {
+            Database.Migrate();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

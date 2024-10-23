@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cart.Microservice.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CartController : ControllerBase
     {
         private readonly IMediator _mediator;

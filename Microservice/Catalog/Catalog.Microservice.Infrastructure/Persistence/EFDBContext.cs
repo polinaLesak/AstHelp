@@ -13,7 +13,10 @@ namespace Catalog.Microservice.Infrastructure.Persistence
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Product> Products { get; set; }
 
-        public EFDBContext(DbContextOptions options) : base(options) { }
+        public EFDBContext(DbContextOptions options) : base(options)
+        {
+            Database.Migrate();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
