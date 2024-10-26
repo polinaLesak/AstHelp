@@ -7,18 +7,29 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import logoImg from "../../assets/logo.svg";
+import PersonIcon from "@mui/icons-material/Person";
 import { Divider, Link } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../features/auth/model/loginSlice";
+import { useNavigate } from "react-router-dom";
+import { Link as RouterLink } from 'react-router-dom';
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = [
+  { name: "Каталог", href: "/catalog", roles: [1, 2, 3] },
+  { name: "Мои заказы", href: "/my-orders", roles: [1, 2, 3] },
+  { name: "Заявки", href: "/orders", roles: [1, 2] },
+  { name: "Пользователи", href: "/users", roles: [1] },
+  { name: "Настройки", href: "/settings", roles: [1] },
+];
 
 function Navbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useSelector((state) => state.login);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -37,26 +48,32 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
+
   return (
-    <AppBar position="static" sx={{ p: 0 }}>
+    <AppBar sx={{ p: 0, bottom: "auto", top: 0 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Link href="/" underline="none">
+          <RouterLink to="/">
             <Box
               component="img"
               src={logoImg}
               sx={{
+                display: { xs: "none", md: "flex" },
                 height: "50px",
                 width: "50px",
-                mr: 2
+                mr: 2,
               }}
             />
-          </Link>
+          </RouterLink>
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            component={RouterLink}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -69,7 +86,11 @@ function Navbar() {
           >
             AstHelp
           </Typography>
-          <Divider orientation="vertical" flexItem sx={{color: "white"}} />
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{ color: "white", display: { xs: "none", md: "flex" } }}
+          />
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -98,74 +119,142 @@ function Navbar() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
-                </MenuItem>
-              ))}
+              {pages.map((page) => {
+                if (
+                  user != null &&
+                  page.roles.some((num) => user.roles.includes(num))
+                )
+                  return (
+                    <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                      <Typography
+                        sx={{
+                          textAlign: "center",
+                          color: "inherit",
+                          textDecoration: "none",
+                        }}
+                        component={RouterLink}
+                        to={page.href}
+                      >
+                        {page.name}
+                      </Typography>
+                    </MenuItem>
+                  );
+              })}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <RouterLink to="/">
+            <Box
+              component="img"
+              src={logoImg}
+              sx={{
+                flexGrow: 1,
+                display: { xs: "flex", md: "none" },
+                height: "50px",
+                width: "50px",
+                mr: 2,
+              }}
+            />
+          </RouterLink>
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+            component={RouterLink}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
+              letterSpacing: ".1rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            LOGO
+            AstHelp
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
+            {pages.map((page) => {
+              if (
+                user != null &&
+                page.roles.some((num) => user.roles.includes(num))
+              )
+                return (
+                  <Button
+                    key={page.name}
+                    component={RouterLink}
+                    to={page.href}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
+                    {page.name}
+                  </Button>
+                );
+            })}
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>
-                    {setting}
+          {isAuthenticated ? (
+            <Box sx={{ flexGrow: 0 }}>
+              <Typography
+                sx={{
+                  textAlign: "center",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+                component="a"
+              >
+                {user.fullname}
+              </Typography>
+              <Tooltip title="Открыть настройки">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <PersonIcon fontSize="large" sx={{ color: "#FFF" }} />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography
+                    sx={{
+                      textAlign: "center",
+                      color: "inherit",
+                      textDecoration: "none",
+                    }}
+                    component={RouterLink}
+                    to="/profile"
+                  >
+                    Профиль
                   </Typography>
                 </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+                <MenuItem onClick={handleLogout}>
+                  <Typography
+                    sx={{
+                      textAlign: "center",
+                      color: "inherit",
+                      textDecoration: "none",
+                    }}
+                    component="a"
+                  >
+                    Выйти
+                  </Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          ) : (
+            <></>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

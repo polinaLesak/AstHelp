@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,33 +6,37 @@ import 'react-toastify/dist/ReactToastify.css';
 const ErrorToast = () => {
   const loginError = useSelector((state) => state.login.error);
   const registrationError = useSelector((state) => state.registration.error);
+  const userError = useSelector((state) => state.user.error);
 
   const loginSuccess = useSelector((state) => state.login.success);
   const registrationSuccess = useSelector((state) => state.registration.success);
+  const userSuccess = useSelector((state) => state.user.success);
+
+  const states = useMemo(() => [
+    { error: loginError, success: loginSuccess },
+    { error: registrationError, success: registrationSuccess },
+    { error: userError, success: userSuccess }
+  ], [loginError, registrationError, userError, loginSuccess, registrationSuccess, userSuccess]);
+
 
   useEffect(() => {
-    if (loginError) {
-      if(loginError.statusCode)
-        toast.error(`Ошибка ${loginError.statusCode}: ${loginError.message}`);
-      else
-        toast.error(`Ошибка: ${JSON.stringify(loginError)}`);
-    }
-    if (registrationError) {
-      if(registrationError.statusCode)
-        toast.error(`Ошибка ${registrationError.statusCode}: ${registrationError.message}`);
-      else
-        toast.error(`Ошибка: ${JSON.stringify(registrationError)}`);
-    }
-  }, [loginError, registrationError]);
+    states.forEach(({ error }) => {
+      if (error) {
+        const message = error.statusCode
+          ? `Ошибка ${error.statusCode}: ${error.message}`
+          : `Ошибка: ${JSON.stringify(error)}`;
+        toast.error(message);
+      }
+    });
+  }, [states]);
 
   useEffect(() => {
-    if (loginSuccess) {
-      toast.success(loginSuccess);
-    }
-    if (registrationSuccess) {
-      toast.success(registrationSuccess);
-    }
-  }, [loginSuccess, registrationSuccess]);
+    states.forEach(({ success }) => {
+      if (success) {
+        toast.success(success);
+      }
+    });
+  }, [states]);
 
   return (
     <>

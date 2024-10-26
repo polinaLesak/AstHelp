@@ -1,31 +1,59 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchUser } from '../api/userApi';
+import { deleteUser, fetchAllUsers, updateUserProfile, updateUserStatus } from '../api/userApi';
 
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    data: null,
+    users: null,
     loading: false,
+    success: null,
     error: null,
   },
-  reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchUser.pending, (state) => {
-      console.log('userSlice fetchUser.pending')
-      state.loading = true;
-    });
-    builder.addCase(fetchUser.fulfilled, (state, action) => {
-      console.log('userSlice fetchUser.fulfilled')
-      state.loading = false;
-      state.data = action.payload;
-      console.log(state.data, 'state.data')
-    });
-    builder.addCase(fetchUser.rejected, (state, action) => {
-      console.log('userSlice fetchUser.rejected')
-      state.loading = false;
-      state.error = action.error.message;
-    });
+    handleAsyncActions(builder, fetchAllUsers, 'users');
+    handleAsyncActionsWithSuccessAlert(builder, updateUserStatus, 'Активация аккаунта успешно изменена');
+    handleAsyncActionsWithSuccessAlert(builder, deleteUser, 'Пользователь успешно удалён');
+    handleAsyncActionsWithSuccessAlert(builder, updateUserProfile, 'Информация о пользователе успешно изменена');
   },
 });
+
+const handleAsyncActions = (builder, thunk, field) => {
+  builder
+    .addCase(thunk.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(thunk.fulfilled, (state, action) => {
+      state.loading = false;
+      state[field] = action.payload;
+    })
+    .addCase(thunk.rejected, (state, action) => {
+      console.log(action, 'actionactionactionactionaction')
+      state.loading = false;
+      state.error = action.payload === undefined 
+        ? `Непредвиденная ошибка сервера.`
+        : action.payload.response === undefined 
+          ? `Непредвиденная ошибка сервера. ${action.payload.message}` 
+          : action.payload.response.data;
+    });
+};
+
+const handleAsyncActionsWithSuccessAlert = (builder, thunk, successText) => {
+  builder
+    .addCase(thunk.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(thunk.fulfilled, (state, action) => {
+      state.loading = false;
+      state.success = successText;
+    })
+    .addCase(thunk.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload.response === undefined 
+        ? `Непредвиденная ошибка сервера. ${action.payload.message}` 
+        : action.payload.response.data;
+    });
+};
 
 export default userSlice.reducer;

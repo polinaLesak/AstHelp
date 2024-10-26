@@ -1,4 +1,6 @@
-﻿namespace Identity.Microservice.Domain.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Identity.Microservice.Domain.Entities
 {
     public class Profile
     {
@@ -10,6 +12,7 @@
 
         public int UserId { get; set; }
 
+        [JsonIgnore]
         public User User { get; set; } = null!;
     }
 }

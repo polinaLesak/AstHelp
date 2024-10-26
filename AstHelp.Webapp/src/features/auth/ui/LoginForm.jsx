@@ -29,12 +29,11 @@ const LoginForm = () => {
   const onSubmit = (data) => {
     dispatch(login(data)).unwrap()
     .then(() => {
-      navigate('/about');
+      navigate('/')
     })
     .catch((err) => {
       console.error('Login failed:', err);
     });
-    console.log(data);
   };
 
   return (

@@ -35,7 +35,8 @@ namespace Identity.Microservice.Application.Handlers
                 Id = user.Id,
                 Username = user.Username,
                 Fullname = user.Profile.Fullname,
-                JwtToken = _tokenService.GenerateToken(user)
+                JwtToken = _tokenService.GenerateToken(user),
+                Roles = user.UserRoles.Select(x => x.RoleId).ToArray()
             };
         }
     }

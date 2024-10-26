@@ -15,6 +15,17 @@ axiosClient.interceptors.request.use(config => {
   return config;
 });
 
+axiosClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const { response } = error;
+    if (response && response.status === 401) {
+      window.location.href = "/sign_in";
+    }
+    return Promise.reject(error);
+  }
+);
+
 function getJwtToken() {
   const name = 'jwtToken=';
   const decodedCookie = decodeURIComponent(document.cookie);

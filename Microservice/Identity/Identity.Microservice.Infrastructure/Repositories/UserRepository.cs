@@ -13,14 +13,25 @@ namespace Identity.Microservice.Infrastructure.Repositories
         {
             return await _context.Users
                 .Include(x => x.UserRoles)
+                    .ThenInclude(x => x.Role)
                 .Include(x => x.Profile)
                 .SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public override async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return await _context.Users
+                .Include(x => x.UserRoles)
+                    .ThenInclude(x => x.Role)
+                .Include(x => x.Profile)
+                .ToListAsync();
         }
 
         public async Task<User> GetUserByUsernameAsync(string username)
         {
             return await _context.Users
                 .Include(x => x.UserRoles)
+                    .ThenInclude(x => x.Role)
                 .Include(x => x.Profile)
                 .SingleOrDefaultAsync(x => x.Username == username);
         }
@@ -29,6 +40,7 @@ namespace Identity.Microservice.Infrastructure.Repositories
         {
             return await _context.Users
                 .Include(x => x.UserRoles)
+                    .ThenInclude(x => x.Role)
                 .Include(x => x.Profile)
                 .Where(x => x.UserRoles.Any(r => r.RoleId == roleId))
                 .ToListAsync();

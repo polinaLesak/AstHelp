@@ -10,8 +10,11 @@ builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.RegisterRequestHandlers();
 builder.Services.AddJWTSwagger();
 builder.Services.AddJWTAuthorization(builder.Configuration);
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCORS(MyAllowSpecificOrigins);
 
 var app = builder.Build();
+app.UseCors(MyAllowSpecificOrigins);
 app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())

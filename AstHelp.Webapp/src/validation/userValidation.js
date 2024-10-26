@@ -15,3 +15,12 @@ export const registerValidationSchema = yup.object().shape({
     .oneOf([yup.ref('password'), null], 'Пароль не совпадает')
     .required('Введите пароль подтверждения'),
 });
+
+export const editUserSchema = yup.object().shape({
+  fullname: yup.string()
+    .required("ФИО обязательно")
+    .min(2, "ФИО должно содержать минимум 2 символа"),
+  position: yup.string()
+    .required("Должность обязательна")
+    .min(2, "Должность должна содержать минимум 2 символа")
+});
