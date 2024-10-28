@@ -8,5 +8,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.yml" />
+    <None Include="nginx.conf" />
   </ItemGroup>
 </Project>
