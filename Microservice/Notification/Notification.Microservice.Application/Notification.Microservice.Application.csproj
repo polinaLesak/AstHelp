@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="MediatR" Version="12.4.1" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+	<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.8" />
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Commands\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Handlers\" />
+    <Folder Include="Queries\" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\Notification.Microservice.Domain\Notification.Microservice.Domain.csproj" />
+    <ProjectReference Include="..\Notification.Microservice.Infrastructure\Notification.Microservice.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
