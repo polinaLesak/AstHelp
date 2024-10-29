@@ -59,8 +59,108 @@ Swagger находится в doc/api
 Все значения метрик находятся на хорошем уровне и соответствуют принципам Clean Code. Они указывают на поддерживаемый, понятный и легко адаптируемый код.
 
 Maintainability Index - 93.24
+
+
 Cyclomatic Complexity - 2.75
+
+
 Depth of Inheritance - 1.14
+
+
 Class Coupling - 5.09
+
+
 Lines of Source Code - 17.72
+
+
  Lines of Executable Code - 4.35 
+
+### Тестирование
+
+Модульные тесты обеспечивают высокую степень покрытия кода и стабильность отдельных компонентов, в то время как интеграционные тесты гарантируют, что вся система функционирует как единое целое. 
+
+Модульные тесты:
+
+``` namespace Identity.Microservice.Tests.Unit
+{
+    public class LoginUserCommandHandlerTests
+    {
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<ITokenService> _tokenServiceMock;
+        private readonly LoginUserCommandHandler _handler;
+
+        public LoginUserCommandHandlerTests()
+        {
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _tokenServiceMock = new Mock<ITokenService>();
+            _handler = new LoginUserCommandHandler(_unitOfWorkMock.Object, _tokenServiceMock.Object);
+        }
+
+        [Fact]
+        public async Task Handle_ShouldReturnToken_WhenLoginIsSuccessful()
+        {
+            var command = new LoginUserCommand("testUser", "password");
+            var user = new User { Username = "testUser", Password = BCrypt.Net.BCrypt.HashPassword("password"), IsActive = true };
+            _unitOfWorkMock.Setup(uow => uow.Users.GetUserByUsernameAsync(command.Username)).ReturnsAsync(user);
+            _tokenServiceMock.Setup(ts => ts.GenerateToken(user)).Returns("jwt_token");
+
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            Assert.NotNull(result);
+            Assert.Equal("jwt_token", result.JwtToken);
+        }
+
+        [Fact]
+        public async Task Handle_ShouldThrowUnauthorizedAccessException_WhenUserNotFound()
+        {
+            var command = new LoginUserCommand("invalidUser", "password");
+            _unitOfWorkMock.Setup(uow => uow.Users.GetUserByUsernameAsync(command.Username)).ReturnsAsync((User)null);
+
+            await Assert.ThrowsAsync<UnauthorizedAccessException>(() => _handler.Handle(command, CancellationToken.None));
+        }
+    }
+
+}
+```
+
+Интеграционные тесты:
+
+```
+namespace Identity.Microservice.Tests.Integration
+{
+    public class AuthIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+    {
+        private readonly HttpClient _client;
+
+        public AuthIntegrationTests(WebApplicationFactory<Program> factory)
+        {
+            _client = factory.CreateClient();
+        }
+
+        [Fact]
+        public async Task Register_ShouldReturnOk_WhenRegistrationIsSuccessful()
+        {
+            var registerDto = new RegisterUserCommand { Username = "testUser", Email = "test@example.com", Password = "password" };
+
+            var response = await _client.PostAsJsonAsync("/api/auth/register", registerDto);
+
+            response.EnsureSuccessStatusCode();
+            var result = await response.Content.ReadAsStringAsync();
+            Assert.Equal("true", result);
+        }
+
+        [Fact]
+        public async Task Login_ShouldReturnToken_WhenLoginIsSuccessful()
+        {
+            var loginDto = new LoginUserCommand("testUser", "password");
+
+            var response = await _client.PostAsJsonAsync("/api/auth/login", loginDto);
+
+            response.EnsureSuccessStatusCode();
+            var result = await response.Content.ReadFromJsonAsync<UserLoginResponseDto>();
+            Assert.NotNull(result.JwtToken);
+        }
+    }
+
+}
+```
