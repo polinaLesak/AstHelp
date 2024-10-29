@@ -50,4 +50,17 @@
 ![1](https://github.com/polinaLesak/AstHelp/blob/main/doc/interface/katalog.jpg)
 
 
+## Документация
 
+Swagger находится в doc/api
+
+## Оценка качества кода
+
+Все значения метрик находятся на хорошем уровне и соответствуют принципам Clean Code. Они указывают на поддерживаемый, понятный и легко адаптируемый код.
+
+Maintainability Index - 93.24
+Cyclomatic Complexity - 2.75
+Depth of Inheritance - 1.14
+Class Coupling - 5.09
+Lines of Source Code - 17.72
+ Lines of Executable Code - 4.35 
