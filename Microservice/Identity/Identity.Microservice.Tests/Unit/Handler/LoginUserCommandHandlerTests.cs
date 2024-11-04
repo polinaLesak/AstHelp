@@ -5,7 +5,7 @@ using Identity.Microservice.Domain.Entities;
 using Identity.Microservice.Domain.Repositories;
 using Moq;
 
-namespace Identity.Microservice.Tests.Unit
+namespace Identity.Microservice.Tests.Unit.Handler
 {
     public class LoginUserCommandHandlerTests
     {

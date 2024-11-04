@@ -1,3 +1,4 @@
+using Cart.Microservice.API.Configuration;
 using Cart.Microservice.API.Middleware;
 using Cart.Microservice.Application.DI;
 
@@ -7,11 +8,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddApplicationServices(builder.Configuration);
-builder.Services.RegisterRequestHandlers();
-builder.Services.AddJWTSwagger();
-builder.Services.AddJWTAuthorization(builder.Configuration);
+builder.Services.RegisterMediatrHandlers();
+builder.Services.ConfigureSwagger();
+builder.Services.ConfigureJwtAuthorization(builder.Configuration);
+builder.Services.ConfigureRabbitMq(builder.Configuration);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-builder.Services.AddCORS(MyAllowSpecificOrigins);
+builder.Services.ConfigureCors(MyAllowSpecificOrigins);
 
 var app = builder.Build();
 app.UseCors(MyAllowSpecificOrigins);

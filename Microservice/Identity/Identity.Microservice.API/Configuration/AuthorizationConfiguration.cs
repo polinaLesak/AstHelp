@@ -4,11 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Identity.Microservice.Application.DI
+namespace Identity.Microservice.API.Configuration
 {
-    public static class JWTAuthorization
+    public static class AuthorizationConfiguration
     {
-        public static IServiceCollection AddJWTAuthorization(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureAuthorization(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication(options =>
             {

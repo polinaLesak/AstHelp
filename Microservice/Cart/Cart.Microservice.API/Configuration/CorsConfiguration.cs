@@ -1,15 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Identity.Microservice.Application.DI
+namespace Cart.Microservice.API.Configuration
 {
-    public static class CORS
+    public static class CorsConfiguration
     {
-        public static IServiceCollection AddCORS(this IServiceCollection services, string specificOrigins)
+        public static IServiceCollection ConfigureCors(this IServiceCollection services, string specificOrigins)
         {
             return services.AddCors(options =>
             {

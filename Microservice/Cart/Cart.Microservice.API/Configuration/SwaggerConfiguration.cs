@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace Identity.Microservice.Application.DI
+namespace Cart.Microservice.API.Configuration
 {
-    public static class Swagger
+    public static class SwaggerConfiguration
     {
-        public static IServiceCollection AddJWTSwagger(this IServiceCollection services)
+        public static IServiceCollection ConfigureSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
             {
