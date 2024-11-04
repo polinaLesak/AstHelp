@@ -5,11 +5,14 @@ namespace Notification.Microservice.Infrastructure.Persistence
     public class UnitOfWork : IUnitOfWork
     {
         private readonly EFDBContext _context;
+        public INotificationRepository Notification { get; }
 
         public UnitOfWork(
-            EFDBContext context)
+            EFDBContext context
+            , INotificationRepository notification)
         {
             _context = context;
+            Notification = notification;
         }
 
         public async Task<int> CommitAsync()

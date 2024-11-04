@@ -1,6 +1,6 @@
-﻿using Notification.Microservice.Domain.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using Notification.Microservice.Domain.Repositories;
 using Notification.Microservice.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Notification.Microservice.Infrastructure.Repositories

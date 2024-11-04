@@ -2,6 +2,7 @@
 {
     public interface IUnitOfWork : IDisposable
     {
+        INotificationRepository Notification { get; }
 
         Task<int> CommitAsync();
     }

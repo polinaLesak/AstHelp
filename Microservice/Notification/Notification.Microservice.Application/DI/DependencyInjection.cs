@@ -1,8 +1,9 @@
-﻿using Notification.Microservice.Domain.Repositories;
-using Notification.Microservice.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Notification.Microservice.Domain.Repositories;
+using Notification.Microservice.Infrastructure.Persistence;
+using Notification.Microservice.Infrastructure.Repositories;
 
 namespace Notification.Microservice.Application.DI
 {
@@ -13,6 +14,7 @@ namespace Notification.Microservice.Application.DI
             services.AddDbContext<EFDBContext>(options =>
                 options.UseNpgsql(configuration["ConnectionStrings:DefaultConnection"]));
 
+            services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
