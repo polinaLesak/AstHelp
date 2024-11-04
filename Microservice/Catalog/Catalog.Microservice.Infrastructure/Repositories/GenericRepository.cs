@@ -19,7 +19,7 @@ namespace Catalog.Microservice.Infrastructure.Repositories
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async virtual Task<IEnumerable<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
         }

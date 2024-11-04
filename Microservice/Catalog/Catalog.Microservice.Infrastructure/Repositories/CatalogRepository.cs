@@ -16,6 +16,14 @@ namespace Catalog.Microservice.Infrastructure.Repositories
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
 
+        public override async Task<IEnumerable<Domain.Entities.Catalog>> GetAllAsync()
+        {
+            return await _context.Catalogs
+                .Include(x => x.CatalogAttributes)
+                    .ThenInclude(x => x.Attribute)
+                .ToListAsync();
+        }
+
         public async Task<bool> ExistCatalogByName(string name)
         {
             return await _context.Catalogs

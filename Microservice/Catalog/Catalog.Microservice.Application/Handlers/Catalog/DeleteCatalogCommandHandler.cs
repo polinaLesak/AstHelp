@@ -16,7 +16,7 @@ namespace Catalog.Microservice.Application.Handlers
 
         public async Task<Unit> Handle(DeleteCatalogCommand request, CancellationToken cancellationToken)
         {
-            var catalog = await _unitOfWork.Attributes.GetByIdAsync(request.CatalogId);
+            var catalog = await _unitOfWork.Catalogs.GetByIdAsync(request.CatalogId);
             if (catalog == null)
             {
                 throw new NotFoundException($"Категория с ID \"{request.CatalogId}\" не найдена.");
@@ -24,7 +24,7 @@ namespace Catalog.Microservice.Application.Handlers
 
             try
             {
-                _unitOfWork.Attributes.Remove(catalog);
+                _unitOfWork.Catalogs.Remove(catalog);
                 await _unitOfWork.CommitAsync();
             }
             catch (Exception)

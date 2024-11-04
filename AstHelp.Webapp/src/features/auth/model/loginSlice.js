@@ -29,6 +29,12 @@ const loginSlice = createSlice({
       document.cookie = `jwtToken=; max-age=0; path=/;`;
       document.cookie = `user=; max-age=0; path=/;`;
     },
+    clearLoginError(state) {
+      state.error = null
+    },
+    clearLoginSuccess(state) {
+      state.success = null
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -69,5 +75,5 @@ function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-export const { logout } = loginSlice.actions;
+export const { logout, clearLoginError, clearLoginSuccess } = loginSlice.actions;
 export default loginSlice.reducer;

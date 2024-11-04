@@ -23,6 +23,11 @@ namespace Catalog.Microservice.Application.Handlers
                 throw new NotFoundException($"Бренд с ID \"{request.BrandId}\" не найден.");
             }
 
+            if (await _unitOfWork.Brands.ExistBrandByName(request.Name))
+            {
+                throw new DataExistsException("Данный бренд уже существует.");
+            }
+
             brand.Name = request.Name;
 
             _unitOfWork.Brands.Update(brand);

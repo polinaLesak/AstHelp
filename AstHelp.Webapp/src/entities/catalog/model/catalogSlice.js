@@ -1,27 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { deleteUser, fetchAllUsers, updateUserProfile, updateUserStatus } from '../api/userApi';
+import { createCatalog, deleteCatalog, fetchAllCatalogs, updateCatalog } from '../api/catalogApi';
 
-const userSlice = createSlice({
-  name: 'user',
+const catalogSlice = createSlice({
+  name: 'brand',
   initialState: {
-    users: null,
+    catalogs: null,
     loading: false,
     success: null,
     error: null,
   },
   reducers: {
-    clearUserError(state) {
+    clearCatalogError(state) {
       state.error = null
     },
-    clearUserSuccess(state) {
+    clearCatalogSuccess(state) {
       state.success = null
     }
   },
   extraReducers: (builder) => {
-    handleAsyncActions(builder, fetchAllUsers, 'users');
-    handleAsyncActionsWithSuccessAlert(builder, updateUserStatus, 'Активация аккаунта успешно изменена');
-    handleAsyncActionsWithSuccessAlert(builder, deleteUser, 'Пользователь успешно удалён');
-    handleAsyncActionsWithSuccessAlert(builder, updateUserProfile, 'Информация о пользователе успешно изменена');
+    handleAsyncActions(builder, fetchAllCatalogs, 'catalogs');
+    handleAsyncActionsWithSuccessAlert(builder, createCatalog, 'Каталог успешно добавлен');
+    handleAsyncActionsWithSuccessAlert(builder, deleteCatalog, 'Каталог успешно удалён');
+    handleAsyncActionsWithSuccessAlert(builder, updateCatalog, 'Каталог успешно изменён');
   },
 });
 
@@ -30,6 +30,7 @@ const handleAsyncActions = (builder, thunk, field) => {
     .addCase(thunk.pending, (state) => {
       state.loading = true;
       state.error = null;
+      state.success = null;
     })
     .addCase(thunk.fulfilled, (state, action) => {
       state.loading = false;
@@ -51,6 +52,7 @@ const handleAsyncActionsWithSuccessAlert = (builder, thunk, successText) => {
     .addCase(thunk.pending, (state) => {
       state.loading = true;
       state.error = null;
+      state.success = null;
     })
     .addCase(thunk.fulfilled, (state, action) => {
       state.loading = false;
@@ -64,5 +66,5 @@ const handleAsyncActionsWithSuccessAlert = (builder, thunk, successText) => {
     });
 };
 
-export const { clearUserError, clearUserSuccess } = userSlice.actions;
-export default userSlice.reducer;
+export const { clearCatalogError, clearCatalogSuccess } = catalogSlice.actions;
+export default catalogSlice.reducer;

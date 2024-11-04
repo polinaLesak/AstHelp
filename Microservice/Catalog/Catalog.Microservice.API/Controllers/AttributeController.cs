@@ -33,6 +33,14 @@ namespace Catalog.Microservice.API.Controllers
             return Ok(await _mediator.Send(new GetAttributeByIdQuery(id)));
         }
 
+        // GET: api/Attribute/AttributeTypes
+        [HttpGet("AttributeTypes")]
+        [Authorize(Roles = "1, 2, 3")]
+        public async Task<IActionResult> GetAttributeTypes()
+        {
+            return Ok(await _mediator.Send(new GetAllAttributeTypesQuery()));
+        }
+
         // GET: api/Attribute/ByCatalogId?id=
         [HttpGet("ByCatalogId")]
         [Authorize(Roles = "1, 2, 3")]

@@ -64,17 +64,17 @@ namespace Catalog.Microservice.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "String"
+                            Name = "Строковый"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Integer"
+                            Name = "Число"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Numeric"
+                            Name = "Большое число"
                         });
                 });
 

@@ -23,9 +23,9 @@ namespace Catalog.Microservice.Infrastructure.Persistence
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<AttributeType>().HasData(
-                new AttributeType { Id = 1, Name = "String" },
-                new AttributeType { Id = 2, Name = "Integer" },
-                new AttributeType { Id = 3, Name = "Numeric" }
+                new AttributeType { Id = 1, Name = "Строковый" },
+                new AttributeType { Id = 2, Name = "Число" },
+                new AttributeType { Id = 3, Name = "Большое число" }
                 );
 
             // Категория и продукты

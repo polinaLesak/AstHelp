@@ -23,44 +23,28 @@ namespace Catalog.Microservice.Application.Handlers
                 throw new NotFoundException($"Категория с ID \"{request.CatalogId}\" не найдена.");
             }
 
-            foreach (var item in request.AttributeTypes)
+            if (catalog.Name != request.Name && await _unitOfWork.Catalogs.ExistCatalogByName(request.Name))
             {
-                if (!catalog.CatalogAttributes.Any(x => x.AttributeId == item))
-                {
-                    AttributeType attributeType = await _unitOfWork.AttributeTypes.GetByIdAsync(item);
-                    if (attributeType == null)
-                        throw new NotFoundException($"Атрибут с ID \"{item}\" не найден.");
-
-                    catalog.CatalogAttributes.Add(new Domain.Entities.CatalogAttribute
-                    {
-                        CatalogId = catalog.Id,
-                        AttributeId = attributeType.Id,
-                    });
-                }
-            }
-
-            foreach (var item in catalog.CatalogAttributes)
-            {
-                if (!request.AttributeTypes.Any(x => x == item.AttributeId))
-                {
-                    CatalogAttribute catalogAttribute = catalog.CatalogAttributes
-                        .Where(x => x.AttributeId == item.AttributeId)
-                        .FirstOrDefault();
-                    if (catalogAttribute != null)
-                        catalog.CatalogAttributes.Remove(catalogAttribute);
-                    List<Product> products = await _unitOfWork.Products.GetAllProductsByCatalogIdAsync(catalog.Id);
-                    products.ForEach(x =>
-                    {
-                        AttributeValue attributeValue = x.AttributeValues
-                            .Where(x => x.AttributeId == item.AttributeId).FirstOrDefault();
-                        if (attributeValue != null)
-                            x.AttributeValues.Remove(attributeValue);
-                        _unitOfWork.Products.Update(x);
-                    });
-                }
+                throw new DataExistsException("Данная категория уже существует.");
             }
 
             catalog.Name = request.Name;
+            catalog.CatalogAttributes.Clear();
+
+            foreach (var attributeId in request.AttributeIds)
+            {
+                if (!(await _unitOfWork.Attributes.ExistAttributeById(attributeId)))
+                {
+                    throw new NotFoundException($"Атрибут с ID {attributeId} не найден.");
+                }
+
+                catalog.CatalogAttributes.Add(new CatalogAttribute
+                {
+                    CatalogId = catalog.Id,
+                    AttributeId = attributeId
+                });
+            }
+
 
             _unitOfWork.Catalogs.Update(catalog);
             await _unitOfWork.CommitAsync();

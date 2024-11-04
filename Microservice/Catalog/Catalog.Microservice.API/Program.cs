@@ -1,16 +1,21 @@
+using Catalog.Microservice.API.Configuration;
 using Catalog.Microservice.API.Middleware;
 using Catalog.Microservice.Application.DI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddApplicationServices(builder.Configuration);
-builder.Services.RegisterRequestHandlers();
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.RegisterMediatrHandlers();
+builder.Services.ConfigureSwagger();
+builder.Services.ConfigureJwtAuthorization(builder.Configuration);
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.ConfigureCors(MyAllowSpecificOrigins);
 
 var app = builder.Build();
+app.UseCors(MyAllowSpecificOrigins);
 app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())

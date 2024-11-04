@@ -23,6 +23,11 @@ namespace Catalog.Microservice.Application.Handlers
                 throw new NotFoundException($"Атрибут с ID \"{request.AttributeId}\" не найден.");
             }
 
+            if (request.Name != attribute.Name && await _unitOfWork.Attributes.ExistAttributeByName(request.Name))
+            {
+                throw new DataExistsException("Данный атрибут уже существует.");
+            }
+
             AttributeType attributeType = await _unitOfWork.AttributeTypes.GetByIdAsync(request.AttributeTypeId);
             if (attributeType == null)
             {

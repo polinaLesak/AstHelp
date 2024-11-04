@@ -5,7 +5,7 @@ namespace Catalog.Microservice.Application.Commands
 {
     public class UpdateBrandCommand : IRequest<Brand>
     {
-        public int BrandId { get; }
-        public string Name { get; } = "";
+        public int BrandId { get; set; }
+        public string Name { get; set; } = "";
     }
 }

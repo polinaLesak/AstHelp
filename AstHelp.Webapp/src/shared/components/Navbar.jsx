@@ -12,11 +12,11 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import logoImg from "../../assets/logo.svg";
 import PersonIcon from "@mui/icons-material/Person";
-import { Divider, Link } from "@mui/material";
+import { Divider } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../features/auth/model/loginSlice";
 import { useNavigate } from "react-router-dom";
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from "react-router-dom";
 
 const pages = [
   { name: "Каталог", href: "/catalog", roles: [1, 2, 3] },
@@ -119,11 +119,13 @@ function Navbar() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
-              {pages.map((page) => {
-                if (
-                  user != null &&
-                  page.roles.some((num) => user.roles.includes(num))
+              {pages
+                .filter(
+                  (page) =>
+                    user != null &&
+                    page.roles.some((num) => user.roles.includes(num))
                 )
+                .map((page) => {
                   return (
                     <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                       <Typography
@@ -139,7 +141,7 @@ function Navbar() {
                       </Typography>
                     </MenuItem>
                   );
-              })}
+                })}
             </Menu>
           </Box>
           <RouterLink to="/">
@@ -174,11 +176,13 @@ function Navbar() {
             AstHelp
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => {
-              if (
-                user != null &&
-                page.roles.some((num) => user.roles.includes(num))
+            {pages
+              .filter(
+                (page) =>
+                  user != null &&
+                  page.roles.some((num) => user.roles.includes(num))
               )
+              .map((page) => {
                 return (
                   <Button
                     key={page.name}
@@ -190,7 +194,7 @@ function Navbar() {
                     {page.name}
                   </Button>
                 );
-            })}
+              })}
           </Box>
           {isAuthenticated ? (
             <Box sx={{ flexGrow: 0 }}>

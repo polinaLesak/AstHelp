@@ -4,8 +4,8 @@ namespace Catalog.Microservice.Application.Commands
 {
     public class UpdateCatalogCommand : IRequest<Domain.Entities.Catalog>
     {
-        public int CatalogId { get; }
-        public string Name { get; } = "";
-        public int[] AttributeTypes { get; } = [];
+        public int CatalogId { get; set; }
+        public string Name { get; set; } = "";
+        public int[] AttributeIds { get; set; } = [];
     }
 }

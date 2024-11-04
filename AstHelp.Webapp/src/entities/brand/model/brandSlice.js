@@ -1,27 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { deleteUser, fetchAllUsers, updateUserProfile, updateUserStatus } from '../api/userApi';
+import { createBrand, deleteBrand, fetchAllBrands, updateBrand } from '../api/brandApi';
 
-const userSlice = createSlice({
-  name: 'user',
+const brandSlice = createSlice({
+  name: 'brand',
   initialState: {
-    users: null,
+    brands: null,
     loading: false,
     success: null,
     error: null,
   },
   reducers: {
-    clearUserError(state) {
+    clearBrandError(state) {
       state.error = null
     },
-    clearUserSuccess(state) {
+    clearBrandSuccess(state) {
       state.success = null
     }
   },
   extraReducers: (builder) => {
-    handleAsyncActions(builder, fetchAllUsers, 'users');
-    handleAsyncActionsWithSuccessAlert(builder, updateUserStatus, 'Активация аккаунта успешно изменена');
-    handleAsyncActionsWithSuccessAlert(builder, deleteUser, 'Пользователь успешно удалён');
-    handleAsyncActionsWithSuccessAlert(builder, updateUserProfile, 'Информация о пользователе успешно изменена');
+    handleAsyncActions(builder, fetchAllBrands, 'brands');
+    handleAsyncActionsWithSuccessAlert(builder, createBrand, 'Бренд успешно добавлен');
+    handleAsyncActionsWithSuccessAlert(builder, deleteBrand, 'Бренд успешно удалён');
+    handleAsyncActionsWithSuccessAlert(builder, updateBrand, 'Бренд успешно изменён');
   },
 });
 
@@ -30,13 +30,13 @@ const handleAsyncActions = (builder, thunk, field) => {
     .addCase(thunk.pending, (state) => {
       state.loading = true;
       state.error = null;
+      state.success = null;
     })
     .addCase(thunk.fulfilled, (state, action) => {
       state.loading = false;
       state[field] = action.payload;
     })
     .addCase(thunk.rejected, (state, action) => {
-      console.log(action, 'actionactionactionactionaction')
       state.loading = false;
       state.error = action.payload === undefined 
         ? `Непредвиденная ошибка сервера.`
@@ -51,6 +51,7 @@ const handleAsyncActionsWithSuccessAlert = (builder, thunk, successText) => {
     .addCase(thunk.pending, (state) => {
       state.loading = true;
       state.error = null;
+      state.success = null;
     })
     .addCase(thunk.fulfilled, (state, action) => {
       state.loading = false;
@@ -64,5 +65,5 @@ const handleAsyncActionsWithSuccessAlert = (builder, thunk, successText) => {
     });
 };
 
-export const { clearUserError, clearUserSuccess } = userSlice.actions;
-export default userSlice.reducer;
+export const { clearBrandError, clearBrandSuccess } = brandSlice.actions;
+export default brandSlice.reducer;

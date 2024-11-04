@@ -1,4 +1,6 @@
-﻿namespace Catalog.Microservice.Domain.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Catalog.Microservice.Domain.Entities
 {
     /**
         CatalogAttribute
@@ -9,6 +11,7 @@
         public int CatalogId { get; set; }
         public int AttributeId { get; set; }
 
+        [JsonIgnore]
         public Catalog Catalog { get; set; }
         public Attribute Attribute { get; set; }
     }

@@ -1,27 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { deleteUser, fetchAllUsers, updateUserProfile, updateUserStatus } from '../api/userApi';
+import { createAttribute, deleteAttribute, fetchAllAttributes, fetchAllAttributeTypes, updateAttribute } from '../api/attributeApi';
 
-const userSlice = createSlice({
-  name: 'user',
+const attributeSlice = createSlice({
+  name: 'attribute',
   initialState: {
-    users: null,
+    attributes: null,
+    attributeTypes: null,
     loading: false,
     success: null,
     error: null,
   },
   reducers: {
-    clearUserError(state) {
+    clearAttributeError(state) {
       state.error = null
     },
-    clearUserSuccess(state) {
+    clearAttributeSuccess(state) {
       state.success = null
     }
   },
   extraReducers: (builder) => {
-    handleAsyncActions(builder, fetchAllUsers, 'users');
-    handleAsyncActionsWithSuccessAlert(builder, updateUserStatus, 'Активация аккаунта успешно изменена');
-    handleAsyncActionsWithSuccessAlert(builder, deleteUser, 'Пользователь успешно удалён');
-    handleAsyncActionsWithSuccessAlert(builder, updateUserProfile, 'Информация о пользователе успешно изменена');
+    handleAsyncActions(builder, fetchAllAttributes, 'attributes');
+    handleAsyncActions(builder, fetchAllAttributeTypes, 'attributeTypes');
+    handleAsyncActionsWithSuccessAlert(builder, createAttribute, 'Утрибут успешно добавлен');
+    handleAsyncActionsWithSuccessAlert(builder, deleteAttribute, 'Утрибут успешно удалён');
+    handleAsyncActionsWithSuccessAlert(builder, updateAttribute, 'Атрибут успешно изменён');
   },
 });
 
@@ -30,6 +32,7 @@ const handleAsyncActions = (builder, thunk, field) => {
     .addCase(thunk.pending, (state) => {
       state.loading = true;
       state.error = null;
+      state.success = null;
     })
     .addCase(thunk.fulfilled, (state, action) => {
       state.loading = false;
@@ -50,6 +53,7 @@ const handleAsyncActionsWithSuccessAlert = (builder, thunk, successText) => {
   builder
     .addCase(thunk.pending, (state) => {
       state.loading = true;
+      state.success = null;
       state.error = null;
     })
     .addCase(thunk.fulfilled, (state, action) => {
@@ -64,5 +68,5 @@ const handleAsyncActionsWithSuccessAlert = (builder, thunk, successText) => {
     });
 };
 
-export const { clearUserError, clearUserSuccess } = userSlice.actions;
-export default userSlice.reducer;
+export const { clearAttributeError, clearAttributeSuccess } = attributeSlice.actions;
+export default attributeSlice.reducer;
