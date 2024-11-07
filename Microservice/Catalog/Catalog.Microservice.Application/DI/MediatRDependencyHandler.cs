@@ -1,4 +1,6 @@
-﻿namespace Catalog.Microservice.API.Configuration
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Catalog.Microservice.Application.DI
 {
     public static class MediatRDependencyHandler
     {

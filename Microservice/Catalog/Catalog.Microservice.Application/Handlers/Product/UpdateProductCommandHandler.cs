@@ -23,7 +23,9 @@ namespace Catalog.Microservice.Application.Handlers
                 throw new NotFoundException($"Продукт с ID \"{request.ProductId}\" не найден.");
             }
 
-            if (await _unitOfWork.Products.ExistProductByBrandId_CatalogId_Name(
+            if ((product.Name != request.Name || product.BrandId != request.BrandId 
+                || product.CatalogId != request.CatalogId) 
+                && await _unitOfWork.Products.ExistProductByBrandId_CatalogId_Name(
                request.BrandId, request.CatalogId, request.Name))
             {
                 throw new DataExistsException("Продукт с выбранным брендом, категорией и наименованием уже существует.");
@@ -66,12 +68,16 @@ namespace Catalog.Microservice.Application.Handlers
                 }
             }
 
+            var itemsToRemove = new List<AttributeValue>();
             foreach (var item in product.AttributeValues)
             {
                 if (!request.ProductAttributes.Any(x => x.AttributeId == item.AttributeId))
-                {
-                    product.AttributeValues.Remove(item);
-                }
+                    itemsToRemove.Add(item);
+            }
+
+            foreach (var item in itemsToRemove)
+            {
+                product.AttributeValues.Remove(item);
             }
 
             _unitOfWork.Products.Update(product);

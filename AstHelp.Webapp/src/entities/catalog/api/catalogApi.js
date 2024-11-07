@@ -19,7 +19,7 @@ export const fetchAllCatalogs = createAsyncThunk('catalog/fetchAllCatalogs', asy
   }
 });
 
-export const createCatalog = createAsyncThunk('brand/createCatalog', async (data, thunkAPI) => {
+export const createCatalog = createAsyncThunk('catalog/createCatalog', async (data, thunkAPI) => {
   try {
     const response = await axiosClient.post(`/catalog/Catalog`, data);
     return response.data;

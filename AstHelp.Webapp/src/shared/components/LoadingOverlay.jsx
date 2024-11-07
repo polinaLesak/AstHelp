@@ -9,9 +9,10 @@ const LoadingOverlay = () => {
   const isCatalogLoading = useSelector((state) => state.catalog.loading);
   const isBrandLoading = useSelector((state) => state.brand.loading);
   const isAttributeLoading = useSelector((state) => state.attribute.loading);
+  const isProductLoading = useSelector((state) => state.product.loading);
 
   const isLoading = isLoginLoading || isRegistrationLoading || isUserLoading
-    || isCatalogLoading || isBrandLoading || isAttributeLoading;
+    || isCatalogLoading || isBrandLoading || isAttributeLoading || isProductLoading;
 
   return (
     <Backdrop

@@ -16,7 +16,18 @@ namespace Catalog.Microservice.Infrastructure.Repositories
                 .Include(x => x.Brand)
                 .Include(x => x.Catalog)
                 .Include(x => x.AttributeValues)
+                    .ThenInclude(x => x.Attribute)
                 .SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public override async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            return await _context.Products
+                .Include(x => x.Brand)
+                .Include(x => x.Catalog)
+                .Include(x => x.AttributeValues)
+                    .ThenInclude(x => x.Attribute)
+                .ToListAsync();
         }
 
         public async Task<bool> ExistProductByBrandId_CatalogId_Name(int brandId, int catalogId, string name)

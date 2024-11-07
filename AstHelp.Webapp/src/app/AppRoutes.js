@@ -6,6 +6,7 @@ import SignInPage from '../pages/SignInPage';
 import SignUpPage from '../pages/SignUpPage';
 import UsersPage from '../pages/UsersPage';
 import SettingsPage from '../pages/SettingsPage';
+import ProductPage from '../pages/ProductPage';
 
 const AppRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const AppRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/users" element={<UsersPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/catalog" element={<ProductPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
   );

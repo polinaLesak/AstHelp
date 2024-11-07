@@ -5,6 +5,7 @@ import userReducer from '../entities/user/model/userSlice';
 import catalogReducer from '../entities/catalog/model/catalogSlice';
 import brandReducer from '../entities/brand/model/brandSlice';
 import attributesReducer from '../entities/attribute/model/attributeSlice';
+import productReducer from '../entities/product/model/productSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     catalog: catalogReducer,
     brand: brandReducer,
     attribute: attributesReducer,
+    product: productReducer,
   },
 });
