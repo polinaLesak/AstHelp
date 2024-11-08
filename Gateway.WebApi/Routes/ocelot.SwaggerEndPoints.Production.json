@@ -39,6 +39,16 @@
           "Url": "http://orders.microservice.api/swagger/v1/swagger.json"
         }
       ]
+    },
+    {
+      "Key": "notification.microservice.api",
+      "Config": [
+        {
+          "Name": "notification.microservice.api",
+          "Version": "v1",
+          "Url": "http://notification.microservice.api/swagger/v1/swagger.json"
+        }
+      ]
     }
   ]
 }

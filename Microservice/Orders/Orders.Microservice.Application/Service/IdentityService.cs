@@ -15,7 +15,7 @@ namespace Orders.Microservice.Application.Service
             _machineTokenService = machineTokenService;
         }
 
-        public async Task<List<UserDto>> GetAllManagersAsync()
+        public async Task<List<UserInfo>> GetAllManagersAsync()
         {
             var token = await _machineTokenService.GetTokenAsync();
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -24,9 +24,24 @@ namespace Orders.Microservice.Application.Service
 
             if (response.IsSuccessStatusCode)
             {
-                var managers = await response.Content.ReadFromJsonAsync<List<UserDto>>();
+                var managers = await response.Content.ReadFromJsonAsync<List<UserInfo>>();
                 return managers;
             }
+            else
+            {
+                throw new Exception("Error retrieving managers from Identity service.");
+            }
+        }
+
+        public async Task<UserInfo> GetUserInfoById(int userId)
+        {
+            var token = await _machineTokenService.GetTokenAsync();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.GetAsync($"api/User?id={userId}");
+
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<UserInfo>();
             else
             {
                 throw new Exception("Error retrieving managers from Identity service.");

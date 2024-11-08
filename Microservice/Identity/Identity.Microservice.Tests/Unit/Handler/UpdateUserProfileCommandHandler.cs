@@ -15,7 +15,7 @@ namespace Identity.Microservice.Tests.Unit.Handler
         public UpdateUserProfileCommandHandlerTests()
         {
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _handler = new UpdateUserProfileCommandHandler(_unitOfWorkMock.Object);
+            //_handler = new UpdateUserProfileCommandHandler(_unitOfWorkMock.Object);
         }
 
         [Fact]

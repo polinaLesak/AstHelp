@@ -4,6 +4,7 @@ namespace Orders.Microservice.Application.Service
 {
     public interface IIdentityService
     {
-        Task<List<UserDto>> GetAllManagersAsync();
+        Task<List<UserInfo>> GetAllManagersAsync();
+        Task<UserInfo> GetUserInfoById(int userId);
     }
 }

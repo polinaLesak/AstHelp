@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,11 +12,15 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import logoImg from "../../assets/logo.svg";
 import PersonIcon from "@mui/icons-material/Person";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Badge from "@mui/material/Badge";
 import { Divider } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../features/auth/model/loginSlice";
 import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
+import { fetchCartProductsCountByUserId } from "../../entities/cart/api/cartApi";
 
 const pages = [
   { name: "Каталог", href: "/catalog", roles: [1, 2, 3] },
@@ -30,8 +34,13 @@ function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.login);
+  const cartItemCount = useSelector((state) => state.cart.countProducts);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  useEffect(() => {
+    if (user && isAuthenticated) dispatch(fetchCartProductsCountByUserId(user.id));
+  }, [dispatch, isAuthenticated, user]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -196,66 +205,87 @@ function Navbar() {
                 );
               })}
           </Box>
+          {/* Иконка уведомлений */}
+          {/* <IconButton
+            component={RouterLink}
+            to="/notifications"
+            sx={{ color: "inherit", ml: 1 }}
+          >
+            <Badge badgeContent={notificationCount} color="error">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton> */}
           {isAuthenticated ? (
-            <Box sx={{ flexGrow: 0 }}>
-              <Typography
-                sx={{
-                  textAlign: "center",
-                  color: "inherit",
-                  textDecoration: "none",
-                }}
-                component="a"
+            <>
+              <IconButton
+                component={RouterLink}
+                to="/cart"
+                sx={{ color: "inherit", mr: 3 }}
               >
-                {user.fullname}
-              </Typography>
-              <Tooltip title="Открыть настройки">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <PersonIcon fontSize="large" sx={{ color: "#FFF" }} />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography
-                    sx={{
-                      textAlign: "center",
-                      color: "inherit",
-                      textDecoration: "none",
-                    }}
-                    component={RouterLink}
-                    to="/profile"
-                  >
-                    Профиль
-                  </Typography>
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>
-                  <Typography
-                    sx={{
-                      textAlign: "center",
-                      color: "inherit",
-                      textDecoration: "none",
-                    }}
-                    component="a"
-                  >
-                    Выйти
-                  </Typography>
-                </MenuItem>
-              </Menu>
-            </Box>
+                <Badge badgeContent={cartItemCount} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+              <Box sx={{ flexGrow: 0 }}>
+                <Typography
+                  sx={{
+                    textAlign: "center",
+                    color: "inherit",
+                    textDecoration: "none",
+                  }}
+                  component="a"
+                >
+                  {user.fullname}
+                </Typography>
+                <Tooltip title="Открыть настройки">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <PersonIcon fontSize="large" sx={{ color: "#FFF" }} />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography
+                      sx={{
+                        textAlign: "center",
+                        color: "inherit",
+                        textDecoration: "none",
+                      }}
+                      component={RouterLink}
+                      to="/profile"
+                    >
+                      Профиль
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>
+                    <Typography
+                      sx={{
+                        textAlign: "center",
+                        color: "inherit",
+                        textDecoration: "none",
+                      }}
+                      component="a"
+                    >
+                      Выйти
+                    </Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            </>
           ) : (
             <></>
           )}

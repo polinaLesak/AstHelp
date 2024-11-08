@@ -27,7 +27,7 @@ namespace Identity.Microservice.API.Controllers
 
         // Get: api/User
         [HttpGet]
-        [Authorize(Roles = "1, 2, 3")]
+        [Authorize(Roles = "0, 1, 2, 3")]
         public async Task<IActionResult> GetUserById(
             [FromQuery] int id)
         {

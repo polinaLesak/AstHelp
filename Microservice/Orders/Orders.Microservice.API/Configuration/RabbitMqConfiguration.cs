@@ -1,9 +1,9 @@
-﻿using Identity.Microservice.Infrastructure.Configurations;
-using Identity.Microservice.Infrastructure.Messaging;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+using Orders.Microservice.Infrastructure.Messaging;
+using Orders.Microservice.Infrastructure.Messaging.Configurations;
 using RabbitMQ.Client;
 
-namespace Identity.Microservice.API.Configuration
+namespace Orders.Microservice.API.Configuration
 {
     public static class RabbitMqConfiguration
     {
@@ -31,8 +31,8 @@ namespace Identity.Microservice.API.Configuration
                 return connection.CreateModel();
             });
 
-            // Регистрируем RabbitMQProducer и RabbitMQConsumer
-            services.AddSingleton<RabbitMQProducer>();
+            // Регистрируем RabbitMQConsumer как фоновую службу
+            services.AddHostedService<RabbitMQConsumer>();
 
             return services;
         }

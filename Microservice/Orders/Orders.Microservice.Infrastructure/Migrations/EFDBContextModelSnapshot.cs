@@ -67,6 +67,13 @@ namespace Orders.Microservice.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("CatalogId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CatalogName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 

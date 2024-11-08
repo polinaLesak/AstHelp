@@ -12,7 +12,7 @@ using Orders.Microservice.Infrastructure.Persistence;
 namespace Orders.Microservice.Infrastructure.Migrations
 {
     [DbContext(typeof(EFDBContext))]
-    [Migration("20241020165210_InitDb")]
+    [Migration("20241108111832_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -69,6 +69,13 @@ namespace Orders.Microservice.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<int>("CatalogId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CatalogName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");

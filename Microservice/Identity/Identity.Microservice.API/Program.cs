@@ -1,5 +1,5 @@
-using Catalog.Microservice.API.Middleware;
 using Identity.Microservice.API.Configuration;
+using Identity.Microservice.API.Middleware;
 using Identity.Microservice.Application.DI;
 
 var builder = WebApplication.CreateBuilder(args);

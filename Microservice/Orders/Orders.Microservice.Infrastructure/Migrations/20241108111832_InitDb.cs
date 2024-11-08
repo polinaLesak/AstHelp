@@ -36,6 +36,8 @@ namespace Orders.Microservice.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductName = table.Column<string>(type: "text", nullable: false),
+                    CatalogId = table.Column<int>(type: "integer", nullable: false),
+                    CatalogName = table.Column<string>(type: "text", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     OrderId = table.Column<Guid>(type: "uuid", nullable: false)
                 },

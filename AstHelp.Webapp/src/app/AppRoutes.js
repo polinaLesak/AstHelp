@@ -7,6 +7,7 @@ import SignUpPage from '../pages/SignUpPage';
 import UsersPage from '../pages/UsersPage';
 import SettingsPage from '../pages/SettingsPage';
 import ProductPage from '../pages/ProductPage';
+import CartPage from '../pages/CartPage';
 
 const AppRoutes = () => {
   return (
@@ -17,6 +18,7 @@ const AppRoutes = () => {
         <Route path="/users" element={<UsersPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/catalog" element={<ProductPage />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
   );

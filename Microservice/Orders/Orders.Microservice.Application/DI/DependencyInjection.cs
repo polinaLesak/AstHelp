@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Orders.Microservice.Application.Service;
 using Orders.Microservice.Domain.Repositories;
 using Orders.Microservice.Infrastructure.Persistence;
 using Orders.Microservice.Infrastructure.Repositories;
@@ -17,8 +16,6 @@ namespace Orders.Microservice.Application.DI
 
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderItemRepository, OrderItemRepository>();
-            services.AddScoped<IMachineTokenService, MachineTokenService>();
-            services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;

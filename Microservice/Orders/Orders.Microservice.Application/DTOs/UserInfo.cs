@@ -1,9 +1,9 @@
 ﻿namespace Orders.Microservice.Application.DTOs
 {
-    public class UserDto
+    public class UserInfo
     {
         public int Id { get; set; }
-        public string Username { get; set; }
+        public string Username { get; set; } = "";
         public Profile Profile { get; set; }
     }
 

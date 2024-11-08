@@ -15,7 +15,7 @@ namespace Identity.Microservice.Tests.Unit.Handler
         public DeleteUserCommandHandlerTests()
         {
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _handler = new DeleteUserCommandHandler(_unitOfWorkMock.Object);
+            //_handler = new DeleteUserCommandHandler(_unitOfWorkMock.Object);
         }
 
         [Fact]

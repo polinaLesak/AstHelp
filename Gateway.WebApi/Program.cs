@@ -20,8 +20,8 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
-        policy => 
-        { 
+        policy =>
+        {
             policy.AllowAnyOrigin()
                    .AllowAnyMethod()
                    .AllowAnyHeader();
@@ -34,11 +34,11 @@ app.UseCors(MyAllowSpecificOrigins);
 //if (app.Environment.IsDevelopment())
 //{
 app.UseSwagger();
-    app.UseSwaggerForOcelotUI(opt =>
-    {
-        opt.PathToSwaggerGenerator = "/swagger/docs";
-        opt.ReConfigureUpstreamSwaggerJson = AlterUpstream.AlterUpstreamSwaggerJson;
-    }).UseOcelot().Wait();
+app.UseSwaggerForOcelotUI(opt =>
+{
+    opt.PathToSwaggerGenerator = "/swagger/docs";
+    opt.ReConfigureUpstreamSwaggerJson = AlterUpstream.AlterUpstreamSwaggerJson;
+}).UseOcelot().Wait();
 //}
 
 

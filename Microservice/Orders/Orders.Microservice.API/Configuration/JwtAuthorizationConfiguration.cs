@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Orders.Microservice.Application.DI
+namespace Orders.Microservice.API.Configuration
 {
-    public static class JWTAuthorization
+    public static class JwtAuthorizationConfiguration
     {
-        public static IServiceCollection AddJWTAuthorization(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureJwtAuthorization(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication(options =>
             {

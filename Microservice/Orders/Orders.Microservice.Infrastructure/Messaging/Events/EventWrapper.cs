@@ -1,4 +1,4 @@
-﻿namespace Identity.Microservice.Domain.Events
+﻿namespace Orders.Microservice.Infrastructure.Events
 {
     public class EventWrapper<T>
     {

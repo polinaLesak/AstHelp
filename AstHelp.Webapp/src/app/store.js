@@ -6,6 +6,8 @@ import catalogReducer from '../entities/catalog/model/catalogSlice';
 import brandReducer from '../entities/brand/model/brandSlice';
 import attributesReducer from '../entities/attribute/model/attributeSlice';
 import productReducer from '../entities/product/model/productSlice';
+import cartReducer from '../entities/cart/model/cartSlice';
+import orderReducer from '../entities/order/model/orderSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +18,7 @@ export const store = configureStore({
     brand: brandReducer,
     attribute: attributesReducer,
     product: productReducer,
+    cart: cartReducer,
+    order: orderReducer,
   },
 });

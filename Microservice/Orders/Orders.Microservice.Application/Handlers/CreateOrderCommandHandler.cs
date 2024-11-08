@@ -10,48 +10,64 @@ namespace Orders.Microservice.Application.Handlers
     public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Order>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IIdentityService _identityService;
+        private readonly IdentityService _identityService;
+        private readonly CatalogService _catalogService;
+        private readonly CartService _cartService;
 
-        public CreateOrderCommandHandler(IUnitOfWork unitOfWork, IIdentityService identityService)
+        public CreateOrderCommandHandler(
+            IUnitOfWork unitOfWork,
+            IdentityService identityService,
+            CatalogService catalogService, 
+            CartService cartService)
         {
             _unitOfWork = unitOfWork;
             _identityService = identityService;
+            _catalogService = catalogService;
+            _cartService = cartService;
         }
 
         public async Task<Order> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            // Получаем всех менеджеров
             var managers = await _identityService.GetAllManagersAsync();
-
-            // Подсчитываем количество заказов каждого менеджера
             var managerWithLeastOrders = await GetManagerWithLeastOrdersAsync(managers);
+            var customerInfo = await _identityService.GetUserInfoById(request.CustomerId);
+
+            var productsInfo = await _catalogService.GetProductsInfoAsync(request.Items.Select(x => x.ProductId).ToArray());
 
             var order = new Order
             {
                 Id = Guid.NewGuid(),
                 CustomerId = request.CustomerId,
-                CustomerFullname = request.CustomerFullname,
-                CustomerPosition = request.CustomerPosition,
+                CustomerFullname = customerInfo.Profile.Fullname,
+                CustomerPosition = customerInfo.Profile.Position,
                 ManagerId = managerWithLeastOrders.Id,
                 ManagerFullname = managerWithLeastOrders.Profile.Fullname,
                 ManagerPosition = managerWithLeastOrders.Profile.Position,
                 CreatedAt = DateTime.UtcNow,
                 Status = OrderStatus.Pending,
-                Items = request.Items.Select(i => new OrderItem
+                Items = request.Items.Select(i =>
                 {
-                    Id = Guid.NewGuid(),
-                    ProductName = i.ProductName,
-                    Quantity = i.Quantity
+                    var productInfo = productsInfo.FirstOrDefault(x => x.ProductId == i.ProductId);
+                    return new OrderItem
+                    {
+                        Id = Guid.NewGuid(),
+                        CatalogId = productInfo.CatalogId,
+                        CatalogName = productInfo.CatalogName,
+                        ProductId = productInfo.ProductId,
+                        ProductName = productInfo.ProductName,
+                        Quantity = i.Quantity
+                    };
                 }).ToList()
             };
 
             await _unitOfWork.Orders.AddAsync(order);
+            await _cartService.ResetCartByUserId(request.CustomerId);
             await _unitOfWork.CommitAsync();
 
             return order;
         }
 
-        private async Task<UserDto> GetManagerWithLeastOrdersAsync(List<UserDto> managers)
+        private async Task<UserInfo> GetManagerWithLeastOrdersAsync(List<UserInfo> managers)
         {
             var managerOrderCounts = new Dictionary<int, int>();
 
@@ -61,7 +77,6 @@ namespace Orders.Microservice.Application.Handlers
                 managerOrderCounts[manager.Id] = orderCount;
             }
 
-            // Находим менеджера с наименьшим количеством заказов
             var managerIdWithLeastOrders = managerOrderCounts.OrderBy(kvp => kvp.Value).First().Key;
             return managers.First(m => m.Id == managerIdWithLeastOrders);
         }

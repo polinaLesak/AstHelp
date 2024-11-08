@@ -9,13 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservice", "Microservic
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{2D40BCE1-69FF-4091-BCD0-312B31B91ACE}"
 	ProjectSection(SolutionItems) = preProject
-		Microservice\Identity\Dockerfile = Microservice\Identity\Dockerfile
 		Microservice\Identity\README.md = Microservice\Identity\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{530E9DF8-29D1-43EA-AA5A-3C2F376B19ED}"
 	ProjectSection(SolutionItems) = preProject
-		Microservice\Catalog\Dockerfile = Microservice\Catalog\Dockerfile
 		Microservice\Catalog\README.md = Microservice\Catalog\README.md
 	EndProjectSection
 EndProject
@@ -42,7 +40,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cart", "Cart", "{FEF4B7E6-3D8C-4760-A596-D2DB9C4F289D}"
 	ProjectSection(SolutionItems) = preProject
-		Microservice\Cart\Dockerfile = Microservice\Cart\Dockerfile
 		Microservice\Cart\README.md = Microservice\Cart\README.md
 	EndProjectSection
 EndProject
@@ -56,7 +53,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cart.Microservice.Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orders", "Orders", "{F0513E5A-3886-4F80-BC4B-2EB8D6CE215D}"
 	ProjectSection(SolutionItems) = preProject
-		Microservice\Orders\Dockerfile = Microservice\Orders\Dockerfile
 		Microservice\Orders\README.md = Microservice\Orders\README.md
 	EndProjectSection
 EndProject
@@ -80,19 +76,18 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "prod.asthelp", ".docker\pro
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notification", "Notification", "{E99BEC4F-8673-4A12-9679-312D7CE5A4D9}"
 	ProjectSection(SolutionItems) = preProject
-		Microservice\Notification\Dockerfile = Microservice\Notification\Dockerfile
 		Microservice\Notification\README.md = Microservice\Notification\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.Microservice.API", "Microservice\Notification\Notification.Microservice.API\Notification.Microservice.API.csproj", "{C11C5DE1-E9FC-4BA7-9213-80728D0FED2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification.Microservice.API", "Microservice\Notification\Notification.Microservice.API\Notification.Microservice.API.csproj", "{C11C5DE1-E9FC-4BA7-9213-80728D0FED2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.Microservice.Application", "Microservice\Notification\Notification.Microservice.Application\Notification.Microservice.Application.csproj", "{3F36F16E-4DD3-49F6-8E8A-248D8948B155}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification.Microservice.Application", "Microservice\Notification\Notification.Microservice.Application\Notification.Microservice.Application.csproj", "{3F36F16E-4DD3-49F6-8E8A-248D8948B155}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.Microservice.Domain", "Microservice\Notification\Notification.Microservice.Domain\Notification.Microservice.Domain.csproj", "{BA7BEDD8-95F3-4D9D-91E6-91EB80239469}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification.Microservice.Domain", "Microservice\Notification\Notification.Microservice.Domain\Notification.Microservice.Domain.csproj", "{BA7BEDD8-95F3-4D9D-91E6-91EB80239469}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.Microservice.Infrastructure", "Microservice\Notification\Notification.Microservice.Infrastructure\Notification.Microservice.Infrastructure.csproj", "{78B26614-7562-437E-8C77-341E4D2BB5EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification.Microservice.Infrastructure", "Microservice\Notification\Notification.Microservice.Infrastructure\Notification.Microservice.Infrastructure.csproj", "{78B26614-7562-437E-8C77-341E4D2BB5EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Microservice.Tests", "Microservice\Identity\Identity.Microservice.Tests\Identity.Microservice.Tests.csproj", "{ABCA09DF-5532-4B81-8E6C-F4EC825069D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Microservice.Tests", "Microservice\Identity\Identity.Microservice.Tests\Identity.Microservice.Tests.csproj", "{ABCA09DF-5532-4B81-8E6C-F4EC825069D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

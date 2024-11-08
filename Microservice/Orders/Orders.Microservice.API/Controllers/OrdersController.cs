@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Orders.Microservice.Application.Commands;
 using Orders.Microservice.Application.Queries;
+using Orders.Microservice.Domain.Entities;
 
 namespace Orders.Microservice.API.Controllers
 {
@@ -20,50 +21,53 @@ namespace Orders.Microservice.API.Controllers
         // GET: api/Orders
         [HttpGet]
         [Authorize(Roles = "1")]
-        public async Task<IActionResult> GetAllOrders()
+        public async Task<IEnumerable<Order>> GetAllOrders()
         {
-            var orders = await _mediator.Send(new GetAllOrdersQuery());
-            return Ok(orders);
+            return await _mediator.Send(new GetAllOrdersQuery());
         }
 
         // GET: api/Orders/{id}
         [HttpGet("{id}")]
         [Authorize(Roles = "1, 2, 3")]
-        public async Task<IActionResult> GetOrderById(Guid id)
+        public async Task<Order> GetOrderById(Guid id)
         {
-            return Ok(await _mediator.Send(new GetOrderByIdQuery(id)));
+            return await _mediator.Send(new GetOrderByIdQuery(id));
         }
 
         // GET: api/Orders/Customer/{customerId}
         [HttpGet("Customer/{customerId}")]
         [Authorize(Roles = "1, 2, 3")]
-        public async Task<IActionResult> GetOrdersByUserId(int customerId)
+        public async Task<IEnumerable<Order>> GetOrdersByUserId(int customerId)
         {
-            return Ok(await _mediator.Send(new GetOrdersByCustomerIdQuery(customerId)));
+            return await _mediator.Send(new GetOrdersByCustomerIdQuery(customerId));
         }
 
         // GET: api/Orders/Manager/{managerId}
         [HttpGet("Manager/{managerId}")]
         [Authorize(Roles = "1, 2")]
-        public async Task<IActionResult> GetOrdersByManagerId(int managerId)
+        public async Task<IEnumerable<Order>> GetOrdersByManagerId(int managerId)
         {
-            return Ok(await _mediator.Send(new GetOrdersByManagerIdQuery(managerId)));
+            return await _mediator.Send(new GetOrdersByManagerIdQuery(managerId));
         }
 
         // POST: api/Orders
         [HttpPost]
         [Authorize(Roles = "1, 2, 3")]
-        public async Task<IActionResult> CreateOrder(CreateOrderCommand command)
+        public async Task<Order> CreateOrder(CreateOrderCommand command)
         {
-            return Ok(await _mediator.Send(command));
+            return await _mediator.Send(command);
         }
 
-        // PUT: api/Orders/UpdateStatus/{id}
-        [HttpPut("UpdateStatus/{id}")]
+        // PUT: api/Orders/UpdateStatus?orderId=&status=
+        [HttpPut("UpdateStatus")]
         [Authorize(Roles = "1, 2")]
-        public async Task<IActionResult> UpdateOrderStatus(Guid id, UpdateOrderStatusCommand command)
+        public async Task UpdateOrderStatus(Guid orderId, OrderStatus status)
         {
-            return Ok(await _mediator.Send(command));
+            await _mediator.Send(new UpdateOrderStatusCommand
+            {
+                OrderId = orderId,
+                NewStatus = status
+            });
         }
     }
 }

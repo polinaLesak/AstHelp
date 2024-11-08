@@ -1,6 +1,6 @@
 ﻿using Identity.Microservice.Application.Exceptions;
 
-namespace Catalog.Microservice.API.Middleware
+namespace Identity.Microservice.API.Middleware
 {
     public class ExceptionMiddleware
     {
