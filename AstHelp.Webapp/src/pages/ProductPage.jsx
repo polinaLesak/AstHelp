@@ -18,7 +18,7 @@ export default function ProductPage() {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const catalogs = useSelector((state) => state.catalog.catalogs);
-  const { products, loading } = useSelector((state) => state.product);
+  const { products } = useSelector((state) => state.product);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -123,7 +123,6 @@ export default function ProductPage() {
                 ))}
               </Grid>
             </Box>
-            {loading && <p>Загрузка...</p>}
             <CUProductModal
               open={openModal}
               onClose={() => setOpenModal(false)}

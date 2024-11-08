@@ -1,0 +1,128 @@
+version: '3.4'
+
+services:
+    rabbitmq:
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+
+    identity.microservice.db:
+        environment:
+            POSTGRES_DB: "ast-help-identity"
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "1234"
+        ports:
+            - "5400:5432"
+    catalog.microservice.db:
+        environment:
+            POSTGRES_DB: "ast-help-catalog"
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "1234"
+        ports:
+            - "5401:5432"
+    cart.microservice.db:
+        environment:
+            POSTGRES_DB: "ast-help-cart"
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "1234"
+        ports:
+            - "5402:5432"
+    orders.microservice.db:
+        environment:
+            POSTGRES_DB: "ast-help-orders"
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "1234"
+        ports:
+            - "5403:5432"
+    # notification.microservice.db:
+    #     container_name: notification.microservice.db
+    #     image: postgres:17.0-alpine3.20
+    #     restart: unless-stopped
+    #     environment:
+    #         POSTGRES_DB: "ast-help-notification"
+    #         POSTGRES_USER: "postgres"
+    #         POSTGRES_PASSWORD: "1234"
+    #     volumes:
+    #         - notification.microservice.db:/var/lib/postgresql/data
+    #     ports:
+    #         - "5404:5432"
+
+    identity.microservice.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            - ConnectionStrings__DefaultConnection=Server=identity.microservice.db;Port=5432;Database=ast-help-identity;User Id=postgres;Password=1234
+            - RabbitMQ__HostName=rabbitmq
+            - RabbitMQ__Port=5672
+            - RabbitMQ__UserName=user
+            - RabbitMQ__Password=password
+            - RabbitMQ__QueueName=IdentityQueue
+            - RabbitMQ__Exchange=IdentityExchange
+        ports:
+            - "5100:80"
+    catalog.microservice.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            - ConnectionStrings__DefaultConnection=Server=catalog.microservice.db;Port=5432;Database=ast-help-catalog;User Id=postgres;Password=1234
+            - RabbitMQ__HostName=rabbitmq
+            - RabbitMQ__Port=5672
+            - RabbitMQ__UserName=user
+            - RabbitMQ__Password=password
+            - RabbitMQ__QueueName=CatalogQueue
+            - RabbitMQ__Exchange=CatalogExchange
+        ports:
+            - "5101:80"
+    cart.microservice.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            - ConnectionStrings__DefaultConnection=Server=cart.microservice.db;Port=5432;Database=ast-help-cart;User Id=postgres;Password=1234
+            - RabbitMQ__HostName=rabbitmq
+            - RabbitMQ__Port=5672
+            - RabbitMQ__UserName=user
+            - RabbitMQ__Password=password
+            - IdentityService__BaseUrl=http://identity.microservice.api/
+            - CatalogService__BaseUrl=http://catalog.microservice.api/
+        ports:
+            - "5102:80"
+    orders.microservice.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            - ConnectionStrings__DefaultConnection=Server=orders.microservice.db;Port=5432;Database=ast-help-orders;User Id=postgres;Password=1234
+            - RabbitMQ__HostName=rabbitmq
+            - RabbitMQ__Port=5672
+            - RabbitMQ__UserName=user
+            - RabbitMQ__Password=password
+            - IdentityService__BaseUrl=http://identity.microservice.api/
+            - CatalogService__BaseUrl=http://catalog.microservice.api/
+            - CartService__BaseUrl=http://cart.microservice.api/
+        ports:
+            - "5103:80"
+    # notification.microservice.api:
+    #     image: notification.microservice.api
+    #     container_name: notification.microservice.api
+    #     restart: unless-stopped
+    #     build:
+    #         context: ../../Microservice/Notification
+    #         dockerfile: ./Dockerfile
+    #     environment:
+    #         - ASPNETCORE_ENVIRONMENT=Development
+    #         - ASPNETCORE_URLS=http://+:80
+    #         - ConnectionStrings__DefaultConnection=Server=notification.microservice.db;Port=5432;Database=ast-help-notification;User Id=postgres;Password=1234
+    #         - RABBITMQ_HOST=rabbitmq
+    #         - RABBITMQ_PORT=5672
+    #         - RABBITMQ_USER=user
+    #         - RABBITMQ_PASSWORD=password
+    #     ports:
+    #         - "5104:80"
+    #     depends_on:
+    #         - notification.microservice.db
+
+    asthelp.gateway:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+            - ASPNETCORE_URLS=http://+:80
+        ports:
+            - "80:80"       

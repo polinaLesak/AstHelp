@@ -2,6 +2,6 @@
 {
     public interface ICartItemRepository : IGenericRepository<Entities.CartItem, Guid>
     {
-
+        Task<int> GetCartProductsCountByUserId(int userId);
     }
 }

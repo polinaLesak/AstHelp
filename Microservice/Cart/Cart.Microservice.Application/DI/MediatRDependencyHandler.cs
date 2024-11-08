@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Cart.Microservice.API.Configuration
+namespace Cart.Microservice.Application.DI
 {
     public static class MediatRDependencyHandler
     {

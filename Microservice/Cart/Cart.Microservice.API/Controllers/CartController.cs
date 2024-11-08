@@ -1,5 +1,4 @@
 using Cart.Microservice.Application.Commands;
-using Cart.Microservice.Application.DTOs.Command;
 using Cart.Microservice.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -18,28 +17,50 @@ namespace Cart.Microservice.API.Controllers
             _mediator = mediator;
         }
 
-        // GET: api/Cart/{userId}
-        [HttpGet("{userId}")]
+        // GET: api/Cart?userId=
+        [HttpGet]
         [Authorize(Roles = "1, 2, 3")]
-        public async Task<IActionResult> GetCart(int userId)
+        public async Task<Domain.Entities.Cart> GetCart(
+            [FromQuery] int userId)
         {
-            return Ok(await _mediator.Send(new GetCartQuery(userId)));
+            return await _mediator.Send(new GetCartQuery(userId));
         }
 
-        // POST: api/Cart/{userId}/Add
-        [HttpPost("{userId}/Add")]
+        // GET: api/Cart/ProductsCount?userId=
+        [HttpGet("ProductsCount")]
         [Authorize(Roles = "1, 2, 3")]
-        public async Task<IActionResult> AddToCart(int userId, [FromBody] AddToCartCommandDto dto)
+        public async Task<int> GetCartProductsCount(
+            [FromQuery] int userId)
         {
-            return Ok(await _mediator.Send(new AddToCartCommand(userId, dto)));
+            return await _mediator.Send(new GetCartProductsCount(userId));
         }
 
-        // DELETE: api/Cart/{userId}/Delete
-        [HttpDelete("{userId}/Delete/{productId}")]
+        // POST: api/Cart/AddProduct
+        [HttpPost("AddProduct")]
         [Authorize(Roles = "1, 2, 3")]
-        public async Task<IActionResult> RemoveFromCart(int userId, Guid productId)
+        public async Task<Domain.Entities.Cart> AddToCart(
+            [FromBody] AddProductToCartCommand command)
         {
-            return Ok(await _mediator.Send(new RemoveFromCartCommand(userId, productId)));
+            return await _mediator.Send(command);
+        }
+
+        // POST: api/Cart/Clear?userId=
+        [HttpPost("Clear")]
+        [Authorize(Roles = "0, 1, 2, 3")]
+        public async Task ClearCart(
+            [FromQuery] int userId)
+        {
+            await _mediator.Send(new ClearCartByUserIdCommand(userId));
+        }
+
+        // DELETE: api/Cart/{userId}/DeleteProduct?productId=
+        [HttpDelete("{userId}/DeleteProduct")]
+        [Authorize(Roles = "1, 2, 3")]
+        public async Task RemoveFromCart(
+            [FromQuery] Guid productId,
+            int userId)
+        {
+            await _mediator.Send(new RemoveProductFromCartCommand(userId, productId));
         }
     }
 }

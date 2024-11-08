@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Catalog.Microservice.Application.Handlers
 {
-    public class GetAllAttributeTypesQueryHandler 
+    public class GetAllAttributeTypesQueryHandler
         : IRequestHandler<GetAllAttributeTypesQuery, IEnumerable<Domain.Entities.AttributeType>>
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -15,7 +15,7 @@ namespace Catalog.Microservice.Application.Handlers
         }
 
         public async Task<IEnumerable<Domain.Entities.AttributeType>> Handle(
-            GetAllAttributeTypesQuery request, 
+            GetAllAttributeTypesQuery request,
             CancellationToken cancellationToken)
         {
             return await _unitOfWork.AttributeTypes.GetAllAsync();

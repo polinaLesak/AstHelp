@@ -1,7 +1,6 @@
 ﻿using Catalog.Microservice.Domain.Repositories;
 using Catalog.Microservice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
 
 namespace Catalog.Microservice.Infrastructure.Repositories
 {

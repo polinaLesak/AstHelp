@@ -1,5 +1,6 @@
 ﻿using Catalog.Microservice.Application.Commands;
 using Catalog.Microservice.Application.Queries;
+using Catalog.Microservice.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,10 +28,18 @@ namespace Catalog.Microservice.API.Controllers
 
         // GET: api/Product/{id}
         [HttpGet("{id}")]
-        [Authorize(Roles = "1, 2, 3")]
+        [Authorize(Roles = "0, 1, 2, 3")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
             return Ok(await _mediator.Send(new GetProductByIdQuery(id)));
+        }
+
+        // GET: api/Product/Products?ids=&ids=
+        [HttpGet("Products")]
+        [Authorize(Roles = "0, 1, 2, 3")]
+        public async Task<List<Product>> GetProductsInfoById([FromQuery] Guid[] ids)
+        {
+            return await _mediator.Send(new GetProductsInfoByIdsQuery(ids));
         }
 
         // POST: api/Product

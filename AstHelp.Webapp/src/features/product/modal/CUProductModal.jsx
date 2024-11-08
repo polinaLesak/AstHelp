@@ -41,6 +41,7 @@ export default function CUProductModal({ open, onClose, product }) {
     reset,
   } = useForm({
     resolver: yupResolver(productValidationSchema),
+    defaultValues: formData,
   });
 
   useEffect(() => {
@@ -56,7 +57,7 @@ export default function CUProductModal({ open, onClose, product }) {
         attributeTypeId: attrValue.attribute.attributeTypeId,
         value: attrValue.valueString || attrValue.valueInt || attrValue.valueNumeric || '',
       }));
-
+  
       const newFormData = {
         productId: product.id,
         name: product.name,
@@ -64,17 +65,17 @@ export default function CUProductModal({ open, onClose, product }) {
         brandId: product.brandId,
         productAttributes,
       };
-
+  
       setFormData(newFormData);
       reset(newFormData);
     } else {
-      let resetData = {
+      const resetData = {
         productId: null,
         name: '',
         catalogId: '',
         brandId: '',
         productAttributes: [],
-      }
+      };
       setFormData(resetData);
       reset(resetData);
     }

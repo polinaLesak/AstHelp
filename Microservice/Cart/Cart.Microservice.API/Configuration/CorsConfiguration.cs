@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace Cart.Microservice.API.Configuration
+﻿namespace Cart.Microservice.API.Configuration
 {
     public static class CorsConfiguration
     {

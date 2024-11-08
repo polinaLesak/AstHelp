@@ -3,7 +3,6 @@ using Catalog.Microservice.Application.Exceptions;
 using Catalog.Microservice.Domain.Entities;
 using Catalog.Microservice.Domain.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Microservice.Application.Handlers
 {

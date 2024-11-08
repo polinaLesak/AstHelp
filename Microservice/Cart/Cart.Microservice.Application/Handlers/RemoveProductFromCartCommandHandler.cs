@@ -6,16 +6,16 @@ using MediatR;
 
 namespace Cart.Microservice.Application.Handlers
 {
-    public class RemoveFromCartCommandHandler : IRequestHandler<RemoveFromCartCommand, Unit>
+    public class RemoveProductFromCartCommandHandler : IRequestHandler<RemoveProductFromCartCommand, Unit>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public RemoveFromCartCommandHandler(IUnitOfWork unitOfWork)
+        public RemoveProductFromCartCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Unit> Handle(RemoveFromCartCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RemoveProductFromCartCommand request, CancellationToken cancellationToken)
         {
             var cart = await _unitOfWork.Carts.GetCartByUserIdAsync(request.UserId);
             if (cart == null)
@@ -23,14 +23,13 @@ namespace Cart.Microservice.Application.Handlers
                 throw new NotFoundException($"Корзина пользователя с ID \"{request.UserId}\" не найдена.");
             }
 
-            CartItem cartItem = cart.Items.Where(x => x.ProductId == request.ProductId).FirstOrDefault();
+            CartItem? cartItem = cart.Items.Where(x => x.Id == request.ItemId).FirstOrDefault();
             if (cartItem == null)
             {
-                throw new NotFoundException($"Продукт с ID \"{request.ProductId}\" не найден.");
+                throw new NotFoundException($"Элемент корзины с ID \"{request.ItemId}\" не найден.");
             }
 
             cart.Items.Remove(cartItem);
-            cart.UpdatedAt = DateTime.UtcNow;
 
             _unitOfWork.Carts.Update(cart);
             await _unitOfWork.CommitAsync();

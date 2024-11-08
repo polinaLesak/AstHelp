@@ -23,8 +23,8 @@ namespace Catalog.Microservice.Application.Handlers
                 throw new NotFoundException($"Продукт с ID \"{request.ProductId}\" не найден.");
             }
 
-            if ((product.Name != request.Name || product.BrandId != request.BrandId 
-                || product.CatalogId != request.CatalogId) 
+            if ((product.Name != request.Name || product.BrandId != request.BrandId
+                || product.CatalogId != request.CatalogId)
                 && await _unitOfWork.Products.ExistProductByBrandId_CatalogId_Name(
                request.BrandId, request.CatalogId, request.Name))
             {

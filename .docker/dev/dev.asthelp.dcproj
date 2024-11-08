@@ -7,6 +7,12 @@
     <ProjectGuid>8cc8a2df-c146-43dc-89ad-87f1e92c4e91</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="docker-compose.override.yml">
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
     <None Include="docker-compose.yml" />
+    <None Include="rabbitmq_config\definitions.json" />
+    <None Include="rabbitmq_config\Dockerfile" />
+    <None Include="rabbitmq_config\rabbitmq.conf" />
   </ItemGroup>
 </Project>

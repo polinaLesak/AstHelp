@@ -1,10 +1,28 @@
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import noImage from "../../assets/noImage.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import ProductQuantityModal from "./modal/ProductQuantityModal";
+import { addProductToUserCart, fetchCartProductsCountByUserId } from "../../entities/cart/api/cartApi";
+import { useState } from "react";
 
 export default function ProductCard({ product, onEdit, onDelete }) {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.login);
+  const [open, setOpen] = useState(false);
+
+  const handleOpenModal = () => setOpen(true);
+  const handleCloseModal = () => setOpen(false);
+
+  const handleSubmitQuantity = async (quantity) => {
+    const orderData = {
+      userId: user.id,
+      productId: product.id,
+      quantity: quantity,
+    };
+    await dispatch(addProductToUserCart(orderData));
+    await dispatch(fetchCartProductsCountByUserId(user.id));
+  };
 
   return (
     <Card
@@ -60,7 +78,12 @@ export default function ProductCard({ product, onEdit, onDelete }) {
             ) : (
               <></>
             )}
-            <Button size="small" variant="contained" color="primary">
+            <Button
+              size="small"
+              variant="contained"
+              color="primary"
+              onClick={handleOpenModal}
+            >
               Добавить в заявку
             </Button>
           </Grid>
@@ -78,6 +101,11 @@ export default function ProductCard({ product, onEdit, onDelete }) {
           </Grid>
         </Grid>
       </CardContent>
+      <ProductQuantityModal
+        open={open}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmitQuantity}
+      />
     </Card>
   );
 }

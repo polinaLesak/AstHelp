@@ -20,6 +20,15 @@ namespace Catalog.Microservice.Infrastructure.Repositories
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<List<Product>> GetByIdsAsync(Guid[] ids)
+        {
+            return await _context.Products.AsNoTracking()
+                .Include(x => x.Brand)
+                .Include(x => x.Catalog)
+                .Where(x => ids.Contains(x.Id))
+                .ToListAsync();
+        }
+
         public override async Task<IEnumerable<Product>> GetAllAsync()
         {
             return await _context.Products
