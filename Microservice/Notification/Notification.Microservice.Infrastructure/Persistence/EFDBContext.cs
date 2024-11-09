@@ -8,7 +8,10 @@ namespace Notification.Microservice.Infrastructure.Persistence
 
         public EFDBContext(DbContextOptions options) : base(options)
         {
-            Database.Migrate();
+            if (Database.IsRelational())
+            {
+                Database.Migrate();
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
