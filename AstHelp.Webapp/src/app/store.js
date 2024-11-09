@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import loginReducer from '../features/auth/model/loginSlice';
 import registrationReducer from '../features/auth/model/registrationSlice';
+import notificationsReducer from '../entities/notifications/model/notificationsSlice';
 import userReducer from '../entities/user/model/userSlice';
 import catalogReducer from '../entities/catalog/model/catalogSlice';
 import brandReducer from '../entities/brand/model/brandSlice';
@@ -20,5 +21,6 @@ export const store = configureStore({
     product: productReducer,
     cart: cartReducer,
     order: orderReducer,
+    notifications: notificationsReducer,
   },
 });

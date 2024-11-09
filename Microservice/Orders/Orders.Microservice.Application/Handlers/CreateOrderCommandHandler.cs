@@ -17,7 +17,7 @@ namespace Orders.Microservice.Application.Handlers
         public CreateOrderCommandHandler(
             IUnitOfWork unitOfWork,
             IdentityService identityService,
-            CatalogService catalogService, 
+            CatalogService catalogService,
             CartService cartService)
         {
             _unitOfWork = unitOfWork;

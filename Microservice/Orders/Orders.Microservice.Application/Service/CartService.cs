@@ -1,6 +1,4 @@
-﻿using Orders.Microservice.Application.DTOs;
-using System.Net.Http.Headers;
-using System.Text.Json;
+﻿using System.Net.Http.Headers;
 
 namespace Orders.Microservice.Application.Service
 {

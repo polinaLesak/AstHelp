@@ -23,6 +23,7 @@ services:
                 psql -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'ast_help_catalog'\" | grep -q 1 || psql -U postgres -c 'CREATE DATABASE ast_help_catalog;' &&
                 psql -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'ast_help_cart'\" | grep -q 1 || psql -U postgres -c 'CREATE DATABASE ast_help_cart;' &&
                 psql -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'ast_help_orders'\" | grep -q 1 || psql -U postgres -c 'CREATE DATABASE ast_help_orders;' &&
+                psql -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'ast_help_notification'\" | grep -q 1 || psql -U postgres -c 'CREATE DATABASE ast_help_notification;' &&
                 wait"
                 
     identity.microservice.api:
@@ -78,29 +79,22 @@ services:
             - CartService__BaseUrl=http://cart.microservice.api/
         ports:
             - "5103:80"
-    # notification.microservice.api:
-    #     image: notification.microservice.api
-    #     container_name: notification.microservice.api
-    #     restart: unless-stopped
-    #     build:
-    #         context: ../../Microservice/Notification
-    #         dockerfile: ./Dockerfile
-    #     environment:
-    #         - ASPNETCORE_ENVIRONMENT=Development
-    #         - ASPNETCORE_URLS=http://+:80
-    #         - ConnectionStrings__DefaultConnection=Server=notification.microservice.db;Port=5432;Database=ast-help-notification;User Id=postgres;Password=1234
-    #         - RABBITMQ_HOST=rabbitmq
-    #         - RABBITMQ_PORT=5672
-    #         - RABBITMQ_USER=user
-    #         - RABBITMQ_PASSWORD=password
-    #     ports:
-    #         - "5104:80"
-    #     depends_on:
-    #         - notification.microservice.db
+    notification.microservice.api:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            - ConnectionStrings__DefaultConnection=Server=postgres.db;Port=5432;Database=ast_help_notification;User Id=postgres;Password=1234
+            - RabbitMQ__HostName=rabbitmq
+            - RabbitMQ__Port=5672
+            - RabbitMQ__UserName=user
+            - RabbitMQ__Password=password
+            - RabbitMQ__QueueName=NotificationQueue
+        ports:
+            - "5104:80"
 
     asthelp.gateway:
         environment:
             - ASPNETCORE_ENVIRONMENT=Production
             - ASPNETCORE_URLS=http://+:80
         ports:
-            - "80:80"       
+            - "80:80"

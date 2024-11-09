@@ -2,10 +2,10 @@
 {
     public enum NotificationType
     {
-        OrderConfirmation,
-        OrderStatusChanged,
-        OrderCancelled,
-        ReviewRequest
+        Success,
+        Warning,
+        Error,
+        Info
     }
 
 }

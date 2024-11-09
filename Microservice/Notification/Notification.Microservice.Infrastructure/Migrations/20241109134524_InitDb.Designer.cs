@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Notification.Microservice.Infrastructure.Migrations
 {
     [DbContext(typeof(EFDBContext))]
-    [Migration("20241029173542_InitDb")]
+    [Migration("20241109134524_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -40,6 +40,10 @@ namespace Notification.Microservice.Infrastructure.Migrations
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");

@@ -16,7 +16,7 @@ namespace Cart.Microservice.Application.Handlers
         public async Task<Unit> Handle(ClearCartByUserIdCommand request, CancellationToken cancellationToken)
         {
             var cart = await _unitOfWork.Carts.GetCartByUserIdAsync(request.UserId);
-            if(cart != null)
+            if (cart != null)
             {
                 cart.Items.Clear();
                 _unitOfWork.Carts.Remove(cart);

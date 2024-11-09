@@ -56,25 +56,16 @@ services:
         depends_on:
             - postgres.db
             - rabbitmq
-    # notification.microservice.api:
-    #     image: notification.microservice.api
-    #     container_name: notification.microservice.api
-    #     restart: unless-stopped
-    #     build:
-    #         context: ../../Microservice/Notification
-    #         dockerfile: ./Dockerfile
-    #     environment:
-    #         - ASPNETCORE_ENVIRONMENT=Development
-    #         - ASPNETCORE_URLS=http://+:80
-    #         - ConnectionStrings__DefaultConnection=Server=notification.microservice.db;Port=5432;Database=ast-help-notification;User Id=postgres;Password=1234
-    #         - RABBITMQ_HOST=rabbitmq
-    #         - RABBITMQ_PORT=5672
-    #         - RABBITMQ_USER=user
-    #         - RABBITMQ_PASSWORD=password
-    #     ports:
-    #         - "5104:80"
-    #     depends_on:
-    #         - notification.microservice.db
+    notification.microservice.api:
+        image: notification.microservice.api
+        container_name: notification.microservice.api
+        restart: on-failure
+        build:
+            context: ../../Microservice/Notification
+            dockerfile: ./Notification.Microservice.API/Dockerfile
+        depends_on:
+            - postgres.db
+            - rabbitmq
 
     asthelp.gateway:
         image: asthelp.gateway

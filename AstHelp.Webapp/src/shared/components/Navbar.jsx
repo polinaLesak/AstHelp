@@ -13,7 +13,6 @@ import MenuItem from "@mui/material/MenuItem";
 import logoImg from "../../assets/logo.svg";
 import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import Badge from "@mui/material/Badge";
 import { Divider } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +20,7 @@ import { logout } from "../../features/auth/model/loginSlice";
 import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 import { fetchCartProductsCountByUserId } from "../../entities/cart/api/cartApi";
+import NotificationsPopup from "../../features/notifications/NotificationsPopup";
 
 const pages = [
   { name: "Каталог", href: "/catalog", roles: [1, 2, 3] },
@@ -205,27 +205,18 @@ function Navbar() {
                 );
               })}
           </Box>
-          {/* Иконка уведомлений */}
-          {/* <IconButton
-            component={RouterLink}
-            to="/notifications"
-            sx={{ color: "inherit", ml: 1 }}
-          >
-            <Badge badgeContent={notificationCount} color="error">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton> */}
           {isAuthenticated ? (
             <>
               <IconButton
                 component={RouterLink}
                 to="/cart"
-                sx={{ color: "inherit", mr: 3 }}
+                sx={{ color: "inherit" }}
               >
                 <Badge badgeContent={cartItemCount} color="error">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
+              <NotificationsPopup />
               <Box sx={{ flexGrow: 0 }}>
                 <Typography
                   sx={{

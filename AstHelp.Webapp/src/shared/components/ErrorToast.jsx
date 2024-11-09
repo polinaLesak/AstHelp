@@ -11,6 +11,7 @@ import { clearAttributeError, clearAttributeSuccess } from '../../entities/attri
 import { clearProductError, clearProductSuccess } from '../../entities/product/model/productSlice';
 import { clearCartError, clearCartSuccess } from '../../entities/cart/model/cartSlice';
 import { clearOrderError, clearOrderSuccess } from '../../entities/order/model/orderSlice';
+import { clearAlerts } from '../../entities/notifications/model/notificationsSlice';
 
 const ErrorToast = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const ErrorToast = () => {
   const productError = useSelector((state) => state.product.error);
   const cartError = useSelector((state) => state.cart.error);
   const orderError = useSelector((state) => state.order.error);
+  const notificationsError = useSelector((state) => state.notifications.error);
 
   const loginSuccess = useSelector((state) => state.login.success);
   const registrationSuccess = useSelector((state) => state.registration.success);
@@ -34,6 +36,7 @@ const ErrorToast = () => {
   const productSuccess = useSelector((state) => state.product.success);
   const cartSuccess = useSelector((state) => state.cart.success);
   const orderSuccess = useSelector((state) => state.order.success);
+  const notificationsSuccess = useSelector((state) => state.notifications.success);
 
   const states = useMemo(() => [
     { error: loginError, success: loginSuccess, clearError: clearLoginError, clearSuccess: clearLoginSuccess },
@@ -45,10 +48,11 @@ const ErrorToast = () => {
     { error: productError, success: productSuccess, clearError: clearProductError, clearSuccess: clearProductSuccess },
     { error: cartError, success: cartSuccess, clearError: clearCartError, clearSuccess: clearCartSuccess },
     { error: orderError, success: orderSuccess, clearError: clearOrderError, clearSuccess: clearOrderSuccess },
+    { error: notificationsError, success: notificationsSuccess, clearError: clearAlerts, clearSuccess: clearAlerts },
   ], [loginError, registrationError, userError, catalogError, brandError, attributeError, productError,
-    cartError, orderError,
+    cartError, orderError, notificationsError,
     loginSuccess, registrationSuccess, userSuccess, catalogSuccess, brandSuccess, attributeSuccess, productSuccess,
-    cartSuccess, orderSuccess]);
+    cartSuccess, orderSuccess, notificationsSuccess]);
 
 
   useEffect(() => {

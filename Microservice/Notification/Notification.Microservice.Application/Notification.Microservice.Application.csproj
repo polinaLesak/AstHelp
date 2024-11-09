@@ -15,13 +15,6 @@
   </ItemGroup>
 	
   <ItemGroup>
-    <Folder Include="Commands\" />
-    <Folder Include="DTOs\" />
-    <Folder Include="Handlers\" />
-    <Folder Include="Queries\" />
-  </ItemGroup>
-	
-  <ItemGroup>
     <ProjectReference Include="..\Notification.Microservice.Domain\Notification.Microservice.Domain.csproj" />
     <ProjectReference Include="..\Notification.Microservice.Infrastructure\Notification.Microservice.Infrastructure.csproj" />
   </ItemGroup>
