@@ -24,8 +24,9 @@ import NotificationsPopup from "../../features/notifications/NotificationsPopup"
 
 const pages = [
   { name: "Каталог", href: "/catalog", roles: [1, 2, 3] },
-  { name: "Мои заказы", href: "/my-orders", roles: [1, 2, 3] },
-  { name: "Заявки", href: "/orders", roles: [1, 2] },
+  { name: "Мои заказы", href: "/my_orders", roles: [3] },
+  { name: "Заявки", href: "/request_orders", roles: [2] },
+  { name: "Заказы", href: "/orders", roles: [1] },
   { name: "Пользователи", href: "/users", roles: [1] },
   { name: "Настройки", href: "/settings", roles: [1] },
 ];

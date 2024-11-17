@@ -8,6 +8,8 @@ import UsersPage from '../pages/UsersPage';
 import SettingsPage from '../pages/SettingsPage';
 import ProductPage from '../pages/ProductPage';
 import CartPage from '../pages/CartPage';
+import OrdersPage from '../pages/OrdersPage';
+import OrderDetailsPage from '../pages/OrderDetailsPage';
 
 const AppRoutes = () => {
   return (
@@ -19,6 +21,10 @@ const AppRoutes = () => {
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/catalog" element={<ProductPage />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/my_orders" element={<OrdersPage pageType="Мои заказы" />} />
+        <Route path="/orders" element={<OrdersPage pageType="Заказы" />} />
+        <Route path="/request_orders" element={<OrdersPage pageType="Заявки" />} />
+        <Route path="/orders/:orderId" element={<OrderDetailsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
   );

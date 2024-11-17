@@ -1,5 +1,7 @@
 import axiosClient from "../../../app/axiosClient";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { clearCart } from "../../cart/model/cartSlice";
+import { changeOrderStatus } from "../model/orderSlice";
 
 export const fetchAllOrders = createAsyncThunk(
   "orders/fetchAllOrders",
@@ -51,26 +53,42 @@ export const fetchOrdersByManagerId = createAsyncThunk(
 
 export const createOrder = createAsyncThunk(
   "orders/createOrder",
-  async (data, thunkAPI) => {
+  async (data, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axiosClient.post(`/orders/Orders`, data);
-      return response.data;
+      await axiosClient.post(`/orders/Orders`, data)
+        .then(function () {
+          dispatch(clearCart());
+        });
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
 
 export const updateOrderStatus = createAsyncThunk(
   "orders/updateOrderStatus",
-  async ({ orderId, status }, thunkAPI) => {
+  async ({ orderId, status }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axiosClient.put(`/orders/Orders`, {
+      await axiosClient.put(`/orders/Orders/UpdateStatus`, {}, {
         params: { orderId, status },
+      }).then(function() {
+        dispatch(changeOrderStatus(status))
       });
-      return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const generateOrderAct = createAsyncThunk(
+  "orders/generateOrderAct",
+  async (orderId, { rejectWithValue, dispatch }) => {
+    try {
+      return await axiosClient.get(`/orders/Orders/GenerateAct?orderId=${orderId}`, {
+        responseType: "blob"
+      })
+    } catch (error) {
+      return rejectWithValue(error);
     }
   }
 );

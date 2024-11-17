@@ -28,6 +28,7 @@ namespace Orders.Microservice.API.Configuration
             });
 
             services.AddAuthorization();
+            services.AddHttpContextAccessor();
 
             return services;
         }

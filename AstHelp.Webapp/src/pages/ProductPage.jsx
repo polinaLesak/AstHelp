@@ -13,6 +13,7 @@ import { fetchAllCatalogs } from "../entities/catalog/api/catalogApi";
 
 export default function ProductPage() {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.login);
 
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -37,7 +38,7 @@ export default function ProductPage() {
         p.name.toLowerCase().includes(searchText.toLowerCase()) &&
         (!selectedCategory || p.catalogId === selectedCategory)
     );
-    setFilteredProducts(result)    
+    setFilteredProducts(result);
   }, [products, searchText, selectedCategory]);
 
   const handleAddClick = () => {
@@ -73,7 +74,13 @@ export default function ProductPage() {
         <Box display="flex" p={2}>
           <Box width="100%">
             <Grid container ml={4} mr={4} spacing={2}>
-              <Grid size={10}>
+              <Grid
+                size={
+                  user != null && [1].some((num) => user.roles.includes(num))
+                    ? 10
+                    : 12
+                }
+              >
                 <TextField
                   label="Поиск оборудования"
                   variant="outlined"
@@ -84,11 +91,15 @@ export default function ProductPage() {
                   onChange={(e) => setSearchText(e.target.value)}
                 />
               </Grid>
-              <Grid size={2} mt={1}>
-                <Button variant="contained" onClick={handleAddClick}>
-                  Добавить
-                </Button>
-              </Grid>
+              {user != null && [1].some((num) => user.roles.includes(num)) ? (
+                <Grid size={2} mt={1}>
+                  <Button variant="contained" onClick={handleAddClick}>
+                    Добавить
+                  </Button>
+                </Grid>
+              ) : (
+                <></>
+              )}
               <Grid mb={2}>
                 <Button
                   variant={selectedCategory === "" ? "contained" : "outlined"}
@@ -98,7 +109,7 @@ export default function ProductPage() {
                 </Button>
                 {catalogs?.map((catalog) => (
                   <Button
-                    sx={{ ml: 2}}
+                    sx={{ ml: 2 }}
                     key={catalog.id}
                     variant={
                       selectedCategory === catalog.id ? "contained" : "outlined"

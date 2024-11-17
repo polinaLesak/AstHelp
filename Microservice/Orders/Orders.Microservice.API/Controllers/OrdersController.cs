@@ -16,8 +16,8 @@ namespace Orders.Microservice.API.Controllers
         public OrdersController(IMediator mediator)
         {
             _mediator = mediator;
-        }
-
+        } 
+        
         // GET: api/Orders
         [HttpGet]
         [Authorize(Roles = "1")]
@@ -68,6 +68,15 @@ namespace Orders.Microservice.API.Controllers
                 OrderId = orderId,
                 NewStatus = status
             });
+        }
+
+        // Get: api/Orders/GenerateAct?orderId=
+        [HttpGet("GenerateAct")]
+        [Authorize(Roles = "1")]
+        public async Task<FileResult> GenerateOrderAct(Guid orderId)
+        {
+            var fileBytes = await _mediator.Send(new GenerateOrderActCommand(orderId));
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"Act_{orderId}.docx");
         }
     }
 }

@@ -12,7 +12,7 @@ using Orders.Microservice.Infrastructure.Persistence;
 namespace Orders.Microservice.Infrastructure.Migrations
 {
     [DbContext(typeof(EFDBContext))]
-    [Migration("20241108111832_InitDb")]
+    [Migration("20241114184018_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -53,6 +53,10 @@ namespace Orders.Microservice.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("ManagerPosition")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReasonForIssue")
                         .IsRequired()
                         .HasColumnType("text");
 

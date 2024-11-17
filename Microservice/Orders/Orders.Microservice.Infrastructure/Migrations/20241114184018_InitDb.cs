@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -21,6 +22,7 @@ namespace Orders.Microservice.Infrastructure.Migrations
                     ManagerId = table.Column<int>(type: "integer", nullable: false),
                     ManagerFullname = table.Column<string>(type: "text", nullable: false),
                     ManagerPosition = table.Column<string>(type: "text", nullable: false),
+                    ReasonForIssue = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false)
                 },

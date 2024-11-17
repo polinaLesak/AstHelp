@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Orders.Microservice.Application\Orders.Microservice.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Templates\" />
+  </ItemGroup>
+
 </Project>

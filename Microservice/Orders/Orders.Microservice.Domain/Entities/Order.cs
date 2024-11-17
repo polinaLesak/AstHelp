@@ -9,6 +9,7 @@
         public int ManagerId { get; set; }
         public string ManagerFullname { get; set; } = "";
         public string ManagerPosition { get; set; } = "";
+        public string ReasonForIssue { get; set; } = "";
         public DateTime CreatedAt { get; set; }
         public OrderStatus Status { get; set; }
 

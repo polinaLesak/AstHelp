@@ -1,5 +1,5 @@
 # Add new migration 
-Add-Migration InitDb -Project Microservice\Notification\Notification.Microservice.Infrastructure -OutputDir Migrations
+Add-Migration InitDb -Project Microservice\Orders\Orders.Microservice.Infrastructure -OutputDir Migrations
 
 # Apply migrations to DB
-Update-Database -Project Microservice\Notification\Notification.Microservice.Infrastructure
+Update-Database -Project Microservice\Orders\Orders.Microservice.Infrastructure

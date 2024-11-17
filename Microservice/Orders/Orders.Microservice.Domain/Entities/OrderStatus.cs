@@ -4,6 +4,7 @@
     {
         Pending,
         Processing,
+        Packaged,
         Performed,
         Canceled
     }

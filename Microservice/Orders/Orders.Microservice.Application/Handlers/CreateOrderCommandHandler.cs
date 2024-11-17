@@ -43,6 +43,7 @@ namespace Orders.Microservice.Application.Handlers
                 ManagerId = managerWithLeastOrders.Id,
                 ManagerFullname = managerWithLeastOrders.Profile.Fullname,
                 ManagerPosition = managerWithLeastOrders.Profile.Position,
+                ReasonForIssue = request.ReasonForIssue,
                 CreatedAt = DateTime.UtcNow,
                 Status = OrderStatus.Pending,
                 Items = request.Items.Select(i =>

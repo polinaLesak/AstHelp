@@ -30,6 +30,7 @@ namespace Cart.Microservice.Application.Handlers
                 };
 
                 await _unitOfWork.Carts.AddAsync(cart);
+                await _unitOfWork.CommitAsync();
             }
 
             var productInfo = await _catalogService.GetProductInfoAsync(request.ProductId)

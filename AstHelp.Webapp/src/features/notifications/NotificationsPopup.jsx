@@ -29,13 +29,13 @@ import { blue, green, red, yellow } from "@mui/material/colors";
 
 const getNotificationIcon = (type) => {
   switch (type) {
-    case 1:
+    case 0:
       return <CheckCircle sx={{ color: green[500] }} />;
-    case 2:
+    case 1:
       return <Warning sx={{ color: yellow[700] }} />;
-    case 3:
+    case 2:
       return <ErrorOutline sx={{ color: red[500] }} />;
-    case 4:
+    case 3:
       return <Info sx={{ color: blue[500] }} />;
     default:
       return null;
@@ -44,13 +44,13 @@ const getNotificationIcon = (type) => {
 
 const getNotificationStyle = (type) => {
   switch (type) {
-    case 1:
+    case 0:
       return { backgroundColor: green[50], color: green[800] };
-    case 2:
+    case 1:
       return { backgroundColor: yellow[100], color: yellow[800] };
-    case 3:
+    case 2:
       return { backgroundColor: red[50], color: red[800] };
-    case 4:
+    case 3:
       return { backgroundColor: blue[50], color: blue[800] };
     default:
       return {};
@@ -130,15 +130,18 @@ export default function NotificationsPopup() {
                   key={notification.id}
                   secondaryAction={
                     <>
-                      <Tooltip title="Прочитать">
-                        <IconButton
-                          onClick={() => handleMarkAsRead(notification.id)}
-                          color="success"
-                          size="small"
-                        >
-                          <MarkChatReadIcon />
-                        </IconButton>
-                      </Tooltip>
+                      { !notification.isRead 
+                        ? <>
+                        <Tooltip title="Прочитать">
+                          <IconButton
+                            onClick={() => handleMarkAsRead(notification.id)}
+                            color="success"
+                            size="small"
+                          >
+                            <MarkChatReadIcon />
+                          </IconButton>
+                        </Tooltip>
+                        </> : <></> }
                       <Tooltip title="Удалить">
                         <IconButton
                           onClick={() => handleDelete(notification.id)}
@@ -159,7 +162,15 @@ export default function NotificationsPopup() {
                     primary={notification.title}
                     secondary={
                       <>
-                        <Typography variant="body2">
+                        <Typography
+                          noWrap
+                          variant="body2"
+                          sx={{
+                            wordBreak: "break-word",
+                            whiteSpace: "normal",
+                            maxWidth: "80%",
+                          }}
+                        >
                           {notification.message}
                         </Typography>
                         <Typography variant="caption" color="textSecondary">

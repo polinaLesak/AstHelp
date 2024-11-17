@@ -22,6 +22,10 @@ const cartSlice = createSlice({
     clearCartSuccess(state) {
       state.success = null;
     },
+    clearCart: (state) => {
+      state.cart = null;
+      state.countProducts = null;
+    },
   },
   extraReducers: (builder) => {
     handleAsyncActions(builder, fetchCartByUserId, "cart");
@@ -81,5 +85,5 @@ const handleAsyncActionsWithSuccessAlert = (builder, thunk, successText) => {
     });
 };
 
-export const { clearCartError, clearCartSuccess } = cartSlice.actions;
+export const { clearCartError, clearCartSuccess, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;

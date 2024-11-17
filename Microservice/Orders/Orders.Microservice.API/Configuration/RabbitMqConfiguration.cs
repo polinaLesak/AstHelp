@@ -33,6 +33,7 @@ namespace Orders.Microservice.API.Configuration
 
             // Регистрируем RabbitMQConsumer как фоновую службу
             services.AddHostedService<RabbitMQConsumer>();
+            services.AddSingleton<RabbitMQProducer>();
 
             return services;
         }

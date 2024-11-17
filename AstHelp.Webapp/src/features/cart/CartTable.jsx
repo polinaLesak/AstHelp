@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import CartTableActions from "./CartTableActions";
 import {
   fetchCartByUserId,
-  fetchCartProductsCountByUserId,
 } from "../../entities/cart/api/cartApi";
 import { Box, Button, TextField } from "@mui/material";
 import * as yup from "yup";
@@ -79,12 +78,8 @@ export default function CartTable() {
         items: orderItems,
         reasonForIssue: reasonForIssue.trim(),
       };
-      const response = await dispatch(createOrder(orderData));
-      if (response.status === 200) {
-        setReasonForIssue("");
-        await dispatch(fetchCartByUserId(user?.id ?? 0));
-        dispatch(fetchCartProductsCountByUserId(user?.id ?? 0));
-      }
+      await dispatch(createOrder(orderData));
+      setReasonForIssue("");
     } catch (err) {
       if (err.name === "ValidationError") {
         setError(err.errors[0]);

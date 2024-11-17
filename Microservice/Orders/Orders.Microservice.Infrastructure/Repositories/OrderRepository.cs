@@ -5,10 +5,24 @@ using Orders.Microservice.Infrastructure.Persistence;
 
 namespace Orders.Microservice.Infrastructure.Repositories
 {
-    public class OrderRepository : GenericRepository<Domain.Entities.Order, Guid>, IOrderRepository
+    public class OrderRepository : GenericRepository<Order, Guid>, IOrderRepository
     {
         public OrderRepository(EFDBContext context)
             : base(context) { }
+
+        public async Task<IEnumerable<Order>> GetAllAsync()
+        {
+            return await _context.Orders.AsNoTracking()
+                .Include(x => x.Items)
+                .ToListAsync();
+        }
+
+        public async Task<Order> GetByIdAsync(Guid id)
+        {
+            return await _context.Orders.AsNoTracking()
+                .Include(x => x.Items)
+                .SingleOrDefaultAsync(x => x.Id == id);
+        }
 
         public async Task<int> CountByManagerIdAsync(int managerId)
         {
