@@ -21,7 +21,7 @@ namespace Notification.Microservice.Tests.Unit.Handlers
         [Fact]
         public async Task Handle_ShouldReturnAllNotifications()
         {
-            var query = new GetAllNotificationsByUserIdQuery();
+            var query = new GetAllNotificationsByUserIdQuery(1);
             var notifications = new List<NotificationEntity>
             {
                 new NotificationEntity { UserId = 1, Title = "Test Title1", Message = "Test Message1" },

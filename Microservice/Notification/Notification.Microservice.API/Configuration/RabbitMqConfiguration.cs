@@ -1,4 +1,7 @@
-﻿using Notification.Microservice.Infrastructure.Messaging.Configurations;
+﻿using Microsoft.Extensions.Options;
+using Notification.Microservice.Infrastructure.Messaging;
+using Notification.Microservice.Infrastructure.Messaging.Configurations;
+using RabbitMQ.Client;
 
 namespace Notification.Microservice.API.Configuration
 {
@@ -8,28 +11,26 @@ namespace Notification.Microservice.API.Configuration
         {
             services.Configure<RabbitMQOptions>(configuration.GetSection("RabbitMQ"));
 
-            //services.AddSingleton(sp =>
-            //{
-            //    var options = sp.GetRequiredService<IOptions<RabbitMQOptions>>().Value;
-            //    var factory = new ConnectionFactory()
-            //    {
-            //        HostName = options.HostName,
-            //        Port = options.Port,
-            //        UserName = options.UserName,
-            //        Password = options.Password
-            //    };
-            //    return factory.CreateConnection();
-            //});
+            services.AddSingleton(sp =>
+            {
+                var options = sp.GetRequiredService<IOptions<RabbitMQOptions>>().Value;
+                var factory = new ConnectionFactory()
+                {
+                    HostName = options.HostName,
+                    Port = options.Port,
+                    UserName = options.UserName,
+                    Password = options.Password
+                };
+                return factory.CreateConnection();
+            });
 
-            // Добавляем канал RabbitMQ
-            //services.AddSingleton(sp =>
-            //{
-            //    var connection = sp.GetRequiredService<IConnection>();
-            //    return connection.CreateModel();
-            //});
+            services.AddSingleton(sp =>
+            {
+                var connection = sp.GetRequiredService<IConnection>();
+                return connection.CreateModel();
+            });
 
-            // Регистрируем RabbitMQConsumer как фоновую службу
-            //services.AddHostedService<RabbitMQConsumer>();
+            services.AddHostedService<RabbitMQConsumer>();
 
             return services;
         }

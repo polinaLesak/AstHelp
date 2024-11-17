@@ -24,7 +24,7 @@ namespace Notification.Microservice.API.Controllers
         public async Task<IEnumerable<NotificationEntity>> GetAllNotificationsByUserId(
             [FromQuery] int userId)
         {
-            return await _mediator.Send(new GetAllNotificationsByUserIdQuery());
+            return await _mediator.Send(new GetAllNotificationsByUserIdQuery(userId));
         }
 
         // POST: api/Notification

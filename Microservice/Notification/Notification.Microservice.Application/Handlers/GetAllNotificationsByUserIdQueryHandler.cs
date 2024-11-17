@@ -19,7 +19,7 @@ namespace Notification.Microservice.Application.Handlers
             GetAllNotificationsByUserIdQuery request,
             CancellationToken cancellationToken)
         {
-            return await _unitOfWork.Notification.GetAllAsync();
+            return await _unitOfWork.Notification.GetAllNotificationsByUserId(request.UserId);
         }
     }
 }
