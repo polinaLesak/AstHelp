@@ -1,7 +1,9 @@
 ﻿using Catalog.Microservice.Application.Commands;
+using Catalog.Microservice.Application.Events;
 using Catalog.Microservice.Application.Exceptions;
 using Catalog.Microservice.Domain.Entities;
 using Catalog.Microservice.Domain.Repositories;
+using Catalog.Microservice.Infrastructure.Messaging;
 using MediatR;
 
 namespace Catalog.Microservice.Application.Handlers
@@ -9,10 +11,12 @@ namespace Catalog.Microservice.Application.Handlers
     public class UpdateCatalogCommandHandler : IRequestHandler<UpdateCatalogCommand, Domain.Entities.Catalog>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly RabbitMQProducer _rabbitMQProducer;
 
-        public UpdateCatalogCommandHandler(IUnitOfWork unitOfWork)
+        public UpdateCatalogCommandHandler(IUnitOfWork unitOfWork, RabbitMQProducer rabbitMQProducer)
         {
             _unitOfWork = unitOfWork;
+            _rabbitMQProducer = rabbitMQProducer;
         }
 
         public async Task<Domain.Entities.Catalog> Handle(UpdateCatalogCommand request, CancellationToken cancellationToken)
@@ -45,6 +49,11 @@ namespace Catalog.Microservice.Application.Handlers
                 });
             }
 
+            _rabbitMQProducer.Publish(new UpdateCatalogEvent
+            {
+                CatalogId = catalog.Id,
+                CatalogName = catalog.Name,
+            });
 
             _unitOfWork.Catalogs.Update(catalog);
             await _unitOfWork.CommitAsync();

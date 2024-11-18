@@ -45,7 +45,7 @@ namespace Cart.Microservice.Infrastructure.Messaging
                 try
                 {
                     var wrapper = JsonConvert.DeserializeObject<EventWrapper<object>>(message);
-                    _logger.LogInformation($"wrapper: {wrapper}");
+                    _logger.LogInformation($"wrapper: {JsonConvert.SerializeObject(wrapper, Formatting.Indented)}");
                     await HandleEvent(wrapper);
 
                     _channel.BasicAck(ea.DeliveryTag, multiple: false); // Подтверждаем обработку сообщения
@@ -74,6 +74,21 @@ namespace Cart.Microservice.Infrastructure.Messaging
                         var deletedEvent = JsonConvert.DeserializeObject<UserDeletedEvent>(wrapper.Data.ToString());
                         if (deletedEvent != null)
                             await mediator.Publish(deletedEvent);
+                        break;
+                    case nameof(UpdateProductEvent):
+                        var updateProductEvent = JsonConvert.DeserializeObject<UpdateProductEvent>(wrapper.Data.ToString());
+                        if (updateProductEvent != null)
+                            await mediator.Publish(updateProductEvent);
+                        break;
+                    case nameof(DeleteProductEvent):
+                        var deleteEvent = JsonConvert.DeserializeObject<DeleteProductEvent>(wrapper.Data.ToString());
+                        if (deleteEvent != null)
+                            await mediator.Publish(deleteEvent);
+                        break;
+                    case nameof(UpdateCatalogEvent):
+                        var updateCatalogEvent = JsonConvert.DeserializeObject<UpdateCatalogEvent>(wrapper.Data.ToString());
+                        if (updateCatalogEvent != null)
+                            await mediator.Publish(updateCatalogEvent);
                         break;
                 }
             }

@@ -13,9 +13,14 @@ namespace Cart.Microservice.Application.EventsHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task Handle(UserDeletedEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(UserDeletedEvent userDeletedEvent, CancellationToken cancellationToken)
         {
-            // Логика для обработки удаления пользователя
+            var cart = await _unitOfWork.Carts.GetCartByUserIdAsync(userDeletedEvent.UserId);
+            if (cart != null)
+            {
+                _unitOfWork.Carts.Remove(cart);
+                await _unitOfWork.CommitAsync();
+            }
         }
     }
 }

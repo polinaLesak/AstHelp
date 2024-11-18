@@ -1,12 +1,12 @@
-﻿using Identity.Microservice.Domain.Events;
-using Identity.Microservice.Infrastructure.Configurations;
+﻿using Cart.Microservice.Infrastructure.Events;
+using Cart.Microservice.Infrastructure.Messaging.Configurations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
 
-namespace Identity.Microservice.Infrastructure.Messaging
+namespace Cart.Microservice.Infrastructure.Messaging
 {
     public class RabbitMQProducer
     {

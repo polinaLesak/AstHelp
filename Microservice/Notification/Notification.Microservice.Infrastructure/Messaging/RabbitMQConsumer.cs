@@ -50,7 +50,7 @@ namespace Notification.Microservice.Infrastructure.Messaging
                 try
                 {
                     var wrapper = JsonConvert.DeserializeObject<EventWrapper<object>>(message);
-                    _logger.LogInformation($"NotificationQueue wrapper: {wrapper}");
+                    _logger.LogInformation($"wrapper: {JsonConvert.SerializeObject(wrapper, Formatting.Indented)}");
                     await HandleEvent(wrapper);
 
                     _channel.BasicAck(ea.DeliveryTag, multiple: false); // Подтверждаем обработку сообщения

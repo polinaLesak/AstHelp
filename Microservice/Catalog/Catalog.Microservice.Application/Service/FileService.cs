@@ -12,17 +12,6 @@ namespace Catalog.Microservice.Application.Service
             _environment = environment;
         }
 
-        public Stream GetTemplateStream(string templateName)
-        {
-            var templatePath = Path.Combine(_environment.WebRootPath, "Templates", templateName);
-            if (!File.Exists(templatePath))
-            {
-                throw new FileNotFoundException("Шаблон документа не найден", templateName);
-            }
-
-            return new FileStream(templatePath, FileMode.Open, FileAccess.Read);
-        }
-
         public async Task<string> UploadFileAsync(IFormFile file, string folderPath)
         {
             if (file == null || file.Length == 0)
@@ -40,6 +29,19 @@ namespace Catalog.Microservice.Application.Service
             }
 
             return $"/{folderPath}/{uniqueFileName}";
+        }
+
+        public void DeleteFile(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                return;
+
+            var fullPath = Path.Combine(_environment.WebRootPath, filePath.TrimStart('/'));
+
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+            }
         }
     }
 }

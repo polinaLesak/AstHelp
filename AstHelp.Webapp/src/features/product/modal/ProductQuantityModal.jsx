@@ -8,26 +8,35 @@ import {
   TextField,
 } from "@mui/material";
 
-export default function ProductQuantityModal({ open, onClose, onSubmit }) {
+export default function ProductQuantityModal({
+  open,
+  onClose,
+  onSubmit,
+  maxQuantity,
+}) {
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
 
   const handleQuantityChange = (event) => {
-    const value = event.target.value;
+    const value = Number(event.target.value);
+
     if (value < 1 || isNaN(value)) {
       setError("Введите количество больше 0");
+    } else if (maxQuantity && value > maxQuantity) {
+      setError(`Максимальное количество: ${maxQuantity}`);
     } else {
       setError("");
     }
+
     setQuantity(value);
   };
 
   const handleSubmit = () => {
-    if (quantity > 0 && !isNaN(quantity)) {
+    if (quantity > 0 && (!maxQuantity || quantity <= maxQuantity)) {
       onSubmit(quantity);
       onClose();
     } else {
-      setError("Введите корректное количество");
+      setError(`Введите корректное количество (макс. ${maxQuantity})`);
     }
   };
 
@@ -41,9 +50,13 @@ export default function ProductQuantityModal({ open, onClose, onSubmit }) {
           value={quantity}
           onChange={handleQuantityChange}
           fullWidth
-          sx={{ mt: 2}}
+          sx={{ mt: 2 }}
           error={!!error}
           helperText={error}
+          inputProps={{
+            min: 1,
+            max: maxQuantity,
+          }}
         />
       </DialogContent>
       <DialogActions>

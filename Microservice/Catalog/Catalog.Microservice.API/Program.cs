@@ -12,6 +12,7 @@ builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.RegisterMediatrHandlers();
 builder.Services.ConfigureSwagger();
 builder.Services.ConfigureJwtAuthorization(builder.Configuration);
+builder.Services.ConfigureRabbitMq(builder.Configuration);
 builder.Services.ConfigureCors(MyAllowSpecificOrigins);
 
 var app = builder.Build();

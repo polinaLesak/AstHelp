@@ -16,8 +16,12 @@ export default function ProductCard({ product, onEdit, onDelete }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.login);
   const [open, setOpen] = useState(false);
+  const [availableQuantity, setAvailableQuantity] = useState(1);
 
-  const handleOpenModal = () => setOpen(true);
+  const handleOpenModal = (quantity) => {
+    setAvailableQuantity(quantity)
+    setOpen(true);
+  }
   const handleCloseModal = () => setOpen(false);
 
   const handleSubmitQuantity = async (quantity) => {
@@ -99,7 +103,7 @@ export default function ProductCard({ product, onEdit, onDelete }) {
                 size="small"
                 variant="contained"
                 color="primary"
-                onClick={handleOpenModal}
+                onClick={() => handleOpenModal(product.quantity)}
               >
                 Добавить в заявку
               </Button>
@@ -129,6 +133,7 @@ export default function ProductCard({ product, onEdit, onDelete }) {
         open={open}
         onClose={handleCloseModal}
         onSubmit={handleSubmitQuantity}
+        maxQuantity={availableQuantity}
       />
     </Card>
   );

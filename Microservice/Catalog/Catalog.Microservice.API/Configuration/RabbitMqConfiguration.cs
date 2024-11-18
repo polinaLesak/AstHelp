@@ -1,9 +1,9 @@
-﻿using Cart.Microservice.Infrastructure.Messaging;
-using Cart.Microservice.Infrastructure.Messaging.Configurations;
+﻿using Catalog.Microservice.Infrastructure.Messaging;
+using Catalog.Microservice.Infrastructure.Messaging.Configurations;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 
-namespace Cart.Microservice.API.Configuration
+namespace Catalog.Microservice.API.Configuration
 {
     public static class RabbitMqConfiguration
     {
@@ -31,8 +31,6 @@ namespace Cart.Microservice.API.Configuration
                 return connection.CreateModel();
             });
 
-            // Регистрируем RabbitMQConsumer как фоновую службу
-            services.AddHostedService<RabbitMQConsumer>();
             services.AddSingleton<RabbitMQProducer>();
 
             return services;

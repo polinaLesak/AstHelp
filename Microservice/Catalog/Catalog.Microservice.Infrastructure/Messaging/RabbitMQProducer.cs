@@ -1,12 +1,12 @@
-﻿using Identity.Microservice.Domain.Events;
-using Identity.Microservice.Infrastructure.Configurations;
+﻿using Catalog.Microservice.Infrastructure.Events;
+using Catalog.Microservice.Infrastructure.Messaging.Configurations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
 
-namespace Identity.Microservice.Infrastructure.Messaging
+namespace Catalog.Microservice.Infrastructure.Messaging
 {
     public class RabbitMQProducer
     {
@@ -15,8 +15,8 @@ namespace Identity.Microservice.Infrastructure.Messaging
         private readonly ILogger<RabbitMQProducer> _logger;
 
         public RabbitMQProducer(
-            IModel channel,
-            IOptions<RabbitMQOptions> options,
+            IModel channel, 
+            IOptions<RabbitMQOptions> options, 
             ILogger<RabbitMQProducer> logger)
         {
             _channel = channel;

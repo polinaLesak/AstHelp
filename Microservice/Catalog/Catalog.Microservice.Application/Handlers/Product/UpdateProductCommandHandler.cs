@@ -1,8 +1,10 @@
 ﻿using Catalog.Microservice.Application.Commands;
+using Catalog.Microservice.Application.Events;
 using Catalog.Microservice.Application.Exceptions;
 using Catalog.Microservice.Application.Service;
 using Catalog.Microservice.Domain.Entities;
 using Catalog.Microservice.Domain.Repositories;
+using Catalog.Microservice.Infrastructure.Messaging;
 using MediatR;
 
 namespace Catalog.Microservice.Application.Handlers
@@ -11,11 +13,16 @@ namespace Catalog.Microservice.Application.Handlers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFileService _fileService;
+        private readonly RabbitMQProducer _rabbitMQProducer;
 
-        public UpdateProductCommandHandler(IUnitOfWork unitOfWork, IFileService fileService)
+        public UpdateProductCommandHandler(
+            IUnitOfWork unitOfWork, 
+            IFileService fileService, 
+            RabbitMQProducer rabbitMQProducer)
         {
             _unitOfWork = unitOfWork;
             _fileService = fileService;
+            _rabbitMQProducer = rabbitMQProducer;
         }
 
         public async Task<Product> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
@@ -39,7 +46,8 @@ namespace Catalog.Microservice.Application.Handlers
                 throw new NotFoundException($"Бренд с ID \"{request.BrandId}\" не найден.");
             }
 
-            if (await _unitOfWork.Catalogs.GetByIdAsync(request.CatalogId) == null)
+            Domain.Entities.Catalog catalog = await _unitOfWork.Catalogs.GetByIdAsync(request.CatalogId);
+            if (catalog == null)
             {
                 throw new NotFoundException($"Категория с ID \"{request.CatalogId}\" не найдена.");
             }
@@ -90,6 +98,17 @@ namespace Catalog.Microservice.Application.Handlers
             }
 
             _unitOfWork.Products.Update(product);
+
+            
+            _rabbitMQProducer.Publish(new UpdateProductEvent
+            {
+                ProductId = product.Id,
+                ProductName = product.Name,
+                CatalogId = product.CatalogId,
+                CatalogName = catalog.Name,
+                Quantity = request.Quantity
+            });
+
             await _unitOfWork.CommitAsync();
 
             return product;

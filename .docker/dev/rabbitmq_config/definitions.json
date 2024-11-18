@@ -91,6 +91,15 @@
       "arguments": {}
     },
     {
+      "name": "CartExchange",
+      "vhost": "/",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
       "name": "OrdersExchange",
       "vhost": "/",
       "type": "fanout",
@@ -101,6 +110,14 @@
     }
   ],
   "bindings": [
+    {
+      "source": "CartExchange",
+      "vhost": "/",
+      "destination": "NotificationQueue",
+      "destination_type": "queue",
+      "routing_key": "NotificationQueue",
+      "arguments": {}
+    },
     {
       "source": "CatalogExchange",
       "vhost": "/",
