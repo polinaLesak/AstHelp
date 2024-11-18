@@ -1,6 +1,8 @@
 ﻿using Catalog.Microservice.Domain.Entities;
+using Catalog.Microservice.Domain.Models.Sorting;
 using Catalog.Microservice.Domain.Repositories;
 using Catalog.Microservice.Infrastructure.Persistence;
+using Catalog.Microservice.Infrastructure.Sorting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Microservice.Infrastructure.Repositories
@@ -36,6 +38,17 @@ namespace Catalog.Microservice.Infrastructure.Repositories
                 .Include(x => x.Catalog)
                 .Include(x => x.AttributeValues)
                     .ThenInclude(x => x.Attribute)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetAllAsyncWithSorting(SortingRequest sortingRequest)
+        {
+            return await _context.Products
+                .Include(x => x.Brand)
+                .Include(x => x.Catalog)
+                .Include(x => x.AttributeValues)
+                    .ThenInclude(x => x.Attribute)
+                .SortByField(sortingRequest)
                 .ToListAsync();
         }
 

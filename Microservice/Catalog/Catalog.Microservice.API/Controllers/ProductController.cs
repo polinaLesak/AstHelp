@@ -1,9 +1,12 @@
 ﻿using Catalog.Microservice.Application.Commands;
+using Catalog.Microservice.Application.DTOs.Request;
 using Catalog.Microservice.Application.Queries;
 using Catalog.Microservice.Domain.Entities;
+using Catalog.Microservice.Domain.Models.Sorting;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Catalog.Microservice.API.Controllers
 {
@@ -21,9 +24,11 @@ namespace Catalog.Microservice.API.Controllers
         // GET: api/Product
         [HttpGet]
         [Authorize(Roles = "1, 2, 3")]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProductsWithSorting(
+            [FromQuery] string? sortingField,
+            [FromQuery] string? sortingDirection)
         {
-            return Ok(await _mediator.Send(new GetAllProductsQuery()));
+            return Ok(await _mediator.Send(new GetAllProductsWithSortingQuery(sortingField, sortingDirection)));
         }
 
         // GET: api/Product/{id}
@@ -45,16 +50,22 @@ namespace Catalog.Microservice.API.Controllers
         // POST: api/Product
         [HttpPost]
         [Authorize(Roles = "1")]
-        public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand command)
+        public async Task<IActionResult> CreateProduct(
+            [FromForm] string productAttributes,
+            [FromForm] CreateProductCommand command)
         {
+            command.ProductAttributes = JsonConvert.DeserializeObject<List<ProductAttributeRequestDto>>(productAttributes);
             return Ok(await _mediator.Send(command));
         }
 
         // PUT: api/Product
         [HttpPut]
         [Authorize(Roles = "1")]
-        public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductCommand command)
+        public async Task<IActionResult> UpdateProduct(
+            [FromForm] string productAttributes,
+            [FromForm] UpdateProductCommand command)
         {
+            command.ProductAttributes = JsonConvert.DeserializeObject<List<ProductAttributeRequestDto>>(productAttributes);
             return Ok(await _mediator.Send(command));
         }
 

@@ -1,5 +1,6 @@
 ﻿using Catalog.Microservice.Application.Commands;
 using Catalog.Microservice.Application.Exceptions;
+using Catalog.Microservice.Application.Service;
 using Catalog.Microservice.Domain.Entities;
 using Catalog.Microservice.Domain.Repositories;
 using MediatR;
@@ -9,10 +10,12 @@ namespace Catalog.Microservice.Application.Handlers
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Product>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IFileService _fileService;
 
-        public CreateProductCommandHandler(IUnitOfWork unitOfWork)
+        public CreateProductCommandHandler(IUnitOfWork unitOfWork, IFileService fileService)
         {
             _unitOfWork = unitOfWork;
+            _fileService = fileService;
         }
 
         public async Task<Product> Handle(CreateProductCommand request, CancellationToken cancellationToken)
@@ -36,11 +39,16 @@ namespace Catalog.Microservice.Application.Handlers
             var product = new Product
             {
                 Name = request.Name,
+                Quantity = request.Quantity,
                 BrandId = request.BrandId,
                 CatalogId = request.CatalogId,
                 AttributeValues = new List<AttributeValue>()
-
             };
+
+            if (request.Image != null)
+            {
+                product.ImageUrl = await _fileService.UploadFileAsync(request.Image, "images");
+            }
 
             foreach (var item in request.ProductAttributes)
             {

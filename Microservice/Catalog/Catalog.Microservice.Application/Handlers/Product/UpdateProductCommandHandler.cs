@@ -1,5 +1,6 @@
 ﻿using Catalog.Microservice.Application.Commands;
 using Catalog.Microservice.Application.Exceptions;
+using Catalog.Microservice.Application.Service;
 using Catalog.Microservice.Domain.Entities;
 using Catalog.Microservice.Domain.Repositories;
 using MediatR;
@@ -9,18 +10,20 @@ namespace Catalog.Microservice.Application.Handlers
     public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Product>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IFileService _fileService;
 
-        public UpdateProductCommandHandler(IUnitOfWork unitOfWork)
+        public UpdateProductCommandHandler(IUnitOfWork unitOfWork, IFileService fileService)
         {
             _unitOfWork = unitOfWork;
+            _fileService = fileService;
         }
 
         public async Task<Product> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _unitOfWork.Products.GetByIdAsync(request.ProductId);
+            var product = await _unitOfWork.Products.GetByIdAsync(request.Id);
             if (product == null)
             {
-                throw new NotFoundException($"Продукт с ID \"{request.ProductId}\" не найден.");
+                throw new NotFoundException($"Продукт с ID \"{request.Id}\" не найден.");
             }
 
             if ((product.Name != request.Name || product.BrandId != request.BrandId
@@ -42,8 +45,14 @@ namespace Catalog.Microservice.Application.Handlers
             }
 
             product.Name = request.Name;
+            product.Quantity = request.Quantity;
             product.BrandId = request.BrandId;
             product.CatalogId = request.CatalogId;
+
+            if (request.Image != null)
+            {
+                product.ImageUrl = await _fileService.UploadFileAsync(request.Image, "images");
+            }
 
             foreach (var item in request.ProductAttributes)
             {

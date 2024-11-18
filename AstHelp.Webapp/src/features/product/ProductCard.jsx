@@ -3,8 +3,14 @@ import Grid from "@mui/material/Grid2";
 import noImage from "../../assets/noImage.svg";
 import { useDispatch, useSelector } from "react-redux";
 import ProductQuantityModal from "./modal/ProductQuantityModal";
-import { addProductToUserCart, fetchCartProductsCountByUserId } from "../../entities/cart/api/cartApi";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import {
+  addProductToUserCart,
+  fetchCartProductsCountByUserId,
+} from "../../entities/cart/api/cartApi";
 import { useState } from "react";
+import config from "../../config";
 
 export default function ProductCard({ product, onEdit, onDelete }) {
   const dispatch = useDispatch();
@@ -45,6 +51,16 @@ export default function ProductCard({ product, onEdit, onDelete }) {
                 {attr.valueString || attr.valueInt || attr.valueNumeric}
               </Typography>
             ))}
+            <Typography variant="body2" color="text.secondary">
+              <InventoryIcon fontSize="small" /> Доступное количество:{" "}
+              <b style={{ color: product.quantity < 10 ? "red" : "inherit" }}>
+                {product.quantity}
+              </b>
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              <CalendarTodayIcon fontSize="small" /> Дата создания:{" "}
+              {new Date(product.createdAt).toLocaleDateString()}
+            </Typography>
           </Grid>
           <Grid
             size={2}
@@ -78,14 +94,18 @@ export default function ProductCard({ product, onEdit, onDelete }) {
             ) : (
               <></>
             )}
-            <Button
-              size="small"
-              variant="contained"
-              color="primary"
-              onClick={handleOpenModal}
-            >
-              Добавить в заявку
-            </Button>
+            {[3].some((num) => user.roles.includes(num)) ? (
+              <Button
+                size="small"
+                variant="contained"
+                color="primary"
+                onClick={handleOpenModal}
+              >
+                Добавить в заявку
+              </Button>
+            ) : (
+              <></>
+            )}
           </Grid>
           <Grid size={2}>
             <Box
@@ -96,7 +116,11 @@ export default function ProductCard({ product, onEdit, onDelete }) {
                 maxHeight: 140,
                 objectFit: "contain",
               }}
-              src={product.imageUrl ?? noImage}
+              src={
+                product.imageUrl !== ""
+                  ? `${config.apiUrl}resources/catalog${product.imageUrl}`
+                  : noImage
+              }
             />
           </Grid>
         </Grid>

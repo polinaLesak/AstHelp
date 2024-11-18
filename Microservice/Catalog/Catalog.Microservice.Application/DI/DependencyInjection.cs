@@ -1,4 +1,5 @@
-﻿using Catalog.Microservice.Domain.Repositories;
+﻿using Catalog.Microservice.Application.Service;
+using Catalog.Microservice.Domain.Repositories;
 using Catalog.Microservice.Infrastructure.Persistence;
 using Catalog.Microservice.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace Catalog.Microservice.Application.DI
             services.AddScoped<ICatalogAttributeRepository, CatalogAttributeRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
 
+            services.AddScoped<IFileService, FileService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;

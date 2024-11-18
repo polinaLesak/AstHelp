@@ -10,6 +10,13 @@ const productSlice = createSlice({
   name: "product",
   initialState: {
     products: null,
+    sortOptions: [
+      { sortingField: "createdAt", sortingDirection: "Asc", label: "По дате создания (возр.)" },
+      { sortingField: "createdAt", sortingDirection: "Desc", label: "По дате создания (убыв.)" },
+      { sortingField: "quantity", sortingDirection: "Asc", label: "По количеству (возр.)" },
+      { sortingField: "quantity", sortingDirection: "Desc", label: "По количеству (убыв.)" },
+    ],
+    sortState: { sortingField: "createdAt", sortingDirection: "Asc", label: "По дате создания (возр.)" },
     loading: false,
     success: null,
     error: null,
@@ -20,6 +27,9 @@ const productSlice = createSlice({
     },
     clearProductSuccess(state) {
       state.success = null;
+    },
+    setSortState(state, { payload }) {
+      state.sortState = payload;
     },
   },
   extraReducers: (builder) => {
@@ -84,5 +94,5 @@ const handleAsyncActionsWithSuccessAlert = (builder, thunk, successText) => {
     });
 };
 
-export const { clearProductError, clearProductSuccess } = productSlice.actions;
+export const { clearProductError, clearProductSuccess, setSortState } = productSlice.actions;
 export default productSlice.reducer;

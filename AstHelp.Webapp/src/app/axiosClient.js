@@ -4,7 +4,7 @@ import config from "../config";
 const axiosClient = axios.create({
   baseURL: config.apiUrl,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json; charset=utf-8"
   },
 });
 

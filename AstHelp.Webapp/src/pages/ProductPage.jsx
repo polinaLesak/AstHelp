@@ -10,6 +10,7 @@ import {
 } from "../entities/product/api/productApi";
 import DeleteConfirmationModal from "../shared/components/DeleteConfirmationModal";
 import { fetchAllCatalogs } from "../entities/catalog/api/catalogApi";
+import ProductSortSelect from "../features/product/ProductSortSelect";
 
 export default function ProductPage() {
   const dispatch = useDispatch();
@@ -23,12 +24,13 @@ export default function ProductPage() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
+  
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteData, setDeleteData] = useState(null);
 
+  const { sortState } = useSelector((state) => state.product);
+
   useEffect(() => {
-    dispatch(fetchAllProducts());
     dispatch(fetchAllCatalogs());
   }, [dispatch]);
 
@@ -61,12 +63,20 @@ export default function ProductPage() {
   const handleDelete = async () => {
     try {
       await dispatch(deleteProduct(deleteData)).unwrap();
-      dispatch(fetchAllProducts());
+      dispatch(fetchAllProducts(sortState));
     } catch (error) {
       console.error("Ошибка при удалении:", error);
     }
     handleCloseDelete(false);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await dispatch(fetchAllProducts(sortState));
+    };
+
+    fetchData();
+  }, [dispatch, sortState]);
 
   return (
     <Grid container>
@@ -77,7 +87,7 @@ export default function ProductPage() {
               <Grid
                 size={
                   user != null && [1].some((num) => user.roles.includes(num))
-                    ? 10
+                    ? 11
                     : 12
                 }
               >
@@ -92,35 +102,51 @@ export default function ProductPage() {
                 />
               </Grid>
               {user != null && [1].some((num) => user.roles.includes(num)) ? (
-                <Grid size={2} mt={1}>
-                  <Button variant="contained" onClick={handleAddClick}>
+                <Grid size={1} mt={1}>
+                  <Button fullWidth variant="contained" onClick={handleAddClick}>
                     Добавить
                   </Button>
                 </Grid>
               ) : (
                 <></>
               )}
-              <Grid mb={2}>
-                <Button
-                  variant={selectedCategory === "" ? "contained" : "outlined"}
-                  onClick={() => setSelectedCategory("")}
-                >
-                  Все категории
-                </Button>
-                {catalogs?.map((catalog) => (
-                  <Button
-                    sx={{ ml: 2 }}
-                    key={catalog.id}
-                    variant={
-                      selectedCategory === catalog.id ? "contained" : "outlined"
-                    }
-                    onClick={() => setSelectedCategory(catalog.id)}
-                  >
-                    {catalog.name}
-                  </Button>
-                ))}
-              </Grid>
             </Grid>
+            <Grid size={12}>
+              <Box
+                width="100%"
+                mt={2}
+                mb={2}
+                display="flex"
+                justifyContent="space-between"
+              >
+                <Box ml={4} display="flex" alignItems="center">
+                  <Button
+                    variant={selectedCategory === "" ? "contained" : "outlined"}
+                    onClick={() => setSelectedCategory("")}
+                  >
+                    Все категории
+                  </Button>
+                  {catalogs?.map((catalog) => (
+                    <Button
+                      sx={{ ml: 2 }}
+                      key={catalog.id}
+                      variant={
+                        selectedCategory === catalog.id
+                          ? "contained"
+                          : "outlined"
+                      }
+                      onClick={() => setSelectedCategory(catalog.id)}
+                    >
+                      {catalog.name}
+                    </Button>
+                  ))}
+                </Box>
+                <Box sx={{ mr: 4 }} display="flex" alignItems="center">
+                  <ProductSortSelect />
+                </Box>
+              </Box>
+            </Grid>
+
             <Box display="flex" justifyContent="center" mb={2} ml={4} mr={4}>
               <Grid size={12} container spacing={2}>
                 {filteredProducts?.map((product) => (

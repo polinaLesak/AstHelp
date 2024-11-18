@@ -250,7 +250,7 @@ function Navbar() {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  <MenuItem onClick={handleCloseUserMenu}>
+                  {/* <MenuItem onClick={handleCloseUserMenu}>
                     <Typography
                       sx={{
                         textAlign: "center",
@@ -262,7 +262,7 @@ function Navbar() {
                     >
                       Профиль
                     </Typography>
-                  </MenuItem>
+                  </MenuItem> */}
                   <MenuItem onClick={handleLogout}>
                     <Typography
                       sx={{

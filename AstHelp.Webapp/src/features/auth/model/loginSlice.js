@@ -15,7 +15,7 @@ const loginSlice = createSlice({
   name: 'login',
   initialState: {
     isAuthenticated: !!getCookie('jwtToken'),
-    user: getCookie('user') ? JSON.parse(getCookie('user')) : null,
+    user: getCookie('user') ? JSON.parse(decodeURIComponent(getCookie('user'))) : null,
     token: getCookie('jwtToken') || null,
     loading: false,
     success: null,
@@ -58,7 +58,7 @@ const loginSlice = createSlice({
           roles: action.payload.roles
         };
         document.cookie = `jwtToken=${state.token}; max-age=${60 * 30}; path=/; samesite=strict`;
-        document.cookie = `user=${JSON.stringify(state.user)}; max-age=${60 * 30}; path=/; samesite=strict`;
+        document.cookie = `user=${encodeURIComponent(JSON.stringify(state.user))}; max-age=${60 * 30}; path=/; samesite=strict`;
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;

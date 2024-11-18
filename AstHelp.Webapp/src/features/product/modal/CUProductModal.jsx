@@ -6,7 +6,7 @@ import {
   DialogActions,
   TextField,
   Button,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -23,23 +23,21 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function CUProductModal({ open, onClose, product }) {
   const dispatch = useDispatch();
+  const { sortState } = useSelector((state) => state.product);
   const catalogs = useSelector((state) => state.catalog.catalogs);
   const brands = useSelector((state) => state.brand.brands);
 
   const [formData, setFormData] = useState({
     productId: null,
-    name: '',
-    catalogId: '',
-    brandId: '',
+    name: "",
+    quantity: 0,
+    catalogId: "",
+    brandId: "",
     productAttributes: [],
+    imageFile: null,
   });
 
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    reset,
-  } = useForm({
+  const { handleSubmit, control, setValue, reset } = useForm({
     resolver: yupResolver(productValidationSchema),
     defaultValues: formData,
   });
@@ -55,41 +53,59 @@ export default function CUProductModal({ open, onClose, product }) {
         id: attrValue.attributeId,
         name: attrValue.attribute.name,
         attributeTypeId: attrValue.attribute.attributeTypeId,
-        value: attrValue.valueString || attrValue.valueInt || attrValue.valueNumeric || '',
+        value:
+          attrValue.valueString ||
+          attrValue.valueInt ||
+          attrValue.valueNumeric ||
+          "",
       }));
-  
+
       const newFormData = {
         productId: product.id,
         name: product.name,
+        quantity: product.quantity,
         catalogId: product.catalogId,
         brandId: product.brandId,
         productAttributes,
+        imageFile: null,
       };
-  
       setFormData(newFormData);
+      dispatch(fetchAttributesByCatalogId(product.catalogId)).then(
+        (response) => {
+          const productAttributes = response.payload.map((attr) => ({
+            ...attr,
+            value: "",
+          }));
+          setFormData((prev) => ({ ...prev, productAttributes }));
+        }
+      );
+
       reset(newFormData);
     } else {
       const resetData = {
         productId: null,
-        name: '',
-        catalogId: '',
-        brandId: '',
+        name: "",
+        quantity: 0,
+        catalogId: "",
+        brandId: "",
         productAttributes: [],
+        imageFile: null,
       };
       setFormData(resetData);
       reset(resetData);
     }
-  }, [product, reset, open]);
+  }, [dispatch, product, reset, open]);
 
   const handleCatalogChange = async (event) => {
+    console.log("asdasdasd");
     const catalogId = event.target.value;
     setFormData({ ...formData, catalogId });
-    setValue('catalogId', catalogId);
+    setValue("catalogId", catalogId);
 
     await dispatch(fetchAttributesByCatalogId(catalogId)).then((response) => {
       const productAttributes = response.payload.map((attr) => ({
         ...attr,
-        value: '',
+        value: "",
       }));
       setFormData((prev) => ({ ...prev, productAttributes }));
     });
@@ -102,27 +118,41 @@ export default function CUProductModal({ open, onClose, product }) {
     setValue(`productAttributes.${index}.value`, value);
   };
 
+  const handleImageChange = (event) => {
+    setFormData({ ...formData, imageFile: event.target.files[0] });
+  };
+
   const onSubmit = async (data) => {
-    const payload = {
-      productId: data.productId,
-      name: data.name,
-      catalogId: data.catalogId,
-      brandId: data.brandId,
-      productAttributes: formData.productAttributes.map((attr) => ({
+    const formDataToSend = new FormData();
+    formDataToSend.append("id", data.productId || "");
+    formDataToSend.append("name", data.name);
+    formDataToSend.append("quantity", data.quantity);
+    formDataToSend.append("catalogId", data.catalogId);
+    formDataToSend.append("brandId", data.brandId);
+
+    let attributes = [];
+    formData.productAttributes.forEach((attr) => {
+      attributes.push({
         attributeId: attr.id,
         valueString: attr.attributeTypeId === 1 ? attr.value : null,
         valueInt: attr.attributeTypeId === 2 ? parseInt(attr.value, 10) : null,
-        valueNumeric: attr.attributeTypeId === 3 ? parseFloat(attr.value) : null,
-      })),
-    };
+        valueNumeric:
+          attr.attributeTypeId === 3 ? parseFloat(attr.value) : null,
+      });
+    });
+    formDataToSend.append(`productAttributes`, JSON.stringify(attributes));
 
-    if (product) {
-      await dispatch(updateProduct({ id: product.id, ...payload }));
-    } else {
-      await dispatch(createProduct(payload));
+    if (formData.imageFile) {
+      formDataToSend.append("image", formData.imageFile);
     }
 
-    await dispatch(fetchAllProducts());
+    if (product) {
+      await dispatch(updateProduct(formDataToSend));
+    } else {
+      await dispatch(createProduct(formDataToSend));
+    }
+
+    await dispatch(fetchAllProducts(sortState));
     onClose();
   };
 
@@ -134,7 +164,7 @@ export default function CUProductModal({ open, onClose, product }) {
           : "Добавить оборудование"}
       </DialogTitle>
       <DialogContent>
-      <Controller
+        <Controller
           name="name"
           control={control}
           defaultValue={formData.name}
@@ -146,6 +176,44 @@ export default function CUProductModal({ open, onClose, product }) {
               margin="dense"
               error={!!fieldState.error}
               helperText={fieldState.error ? fieldState.error.message : ""}
+            />
+          )}
+        />
+        <Controller
+          name="quantity"
+          control={control}
+          defaultValue={formData.quantity}
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              label="Количество в наличии"
+              fullWidth
+              type="number"
+              margin="dense"
+              error={!!fieldState.error}
+              helperText={fieldState.error ? fieldState.error.message : ""}
+            />
+          )}
+        />
+        <Controller
+          name="image"
+          control={control}
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              label="Загрузить изображение"
+              type="file"
+              fullWidth
+              margin="dense"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              error={!!fieldState.error}
+              helperText={fieldState.error ? fieldState.error.message : ""}
+              inputProps={{
+                accept: "image/*",
+              }}
+              onChange={handleImageChange}
             />
           )}
         />
