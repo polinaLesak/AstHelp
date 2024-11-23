@@ -1,7 +1,7 @@
 import axiosClient from "../../../app/axiosClient";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { clearCart } from "../../cart/model/cartSlice";
-import { changeOrderStatus } from "../model/orderSlice";
+import { changeOrderStatus, removeProduct } from "../model/orderSlice";
 
 export const fetchAllOrders = createAsyncThunk(
   "orders/fetchAllOrders",
@@ -80,11 +80,39 @@ export const updateOrderStatus = createAsyncThunk(
   }
 );
 
+export const removeProductFromOrder = createAsyncThunk(
+  "orders/removeProductFromOrder",
+  async ({ orderId, productId }, { rejectWithValue, dispatch }) => {
+    try {
+      await axiosClient.put(`/orders/Orders/RemoveProduct`, {}, {
+        params: { orderId, productId },
+      }).then(function() {
+        dispatch(removeProduct(productId))
+      });
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const generateOrderAct = createAsyncThunk(
   "orders/generateOrderAct",
   async (orderId, { rejectWithValue, dispatch }) => {
     try {
       return await axiosClient.get(`/orders/Orders/GenerateAct?orderId=${orderId}`, {
+        responseType: "blob"
+      })
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const generateOrderReport = createAsyncThunk(
+  "orders/generateOrderReport",
+  async (orderId, { rejectWithValue, dispatch }) => {
+    try {
+      return await axiosClient.get(`/orders/Orders/GenerateReport?orderId=${orderId}`, {
         responseType: "blob"
       })
     } catch (error) {

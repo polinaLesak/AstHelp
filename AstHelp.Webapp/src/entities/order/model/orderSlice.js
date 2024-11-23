@@ -6,6 +6,8 @@ import {
   fetchOrdersByManagerId,
   fetchOrdersByUserId,
   generateOrderAct,
+  generateOrderReport,
+  removeProductFromOrder,
   updateOrderStatus
 } from "../api/orderApi";
 
@@ -29,9 +31,21 @@ const orderSlice = createSlice({
     changeOrderStatus(state, status) {
       state.order.status = status.payload;
     },
+    removeProduct(state, productId) {
+      if (!state.order)
+        return;
+    
+      const updatedItems = state.order.items?.filter(item => item.productId !== productId.payload);
+    
+      state.order = {
+        ...state.order,
+        items: updatedItems,
+      };
+    },
   },
   extraReducers: (builder) => {
     handleAsync(builder, generateOrderAct);
+    handleAsync(builder, generateOrderReport);
     handleAsyncActions(builder, fetchOrderById, "order");
     handleAsyncActions(builder, fetchOrdersByUserId, "orders");
     handleAsyncActions(builder, fetchOrdersByManagerId, "orders");
@@ -45,6 +59,11 @@ const orderSlice = createSlice({
       builder,
       updateOrderStatus,
       "Статус заявки успешно изменён"
+    );
+    handleAsyncActionsWithSuccessAlert(
+      builder,
+      removeProductFromOrder,
+      "Продукт успешно удалён из заказа"
     );
   },
 });
@@ -112,5 +131,5 @@ const handleAsyncActionsWithSuccessAlert = (builder, thunk, successText) => {
     });
 };
 
-export const { clearOrderError, clearOrderSuccess, changeOrderStatus } = orderSlice.actions;
+export const { clearOrderError, clearOrderSuccess, changeOrderStatus, removeProduct } = orderSlice.actions;
 export default orderSlice.reducer;

@@ -70,6 +70,18 @@ namespace Orders.Microservice.API.Controllers
             });
         }
 
+        // PUT: api/Orders/RemoveProduct?orderId=&productId=
+        [HttpPut("RemoveProduct")]
+        [Authorize(Roles = "1, 2")]
+        public async Task UpdateOrderStatus(Guid orderId, Guid productId)
+        {
+            await _mediator.Send(new RemoveProductFromOrderCommand
+            {
+                OrderId = orderId,
+                ProductId = productId
+            });
+        }
+
         // Get: api/Orders/GenerateAct?orderId=
         [HttpGet("GenerateAct")]
         [Authorize(Roles = "1")]
@@ -77,6 +89,15 @@ namespace Orders.Microservice.API.Controllers
         {
             var fileBytes = await _mediator.Send(new GenerateOrderActCommand(orderId));
             return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"Act_{orderId}.docx");
+        }
+
+        // Get: api/Orders/GenerateReport?orderId=
+        [HttpGet("GenerateReport")]
+        [Authorize(Roles = "2")]
+        public async Task<FileResult> GenerateReport(Guid orderId)
+        {
+            var fileBytes = await _mediator.Send(new GenerateOrderReportCommand(orderId));
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Report_{orderId}.docx");
         }
     }
 }

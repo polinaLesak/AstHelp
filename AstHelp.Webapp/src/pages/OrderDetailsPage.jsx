@@ -7,6 +7,7 @@ import { Box, Button, Chip, TextField, Typography } from "@mui/material";
 import {
   fetchOrderById,
   generateOrderAct,
+  generateOrderReport,
   updateOrderStatus,
 } from "../entities/order/api/orderApi";
 import OrderTableActions from "../features/order/OrderTableActions";
@@ -115,6 +116,21 @@ export default function OrderDetailsTable() {
       }
     } catch (error) {
       console.error("Ошибка при генерации акта:", error);
+    }
+  };
+
+  const handleGenerateReport = async (orderId) => {
+    try {
+      const result = await dispatch(generateOrderReport(orderId));
+      if (generateOrderReport.fulfilled.match(result)) {
+        const { data, status } = result.payload;
+        
+        if (status === 200) {
+          download(data, `Report_${orderId}.xlsx`, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+      }
+    } catch (error) {
+      console.error("Ошибка при генерации отчёта:", error);
     }
   };
 
@@ -249,6 +265,26 @@ export default function OrderDetailsTable() {
                     onClick={() => handleGenerateAct(orderId)}
                   >
                     Выгрузить акт
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
+          </Grid>
+        </>
+      ) : (
+        <></>
+      )}
+      {user != null && [2].some((num) => user.roles.includes(num)) ? (
+        <>
+          <Grid size={12}>
+            <Box display="flex" p={2}>
+              <Box width="100%">
+                <Box display="flex" justifyContent="end">
+                  <Button
+                    variant="contained"
+                    onClick={() => handleGenerateReport(orderId)}
+                  >
+                    Выгрузить отчёт
                   </Button>
                 </Box>
               </Box>

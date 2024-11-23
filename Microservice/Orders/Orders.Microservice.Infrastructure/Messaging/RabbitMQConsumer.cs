@@ -75,6 +75,24 @@ namespace Orders.Microservice.Infrastructure.Messaging
                         if (deletedEvent != null)
                             await mediator.Publish(deletedEvent);
                         break;
+                    case nameof(UpdateProductEvent):
+                        var updateProductEvent = JsonConvert.DeserializeObject<UpdateProductEvent>(wrapper.Data.ToString());
+                        if (updateProductEvent != null)
+                            await mediator.Publish(updateProductEvent);
+                        break;
+                    case nameof(DeleteProductEvent):
+                        var deleteEvent = JsonConvert.DeserializeObject<DeleteProductEvent>(wrapper.Data.ToString());
+                        if (deleteEvent != null)
+                            await mediator.Publish(deleteEvent);
+                        break;
+                    case nameof(UpdateCatalogEvent):
+                        var updateCatalogEvent = JsonConvert.DeserializeObject<UpdateCatalogEvent>(wrapper.Data.ToString());
+                        if (updateCatalogEvent != null)
+                            await mediator.Publish(updateCatalogEvent);
+                        break;
+                    default:
+                        _logger.LogError($"Нет доступного обработчика сообщение: {JsonConvert.SerializeObject(wrapper, Formatting.Indented)}");
+                        break;
                 }
             }
         }

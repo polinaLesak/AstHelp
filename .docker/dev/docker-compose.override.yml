@@ -36,7 +36,7 @@ services:
             - RabbitMQ__UserName=user
             - RabbitMQ__Password=password
             - RabbitMQ__QueueName=IdentityQueue
-            - RabbitMQ__Exchange=IdentityExchange
+            - RabbitMQ__ExchangeName=IdentityExchange
         ports:
             - "5100:80"
     catalog.microservice.api:

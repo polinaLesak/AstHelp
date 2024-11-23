@@ -7,6 +7,6 @@
         public string UserName { get; set; } = "guest";
         public string Password { get; set; } = "guest";
         public string QueueName { get; set; } = "IdentityQueue";
-        public string IdentityExchangeName { get; set; } = "IdentityExchange";
+        public string ExchangeName { get; set; } = "IdentityExchange";
     }
 }

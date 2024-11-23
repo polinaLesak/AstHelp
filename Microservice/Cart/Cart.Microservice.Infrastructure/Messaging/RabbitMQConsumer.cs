@@ -90,6 +90,9 @@ namespace Cart.Microservice.Infrastructure.Messaging
                         if (updateCatalogEvent != null)
                             await mediator.Publish(updateCatalogEvent);
                         break;
+                    default:
+                        _logger.LogError($"Нет доступного обработчика сообщение: {JsonConvert.SerializeObject(wrapper, Formatting.Indented)}");
+                        break;
                 }
             }
         }

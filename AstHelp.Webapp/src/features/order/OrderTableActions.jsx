@@ -1,30 +1,29 @@
 import React, { useState } from "react";
 import { IconButton, Tooltip } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import DeleteConfirmationModal from "../../shared/components/DeleteConfirmationModal";
-// import { updateOrderItemStatus } from "../../entities/order/api/orderApi";
+import { removeProductFromOrder } from "../../entities/order/api/orderApi";
 
 export default function OrderTableActions({ product, userRoles, isAdmin }) {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.login);
   const [openDelete, setOpenDelete] = useState(false);
 
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
 
-  const handleChangeStatus = async (newStatus) => {
-    // try {
-    //   await dispatch(
-    //     updateOrderItemStatus({
-    //       orderId: product.orderId,
-    //       productId: product.id,
-    //       status: newStatus,
-    //     })
-    //   );
-    // } catch (error) {
-    //   console.error("Ошибка при обновлении статуса:", error);
-    // }
+  const handleDeleteProduct = async () => {
+    try {
+      await dispatch(
+        removeProductFromOrder({
+          orderId: product.orderId,
+          productId: product.productId
+        })
+      );
+      handleCloseDelete();
+    } catch (error) {
+      console.error("Ошибка при удалении продукта из корзины:", error);
+    }
   };
 
   return (
@@ -40,8 +39,8 @@ export default function OrderTableActions({ product, userRoles, isAdmin }) {
       <DeleteConfirmationModal
         open={openDelete}
         onClose={handleCloseDelete}
-        onConfirm={() => handleChangeStatus("Canceled")}
-        message="Вы уверены, что хотите отменить данный товар?"
+        onConfirm={() => handleDeleteProduct()}
+        message="Вы уверены, что хотите удалить данный товар?"
       />
     </>
   );

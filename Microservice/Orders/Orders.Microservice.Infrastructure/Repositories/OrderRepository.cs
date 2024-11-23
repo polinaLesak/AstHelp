@@ -19,7 +19,7 @@ namespace Orders.Microservice.Infrastructure.Repositories
 
         public async Task<Order> GetByIdAsync(Guid id)
         {
-            return await _context.Orders.AsNoTracking()
+            return await _context.Orders
                 .Include(x => x.Items)
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
