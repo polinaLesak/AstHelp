@@ -16,8 +16,8 @@ namespace Orders.Microservice.API.Controllers
         public OrdersController(IMediator mediator)
         {
             _mediator = mediator;
-        } 
-        
+        }
+
         // GET: api/Orders
         [HttpGet]
         [Authorize(Roles = "1")]
@@ -97,7 +97,16 @@ namespace Orders.Microservice.API.Controllers
         public async Task<FileResult> GenerateReport(Guid orderId)
         {
             var fileBytes = await _mediator.Send(new GenerateOrderReportCommand(orderId));
-            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Report_{orderId}.docx");
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Report_{orderId}.xlsx");
+        }
+
+        // Get: api/Orders/GenerateAllReport
+        [HttpGet("GenerateAllReport")]
+        [Authorize(Roles = "1, 2")]
+        public async Task<FileResult> GenerateAllReport()
+        {
+            var fileBytes = await _mediator.Send(new GenerateAllOrdersReportCommand());
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Report_All.xlsx");
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Orders.Microservice.Application.EventsHandlers
             var cartItems = await _unitOfWork.OrderItems.GetAllOrderItemsByProductId(product.ProductId);
             foreach (var item in cartItems)
             {
-                if(item.Quantity > product.Quantity)
+                if (item.Quantity > product.Quantity)
                 {
                     _unitOfWork.OrderItems.Remove(item);
 
@@ -36,7 +36,8 @@ namespace Orders.Microservice.Application.EventsHandlers
                             $"из заказа из-за отсутствия его в нужном количестве",
                         Type = NotificationType.Warning
                     });
-                } else
+                }
+                else
                 {
                     item.ProductName = product.ProductName;
                     item.CatalogId = product.CatalogId;

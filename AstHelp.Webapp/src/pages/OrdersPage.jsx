@@ -2,11 +2,18 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
+import Grid from "@mui/material/Grid2";
 import { ruRU } from "@mui/x-data-grid/locales";
 import { Box, Button, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { fetchAllOrders, fetchOrdersByManagerId, fetchOrdersByUserId } from "../entities/order/api/orderApi";
+import {
+  fetchAllOrders,
+  fetchOrdersByManagerId,
+  fetchOrdersByUserId,
+  generateAllOrdersReport,
+} from "../entities/order/api/orderApi";
 import OrderStatusChip from "../features/order/OrderStatusChip";
+import download from "downloadjs";
 
 const getChipStatus = (statusId) => {
   switch (statusId) {
@@ -25,7 +32,7 @@ const getChipStatus = (statusId) => {
   }
 };
 
-export default function OrdersPage({pageType}) {
+export default function OrdersPage({ pageType }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.login);
@@ -33,12 +40,9 @@ export default function OrdersPage({pageType}) {
 
   useEffect(() => {
     if (user) {
-      if(pageType === "Мои заказы")
-        dispatch(fetchOrdersByUserId(user.id));
-      else if(pageType === "Заявки")
-        dispatch(fetchOrdersByManagerId(user.id));
-      else 
-        dispatch(fetchAllOrders());
+      if (pageType === "Мои заказы") dispatch(fetchOrdersByUserId(user.id));
+      else if (pageType === "Заявки") dispatch(fetchOrdersByManagerId(user.id));
+      else dispatch(fetchAllOrders());
     }
   }, [dispatch, user, pageType]);
 
@@ -46,8 +50,24 @@ export default function OrdersPage({pageType}) {
     navigate(`/orders/${params.id}`);
   };
 
+  const handleGenerateReport = async () => {
+    try {
+      const result = await dispatch(generateAllOrdersReport());
+      if (generateAllOrdersReport.fulfilled.match(result)) {
+        const { data, status } = result.payload;
+        
+        if (status === 200) {
+          download(data, `Report_All.xlsx`, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+      }
+    } catch (error) {
+      console.error("Ошибка при генерации отчёта:", error);
+    }
+  };
+
   const columns = [
-    { field: "№",
+    {
+      field: "№",
       headerName: "№",
       renderCell: (params) =>
         params.api.getRowIndexRelativeToVisibleRows(params.id) + 1,
@@ -58,10 +78,13 @@ export default function OrdersPage({pageType}) {
     { field: "managerFullname", headerName: "ФИО менеджера", flex: 1 },
     { field: "managerPosition", headerName: "Должность менеджера", flex: 1 },
     { field: "reasonForIssue", headerName: "Причина выдачи", flex: 1 },
-    { field: "createdAt", headerName: "Дата создания", flex: 1, 
-      renderCell: (params) => (
-        moment(params.row.createdAt).format("DD.MM.YYYY HH:mm")
-    ), },
+    {
+      field: "createdAt",
+      headerName: "Дата создания",
+      flex: 1,
+      renderCell: (params) =>
+        moment(params.row.createdAt).format("DD.MM.YYYY HH:mm"),
+    },
     {
       field: "status",
       headerName: "Статус",
@@ -87,7 +110,7 @@ export default function OrdersPage({pageType}) {
           >
             Подробнее
           </Button>
-        )
+        );
       },
       align: "center",
     },
@@ -95,9 +118,36 @@ export default function OrdersPage({pageType}) {
 
   return (
     <Box p={2}>
-      <Typography variant="h4" gutterBottom>
-        { pageType }
-      </Typography>
+      <Grid size={12}>
+        <Box
+          width="100%"
+          mt={2}
+          mb={2}
+          display="flex"
+          justifyContent="space-between"
+        >
+          <Box display="flex" alignItems="center">
+            <Typography variant="h4" gutterBottom>
+              {pageType}
+            </Typography>
+          </Box>
+          <Box display="flex" alignItems="center">
+            {user != null && [1, 2].some((num) => user.roles.includes(num)) ? (
+              <>
+                <Button
+                  variant="contained"
+                  sx={{ ml: 2 }}
+                  onClick={() => handleGenerateReport()}
+                >
+                  Отчёт
+                </Button>
+              </>
+            ) : (
+              <></>
+            )}
+          </Box>
+        </Box>
+      </Grid>
       <DataGrid
         rows={orders}
         columns={columns}

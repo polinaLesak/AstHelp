@@ -5,6 +5,7 @@ import {
   fetchOrderById,
   fetchOrdersByManagerId,
   fetchOrdersByUserId,
+  generateAllOrdersReport,
   generateOrderAct,
   generateOrderReport,
   removeProductFromOrder,
@@ -46,6 +47,7 @@ const orderSlice = createSlice({
   extraReducers: (builder) => {
     handleAsync(builder, generateOrderAct);
     handleAsync(builder, generateOrderReport);
+    handleAsync(builder, generateAllOrdersReport);
     handleAsyncActions(builder, fetchOrderById, "order");
     handleAsyncActions(builder, fetchOrdersByUserId, "orders");
     handleAsyncActions(builder, fetchOrdersByManagerId, "orders");

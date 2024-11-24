@@ -11,17 +11,19 @@ import {
 } from "../../entities/cart/api/cartApi";
 import { useState } from "react";
 import config from "../../config";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({ product, onEdit, onDelete }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.login);
   const [open, setOpen] = useState(false);
   const [availableQuantity, setAvailableQuantity] = useState(1);
+  const navigate = useNavigate();
 
   const handleOpenModal = (quantity) => {
-    setAvailableQuantity(quantity)
+    setAvailableQuantity(quantity);
     setOpen(true);
-  }
+  };
   const handleCloseModal = () => setOpen(false);
 
   const handleSubmitQuantity = async (quantity) => {
@@ -32,6 +34,10 @@ export default function ProductCard({ product, onEdit, onDelete }) {
     };
     await dispatch(addProductToUserCart(orderData));
     await dispatch(fetchCartProductsCountByUserId(user.id));
+  };
+
+  const handleViewDetails = (productId) => {
+    navigate(`/products/${productId}`);
   };
 
   return (
@@ -98,7 +104,7 @@ export default function ProductCard({ product, onEdit, onDelete }) {
             ) : (
               <></>
             )}
-            {[3].some((num) => user.roles.includes(num)) ? (
+            {[2, 3].some((num) => user.roles.includes(num)) ? (
               <Button
                 size="small"
                 variant="contained"
@@ -110,8 +116,24 @@ export default function ProductCard({ product, onEdit, onDelete }) {
             ) : (
               <></>
             )}
+
+            <Button
+              size="small"
+              variant="contained"
+              color="primary"
+              onClick={() => handleViewDetails(product.id)}
+            >
+              Подробнее
+            </Button>
           </Grid>
-          <Grid size={2}>
+          <Grid
+            size={2}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <Box
               component="img"
               sx={{

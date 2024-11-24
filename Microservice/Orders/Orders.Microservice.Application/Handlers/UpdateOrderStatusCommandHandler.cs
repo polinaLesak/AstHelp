@@ -15,7 +15,7 @@ namespace Orders.Microservice.Application.Handlers
         private readonly RabbitMQProducer _rabbitMQProducer;
 
         public UpdateOrderStatusCommandHandler(
-            IUnitOfWork unitOfWork, 
+            IUnitOfWork unitOfWork,
             RabbitMQProducer rabbitMQProducer)
         {
             _unitOfWork = unitOfWork;
@@ -41,7 +41,8 @@ namespace Orders.Microservice.Application.Handlers
                     Message = $"Ваш заказ от {order.CreatedAt} готов к выдаче.",
                     Type = NotificationType.Success
                 });
-            } else if (order.Status == OrderStatus.Canceled)
+            }
+            else if (order.Status == OrderStatus.Canceled)
             {
                 _rabbitMQProducer.Publish(new AddNotificationEvent
                 {
@@ -50,7 +51,8 @@ namespace Orders.Microservice.Application.Handlers
                     Message = $"Обратите внимание! Ваш заказ от {order.CreatedAt} отклонён.",
                     Type = NotificationType.Error
                 });
-            } else
+            }
+            else
             {
                 _rabbitMQProducer.Publish(new AddNotificationEvent
                 {

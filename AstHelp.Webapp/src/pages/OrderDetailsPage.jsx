@@ -261,7 +261,6 @@ export default function OrderDetailsTable() {
                 <Box display="flex" justifyContent="end">
                   <Button
                     variant="contained"
-                    disabled={order?.status !== 3}
                     onClick={() => handleGenerateAct(orderId)}
                   >
                     Выгрузить акт

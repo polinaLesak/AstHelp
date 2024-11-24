@@ -4,12 +4,19 @@ import { DataGrid } from "@mui/x-data-grid";
 import { ruRU } from "@mui/x-data-grid/locales";
 import { useDispatch, useSelector } from "react-redux";
 import CartTableActions from "./CartTableActions";
+import { fetchCartByUserId } from "../../entities/cart/api/cartApi";
 import {
-  fetchCartByUserId,
-} from "../../entities/cart/api/cartApi";
-import { Box, Button, TextField } from "@mui/material";
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import * as yup from "yup";
 import { createOrder } from "../../entities/order/api/orderApi";
+import { fetchAllUsers } from "../../entities/user/api/userApi";
 
 const validationSchema = yup.object({
   reasonForIssue: yup.string().required("Причина выдачи обязательна"),
@@ -59,10 +66,21 @@ export default function CartTable() {
   const [error, setError] = useState(null);
   const cart = useSelector((state) => state.cart.cart);
   const { user } = useSelector((state) => state.login);
+  const users = useSelector((state) => state.user.users);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
     dispatch(fetchCartByUserId(user?.id ?? 0));
+    if ([2].some((num) => user.roles.includes(num))) {
+      dispatch(fetchAllUsers());
+    }
   }, [dispatch, user]);
+
+  useEffect(() => {
+    if ([2].some((num) => user.roles.includes(num)) && users) {
+      setSelectedUserId(users[0]?.id || "")
+    }
+  }, [user.roles, users]);
 
   const handleSendOrder = async () => {
     try {
@@ -72,12 +90,14 @@ export default function CartTable() {
         productId: item.productId,
         quantity: item.quantity,
       }));
-
       const orderData = {
         customerId: user.id,
         items: orderItems,
         reasonForIssue: reasonForIssue.trim(),
       };
+      if ([2].some((num) => user.roles.includes(num)) && users) {
+        orderData.customerId = selectedUserId
+      }
       await dispatch(createOrder(orderData));
       setReasonForIssue("");
     } catch (err) {
@@ -113,6 +133,39 @@ export default function CartTable() {
           </Box>
         </Box>
       </Grid>
+      {[2].some((num) => user.roles.includes(num)) && (
+        <Grid size={12} m={2}>
+          <FormControl fullWidth style={{ overflow: "visible" }}>
+            <InputLabel id="user-select-label">
+              Выберите пользователя
+            </InputLabel>
+            <Select
+              labelId="user-select-label"
+              value={selectedUserId || ""}
+              onChange={(e) => setSelectedUserId(e.target.value)}
+              fullWidth
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 48 * 4.5,
+                    width: "auto",
+                  },
+                },
+              }}
+            >
+              {users?.map((u) => (
+                <MenuItem
+                  key={u.id}
+                  value={u.id}
+                  style={{ whiteSpace: "normal" }}
+                >
+                  {u.profile?.fullname} ({u.username})
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+      )}
       <Grid size={12} m={2}>
         <TextField
           label="Введите причину выдачи"

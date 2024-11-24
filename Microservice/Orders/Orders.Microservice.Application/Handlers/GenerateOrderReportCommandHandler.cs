@@ -1,9 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Orders.Microservice.Application.Commands;
 using Orders.Microservice.Application.Excel;
 using Orders.Microservice.Application.Exceptions;
-using Orders.Microservice.Application.Service;
 using Orders.Microservice.Domain.Repositories;
 
 namespace Orders.Microservice.Application.Handlers

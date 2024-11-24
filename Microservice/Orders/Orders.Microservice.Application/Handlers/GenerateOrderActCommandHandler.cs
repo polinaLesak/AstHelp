@@ -1,13 +1,10 @@
-﻿using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Orders.Microservice.Application.Commands;
 using Orders.Microservice.Application.DTOs;
 using Orders.Microservice.Application.Exceptions;
 using Orders.Microservice.Application.Service;
 using Orders.Microservice.Application.Word;
-using Orders.Microservice.Domain.Entities;
 using Orders.Microservice.Domain.Repositories;
 using System.Security.Claims;
 
@@ -21,9 +18,9 @@ namespace Orders.Microservice.Application.Handlers
         private readonly IdentityService _identityService;
 
         public GenerateOrderActCommandHandler(
-            IUnitOfWork unitOfWork, 
-            IFileService fileService, 
-            IHttpContextAccessor httpContextAccessor, 
+            IUnitOfWork unitOfWork,
+            IFileService fileService,
+            IHttpContextAccessor httpContextAccessor,
             IdentityService identityService)
         {
             _unitOfWork = unitOfWork;

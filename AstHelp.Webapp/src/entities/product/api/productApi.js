@@ -29,6 +29,18 @@ export const fetchAllProducts = createAsyncThunk(
   }
 );
 
+export const fetchProductById = createAsyncThunk(
+  "product/fetchProductById",
+  async (productId, thunkAPI) => {
+    try {
+      const response = await axiosClient.get(`/catalog/Product/${productId}`);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const createProduct = createAsyncThunk(
   "product/createProduct",
   async (data, thunkAPI) => {

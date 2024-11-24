@@ -15,7 +15,7 @@ namespace Orders.Microservice.Application.Handlers
         private readonly RabbitMQProducer _rabbitMQProducer;
 
         public RemoveProductFromOrderCommandHandler(
-            IUnitOfWork unitOfWork, 
+            IUnitOfWork unitOfWork,
             RabbitMQProducer rabbitMQProducer)
         {
             _unitOfWork = unitOfWork;
@@ -27,7 +27,7 @@ namespace Orders.Microservice.Application.Handlers
             var order = await _unitOfWork.Orders.GetByIdAsync(request.OrderId)
                 ?? throw new NotFoundException($"Заявка с ID \"{request.OrderId}\" не найдена.");
 
-            OrderItem? orderItem = order.Items.Where(x => x.ProductId == request.ProductId).FirstOrDefault() 
+            OrderItem? orderItem = order.Items.Where(x => x.ProductId == request.ProductId).FirstOrDefault()
                 ?? throw new NotFoundException($"Продукт заказа с ID \"{request.ProductId}\" не найден.");
             var notification = new AddNotificationEvent
             {

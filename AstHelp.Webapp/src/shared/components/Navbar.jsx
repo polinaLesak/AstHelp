@@ -40,7 +40,8 @@ function Navbar() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   useEffect(() => {
-    if (user && isAuthenticated) dispatch(fetchCartProductsCountByUserId(user.id));
+    if (user && isAuthenticated)
+      dispatch(fetchCartProductsCountByUserId(user.id));
   }, [dispatch, isAuthenticated, user]);
 
   const handleOpenNavMenu = (event) => {
@@ -208,15 +209,20 @@ function Navbar() {
           </Box>
           {isAuthenticated ? (
             <>
-              <IconButton
-                component={RouterLink}
-                to="/cart"
-                sx={{ color: "inherit" }}
-              >
-                <Badge badgeContent={cartItemCount} color="error">
-                  <ShoppingCartIcon />
-                </Badge>
-              </IconButton>
+              {user != null &&
+              [2, 3].some((num) => user.roles.includes(num)) ? (
+                <IconButton
+                  component={RouterLink}
+                  to="/cart"
+                  sx={{ color: "inherit" }}
+                >
+                  <Badge badgeContent={cartItemCount} color="error">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </IconButton>
+              ) : (
+                <></>
+              )}
               <NotificationsPopup />
               <Box sx={{ flexGrow: 0 }}>
                 <Typography

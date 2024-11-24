@@ -33,7 +33,7 @@ namespace Orders.Microservice.Application.Word
                     {
                         var row = new TableRow();
                         AppendTableCell(row, index.ToString());
-                        AppendTableCell(row, $"{item.CatalogName}, {item.ProductName}" );
+                        AppendTableCell(row, $"{item.CatalogName}, {item.ProductName}");
                         AppendTableCell(row, "шт.");
                         AppendTableCell(row, item.Quantity.ToString());
                         table.Append(row);
@@ -44,7 +44,7 @@ namespace Orders.Microservice.Application.Word
                 document.Save();
             }
 
-            return await File.ReadAllBytesAsync(outputPath);            
+            return await File.ReadAllBytesAsync(outputPath);
         }
 
         private static void AppendTableCell(TableRow row, string value)

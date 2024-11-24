@@ -120,3 +120,16 @@ export const generateOrderReport = createAsyncThunk(
     }
   }
 );
+
+export const generateAllOrdersReport = createAsyncThunk(
+  "orders/generateAllOrdersReport",
+  async (thunkAPI) => {
+    try {
+      return await axiosClient.get(`/orders/Orders/GenerateAllReport`, {
+        responseType: "blob"
+      })
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);

@@ -3,12 +3,14 @@ import {
   createProduct,
   deleteProduct,
   fetchAllProducts,
+  fetchProductById,
   updateProduct,
 } from "../api/productApi";
 
 const productSlice = createSlice({
   name: "product",
   initialState: {
+    product: null,
     products: null,
     sortOptions: [
       { sortingField: "createdAt", sortingDirection: "Asc", label: "По дате создания (возр.)" },
@@ -33,6 +35,7 @@ const productSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    handleAsyncActions(builder, fetchProductById, "product");
     handleAsyncActions(builder, fetchAllProducts, "products");
     handleAsyncActionsWithSuccessAlert(
       builder,
