@@ -46,7 +46,7 @@ namespace Catalog.Microservice.Infrastructure.Repositories
             return await _context.Products
                 .Include(x => x.Brand)
                 .Include(x => x.Catalog)
-                .Include(x => x.AttributeValues)
+                .Include(x => x.AttributeValues.Take(5))
                     .ThenInclude(x => x.Attribute)
                 .SortByField(sortingRequest)
                 .ToListAsync();

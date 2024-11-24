@@ -1,7 +1,5 @@
 ﻿using Cart.Microservice.Application.Events;
 using Cart.Microservice.Domain.Repositories;
-using Cart.Microservice.Infrastructure.Messaging;
-using Cart.Microservice.Infrastructure.Messaging.Events;
 using MediatR;
 
 namespace Notificationt.Microservice.Application.EventsHandlers

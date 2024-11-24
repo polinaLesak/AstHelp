@@ -16,8 +16,8 @@ namespace Catalog.Microservice.Application.Handlers
         private readonly RabbitMQProducer _rabbitMQProducer;
 
         public UpdateProductCommandHandler(
-            IUnitOfWork unitOfWork, 
-            IFileService fileService, 
+            IUnitOfWork unitOfWork,
+            IFileService fileService,
             RabbitMQProducer rabbitMQProducer)
         {
             _unitOfWork = unitOfWork;
@@ -99,7 +99,7 @@ namespace Catalog.Microservice.Application.Handlers
 
             _unitOfWork.Products.Update(product);
 
-            
+
             _rabbitMQProducer.Publish(new UpdateProductEvent
             {
                 ProductId = product.Id,

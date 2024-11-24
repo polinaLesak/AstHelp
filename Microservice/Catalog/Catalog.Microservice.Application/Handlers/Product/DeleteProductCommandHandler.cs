@@ -15,8 +15,8 @@ namespace Catalog.Microservice.Application.Handlers
         private readonly RabbitMQProducer _rabbitMQProducer;
 
         public DeleteProductCommandHandler(
-            IUnitOfWork unitOfWork, 
-            IFileService fileService, 
+            IUnitOfWork unitOfWork,
+            IFileService fileService,
             RabbitMQProducer rabbitMQProducer)
         {
             _unitOfWork = unitOfWork;

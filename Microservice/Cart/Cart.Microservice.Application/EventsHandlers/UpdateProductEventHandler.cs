@@ -22,7 +22,7 @@ namespace Notificationt.Microservice.Application.EventsHandlers
             var cartItems = await _unitOfWork.CartItems.GetAllCartItemsByProductId(product.ProductId);
             foreach (var item in cartItems)
             {
-                if(item.Quantity > product.Quantity)
+                if (item.Quantity > product.Quantity)
                 {
                     _unitOfWork.CartItems.Remove(item);
 
@@ -36,7 +36,8 @@ namespace Notificationt.Microservice.Application.EventsHandlers
                             $"из корзины из-за отсутствия его в нужном количестве",
                         Type = NotificationType.Warning
                     });
-                } else
+                }
+                else
                 {
                     item.ProductName = product.ProductName;
                     item.CatalogId = product.CatalogId;

@@ -19,7 +19,7 @@ namespace Identity.Microservice.API.Controllers
 
         // Get: api/User/AllUsers
         [HttpGet("AllUsers")]
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "1, 2")]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _mediator.Send(new GetAllUsersQuery()));

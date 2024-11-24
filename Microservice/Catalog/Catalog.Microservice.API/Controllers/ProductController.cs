@@ -2,7 +2,6 @@
 using Catalog.Microservice.Application.DTOs.Request;
 using Catalog.Microservice.Application.Queries;
 using Catalog.Microservice.Domain.Entities;
-using Catalog.Microservice.Domain.Models.Sorting;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

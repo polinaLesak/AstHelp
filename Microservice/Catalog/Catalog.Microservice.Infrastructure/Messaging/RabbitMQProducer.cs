@@ -15,8 +15,8 @@ namespace Catalog.Microservice.Infrastructure.Messaging
         private readonly ILogger<RabbitMQProducer> _logger;
 
         public RabbitMQProducer(
-            IModel channel, 
-            IOptions<RabbitMQOptions> options, 
+            IModel channel,
+            IOptions<RabbitMQOptions> options,
             ILogger<RabbitMQProducer> logger)
         {
             _channel = channel;

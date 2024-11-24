@@ -9,13 +9,17 @@ namespace Cart.Microservice.Application.Service
         private readonly HttpClient _httpClient;
         private readonly MachineTokenService _machineTokenService;
 
+        public CatalogService()
+        {
+        }
+
         public CatalogService(HttpClient httpClient, MachineTokenService machineTokenService)
         {
             _httpClient = httpClient;
             _machineTokenService = machineTokenService;
         }
 
-        public async Task<ProductInfoDto> GetProductInfoAsync(Guid productId)
+        public virtual async Task<ProductInfoDto> GetProductInfoAsync(Guid productId)
         {
             var token = await _machineTokenService.GetTokenAsync();
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
