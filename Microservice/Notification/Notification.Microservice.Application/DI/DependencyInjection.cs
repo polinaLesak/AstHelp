@@ -5,19 +5,19 @@ using Notification.Microservice.Domain.Repositories;
 using Notification.Microservice.Infrastructure.Persistence;
 using Notification.Microservice.Infrastructure.Repositories;
 
-namespace Notification.Microservice.Application.DI
+namespace Notification.Microservice.Application.DI;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services,
+        IConfiguration configuration)
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddDbContext<EFDBContext>(options =>
-                options.UseNpgsql(configuration["ConnectionStrings:DefaultConnection"]));
+        services.AddDbContext<EFDBContext>(options =>
+            options.UseNpgsql(configuration["ConnectionStrings:DefaultConnection"]));
 
-            services.AddScoped<INotificationRepository, NotificationRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<INotificationRepository, NotificationRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            return services;
-        }
+        return services;
     }
 }
