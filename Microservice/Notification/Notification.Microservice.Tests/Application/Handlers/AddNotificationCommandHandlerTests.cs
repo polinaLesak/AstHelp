@@ -35,8 +35,10 @@ public class AddNotificationCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         Assert.NotNull(result);
+        Assert.NotEqual(DateTime.MinValue, result.Timestamp);
         Assert.Equal(command.UserId, result.UserId);
         Assert.Equal(command.Message, result.Message);
+        Assert.Equal(command.Type, result.Type);
         _unitOfWorkMock.Verify(x => x.CommitAsync(), Times.Once);
     }
 }

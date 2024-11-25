@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Notification.Microservice.Domain.Entities;
 
-namespace Notification.Microservice.Application.Events
+namespace Notification.Microservice.Infrastructure.Messaging.Events
 {
     public class AddNotificationEvent : INotification
     {

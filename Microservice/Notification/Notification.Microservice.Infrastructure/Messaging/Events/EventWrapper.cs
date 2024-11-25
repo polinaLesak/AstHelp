@@ -1,4 +1,4 @@
-﻿namespace Notification.Microservice.Infrastructure.Events
+﻿namespace Notification.Microservice.Infrastructure.Messaging.Events
 {
     public class EventWrapper<T>
     {

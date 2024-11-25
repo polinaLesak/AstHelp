@@ -4,12 +4,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Notification.Microservice.Application.Events;
-using Notification.Microservice.Infrastructure.Events;
 using Notification.Microservice.Infrastructure.Messaging.Configurations;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
+using Notification.Microservice.Infrastructure.Messaging.Events;
 
 namespace Notification.Microservice.Infrastructure.Messaging
 {

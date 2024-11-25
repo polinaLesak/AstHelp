@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Notification.Microservice.Application.Events
+namespace Notification.Microservice.Infrastructure.Messaging.Events
 {
     public class UserDeletedEvent : INotification
     {
