@@ -1,210 +1,116 @@
-version: '3.4'
-
 services:
     rabbitmq:
-        image: rabbitmq:3-management
         container_name: rabbitmq
-        environment:
-            RABBITMQ_DEFAULT_USER: user
-            RABBITMQ_DEFAULT_PASS: password
-            RABBITMQ_DEFAULT_VHOST: /
+        build: 
+            context: ./rabbitmq_config
+            dockerfile: Dockerfile
         volumes:
             - rabbitmq_data:/var/lib/rabbitmq
-        ports:
-            - "5672:5672"
-            - "15672:15672"
 
     identity.microservice.db:
         container_name: identity.microservice.db
         image: postgres:17.0-alpine3.20
-        restart: unless-stopped
-        environment:
-            POSTGRES_DB: "ast-help-identity"
-            POSTGRES_USER: "postgres"
-            POSTGRES_PASSWORD: "1234"
+        restart: on-failure
         volumes:
             - identity.microservice.db:/var/lib/postgresql/data
-        ports:
-            - "5400:5432"
     catalog.microservice.db:
         container_name: catalog.microservice.db
         image: postgres:17.0-alpine3.20
-        restart: unless-stopped
-        environment:
-            POSTGRES_DB: "ast-help-catalog"
-            POSTGRES_USER: "postgres"
-            POSTGRES_PASSWORD: "1234"
+        restart: on-failure
         volumes:
             - catalog.microservice.db:/var/lib/postgresql/data
-        ports:
-            - "5401:5432"
     cart.microservice.db:
         container_name: cart.microservice.db
         image: postgres:17.0-alpine3.20
-        restart: unless-stopped
-        environment:
-            POSTGRES_DB: "ast-help-cart"
-            POSTGRES_USER: "postgres"
-            POSTGRES_PASSWORD: "1234"
+        restart: on-failure
         volumes:
             - cart.microservice.db:/var/lib/postgresql/data
-        ports:
-            - "5402:5432"
     orders.microservice.db:
         container_name: orders.microservice.db
         image: postgres:17.0-alpine3.20
-        restart: unless-stopped
-        environment:
-            POSTGRES_DB: "ast-help-orders"
-            POSTGRES_USER: "postgres"
-            POSTGRES_PASSWORD: "1234"
+        restart: on-failure
         volumes:
             - orders.microservice.db:/var/lib/postgresql/data
-        ports:
-            - "5403:5432"
     notification.microservice.db:
         container_name: notification.microservice.db
         image: postgres:17.0-alpine3.20
-        restart: unless-stopped
-        environment:
-            POSTGRES_DB: "ast-help-notification"
-            POSTGRES_USER: "postgres"
-            POSTGRES_PASSWORD: "1234"
+        restart: on-failure
         volumes:
             - notification.microservice.db:/var/lib/postgresql/data
-        ports:
-            - "5404:5432"
 
     identity.microservice.api:
         image: identity.microservice.api
         container_name: identity.microservice.api
-        restart: unless-stopped
+        restart: on-failure
         build:
             context: ../../Microservice/Identity
-            dockerfile: ./Dockerfile
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Production
-            - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=identity.microservice.db;Port=5432;Database=ast-help-identity;User Id=postgres;Password=1234
-            - RABBITMQ_HOST=rabbitmq
-            - RABBITMQ_PORT=5672
-            - RABBITMQ_USER=user
-            - RABBITMQ_PASSWORD=password
-        ports:
-            - "5100:80"
+            dockerfile: ./Identity.Microservice.API/Dockerfile
         depends_on:
             - identity.microservice.db
+            - rabbitmq
     catalog.microservice.api:
         image: catalog.microservice.api
         container_name: catalog.microservice.api
-        restart: unless-stopped
+        restart: on-failure
         build:
             context: ../../Microservice/Catalog
-            dockerfile: ./Dockerfile
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Production
-            - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=catalog.microservice.db;Port=5432;Database=ast-help-catalog;User Id=postgres;Password=1234
-            - RABBITMQ_HOST=rabbitmq
-            - RABBITMQ_PORT=5672
-            - RABBITMQ_USER=user
-            - RABBITMQ_PASSWORD=password
-        ports:
-            - "5101:80"
+            dockerfile: ./Catalog.Microservice.API/Dockerfile
         depends_on:
             - catalog.microservice.db
+            - rabbitmq
     cart.microservice.api:
         image: cart.microservice.api
         container_name: cart.microservice.api
-        restart: unless-stopped
+        restart: on-failure
         build:
             context: ../../Microservice/Cart
-            dockerfile: ./Dockerfile
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Production
-            - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=cart.microservice.db;Port=5432;Database=ast-help-cart;User Id=postgres;Password=1234
-            - RABBITMQ_HOST=rabbitmq
-            - RABBITMQ_PORT=5672
-            - RABBITMQ_USER=user
-            - RABBITMQ_PASSWORD=password
-        ports:
-            - "5102:80"
+            dockerfile: ./Cart.Microservice.API/Dockerfile
         depends_on:
             - cart.microservice.db
+            - rabbitmq
     orders.microservice.api:
         image: orders.microservice.api
         container_name: orders.microservice.api
-        restart: unless-stopped
+        restart: on-failure
         build:
             context: ../../Microservice/Orders
-            dockerfile: ./Dockerfile
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Production
-            - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=orders.microservice.db;Port=5432;Database=ast-help-orders;User Id=postgres;Password=1234
-            - RABBITMQ_HOST=rabbitmq
-            - RABBITMQ_PORT=5672
-            - RABBITMQ_USER=user
-            - RABBITMQ_PASSWORD=password
-        ports:
-            - "5103:80"
+            dockerfile: ./Orders.Microservice.API/Dockerfile
         depends_on:
             - orders.microservice.db
+            - rabbitmq
     notification.microservice.api:
         image: notification.microservice.api
         container_name: notification.microservice.api
-        restart: unless-stopped
+        restart: on-failure
         build:
             context: ../../Microservice/Notification
-            dockerfile: ./Dockerfile
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Production
-            - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=notification.microservice.db;Port=5432;Database=ast-help-notification;User Id=postgres;Password=1234
-            - RABBITMQ_HOST=rabbitmq
-            - RABBITMQ_PORT=5672
-            - RABBITMQ_USER=user
-            - RABBITMQ_PASSWORD=password
-        ports:
-            - "5103:80"
+            dockerfile: ./Notification.Microservice.API/Dockerfile
         depends_on:
             - notification.microservice.db
+            - rabbitmq
 
     asthelp.gateway:
         image: asthelp.gateway
         container_name: asthelp.gateway
-        restart: unless-stopped
+        restart: on-failure
         build:
             context: ../../Gateway.WebApi
             dockerfile: ./Dockerfile
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Production
-            - ASPNETCORE_URLS=http://+:5000
-        ports:
-            - "5000:80"
         depends_on:
             - identity.microservice.api
+            - catalog.microservice.api
+            - cart.microservice.api
+            - orders.microservice.api
+            - notification.microservice.api
 
-    astHelp.webapp:
+    asthelp.webapp:
+        image: asthelp.webapp
+        container_name: asthelp.webapp
         build:
-            context: ../../Gateway.WebApi
+            context: ../../AstHelp.Webapp
             dockerfile: ./Dockerfile
-        environment:
-            - API_URL=http://asthelp.gateway/api
-        ports:
-            - "3000:80"
         depends_on:
             - asthelp.gateway
-
-    nginx:
-        image: nginx:alpine
-        ports:
-            - "80:80"
-        volumes:
-            - ./nginx.conf:/etc/nginx/nginx.conf
-        depends_on:
-            - astHelp.webapp
 
 volumes:
     rabbitmq_data:

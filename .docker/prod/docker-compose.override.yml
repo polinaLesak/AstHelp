@@ -1,36 +1,50 @@
-version: '3.4'
-
 services:
     rabbitmq:
         ports:
             - "5672:5672"
             - "15672:15672"
 
-    postgres.db:
+    identity.microservice.db:
         environment:
+            POSTGRES_DB: "ast_help_identity"
             POSTGRES_USER: "postgres"
             POSTGRES_PASSWORD: "1234"
         ports:
             - "5400:5432"
-        command: >
-            bash -c "
-                docker-entrypoint.sh postgres & 
-                until pg_isready -h localhost -U postgres; do 
-                    echo waiting for postgres; 
-                    sleep 2; 
-                done; 
-                psql -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'ast_help_identity'\" | grep -q 1 || psql -U postgres -c 'CREATE DATABASE ast_help_identity;' &&
-                psql -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'ast_help_catalog'\" | grep -q 1 || psql -U postgres -c 'CREATE DATABASE ast_help_catalog;' &&
-                psql -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'ast_help_cart'\" | grep -q 1 || psql -U postgres -c 'CREATE DATABASE ast_help_cart;' &&
-                psql -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'ast_help_orders'\" | grep -q 1 || psql -U postgres -c 'CREATE DATABASE ast_help_orders;' &&
-                psql -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'ast_help_notification'\" | grep -q 1 || psql -U postgres -c 'CREATE DATABASE ast_help_notification;' &&
-                wait"
-                
+    catalog.microservice.db:
+        environment:
+            POSTGRES_DB: "ast_help_catalog"
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "1234"
+        ports:
+            - "5401:5432"
+    cart.microservice.db:
+        environment:
+            POSTGRES_DB: "ast_help_cart"
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "1234"
+        ports:
+            - "5402:5432"
+    orders.microservice.db:
+        environment:
+            POSTGRES_DB: "ast_help_orders"
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "1234"
+        ports:
+            - "5403:5432"
+    notification.microservice.db:
+        environment:
+            POSTGRES_DB: "ast_help_notification"
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "1234"
+        ports:
+            - "5404:5432"
+                            
     identity.microservice.api:
         environment:
-            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_ENVIRONMENT=Production
             - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=postgres.db;Port=5432;Database=ast_help_identity;User Id=postgres;Password=1234
+            - ConnectionStrings__DefaultConnection=Server=identity.microservice.db;Port=5432;Database=ast_help_identity;User Id=postgres;Password=1234
             - RabbitMQ__HostName=rabbitmq
             - RabbitMQ__Port=5672
             - RabbitMQ__UserName=user
@@ -41,9 +55,9 @@ services:
             - "5100:80"
     catalog.microservice.api:
         environment:
-            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_ENVIRONMENT=Production
             - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=postgres.db;Port=5432;Database=ast_help_catalog;User Id=postgres;Password=1234
+            - ConnectionStrings__DefaultConnection=Server=catalog.microservice.db;Port=5432;Database=ast_help_catalog;User Id=postgres;Password=1234
             - RabbitMQ__HostName=rabbitmq
             - RabbitMQ__Port=5672
             - RabbitMQ__UserName=user
@@ -54,9 +68,9 @@ services:
             - "5101:80"
     cart.microservice.api:
         environment:
-            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_ENVIRONMENT=Production
             - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=postgres.db;Port=5432;Database=ast_help_cart;User Id=postgres;Password=1234
+            - ConnectionStrings__DefaultConnection=Server=cart.microservice.db;Port=5432;Database=ast_help_cart;User Id=postgres;Password=1234
             - RabbitMQ__HostName=rabbitmq
             - RabbitMQ__Port=5672
             - RabbitMQ__UserName=user
@@ -67,9 +81,9 @@ services:
             - "5102:80"
     orders.microservice.api:
         environment:
-            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_ENVIRONMENT=Production
             - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=postgres.db;Port=5432;Database=ast_help_orders;User Id=postgres;Password=1234
+            - ConnectionStrings__DefaultConnection=Server=orders.microservice.db;Port=5432;Database=ast_help_orders;User Id=postgres;Password=1234
             - RabbitMQ__HostName=rabbitmq
             - RabbitMQ__Port=5672
             - RabbitMQ__UserName=user
@@ -81,9 +95,9 @@ services:
             - "5103:80"
     notification.microservice.api:
         environment:
-            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_ENVIRONMENT=Production
             - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=postgres.db;Port=5432;Database=ast_help_notification;User Id=postgres;Password=1234
+            - ConnectionStrings__DefaultConnection=Server=notification.microservice.db;Port=5432;Database=ast_help_notification;User Id=postgres;Password=1234
             - RabbitMQ__HostName=rabbitmq
             - RabbitMQ__Port=5672
             - RabbitMQ__UserName=user
@@ -98,9 +112,9 @@ services:
             - ASPNETCORE_URLS=http://+:80
         ports:
             - "5000:80"
-    
+
     asthelp.webapp:
         environment:
             - REACT_APP_API_URL=http://asthelp.gateway/api/
         ports:
-            - "80:80"    
+            - "80:80"
