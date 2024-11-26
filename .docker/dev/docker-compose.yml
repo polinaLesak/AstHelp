@@ -1,12 +1,9 @@
-version: '3.4'
-
 services:
     rabbitmq:
-        image: rabbitmq:3-management
         container_name: rabbitmq
         build: 
             context: ./rabbitmq_config
-            dockerfile: Dockerfile
+            dockerfile: ./Dockerfile
         volumes:
             - rabbitmq_data:/var/lib/rabbitmq
 

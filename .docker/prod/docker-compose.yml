@@ -3,7 +3,7 @@ services:
         container_name: rabbitmq
         build: 
             context: ./rabbitmq_config
-            dockerfile: Dockerfile
+            dockerfile: ./Dockerfile
         volumes:
             - rabbitmq_data:/var/lib/rabbitmq
 
