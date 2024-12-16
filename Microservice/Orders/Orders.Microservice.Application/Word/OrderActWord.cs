@@ -22,8 +22,8 @@ namespace Orders.Microservice.Application.Word
 
                 ReplacePlaceholder(body, "adminFullname", dto.AdminFullname);
                 ReplacePlaceholder(body, "customerFullname", dto.CustomerFullname);
-                ReplacePlaceholder(body, "adminPosition", dto.AdminFullname);
-                ReplacePlaceholder(body, "customerPosition", dto.CustomerFullname);
+                ReplacePlaceholder(body, "adminPosition", dto.AdminPosition);
+                ReplacePlaceholder(body, "customerPosition", dto.CustomerPosition);
 
                 var table = body.Elements<Table>().FirstOrDefault();
                 if (table != null)
