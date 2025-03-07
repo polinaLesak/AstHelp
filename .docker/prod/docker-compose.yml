@@ -1,5 +1,8 @@
+version: '3.4'
+
 services:
     rabbitmq:
+        image: rabbitmq:3-management
         container_name: rabbitmq
         build: 
             context: ./rabbitmq_config
@@ -7,37 +10,12 @@ services:
         volumes:
             - rabbitmq_data:/var/lib/rabbitmq
 
-    identity.microservice.db:
-        container_name: identity.microservice.db
+    postgres.db:
+        container_name: postgres.db
         image: postgres:17.0-alpine3.20
-        restart: on-failure
         volumes:
-            - identity.microservice.db:/var/lib/postgresql/data
-    catalog.microservice.db:
-        container_name: catalog.microservice.db
-        image: postgres:17.0-alpine3.20
-        restart: on-failure
-        volumes:
-            - catalog.microservice.db:/var/lib/postgresql/data
-    cart.microservice.db:
-        container_name: cart.microservice.db
-        image: postgres:17.0-alpine3.20
-        restart: on-failure
-        volumes:
-            - cart.microservice.db:/var/lib/postgresql/data
-    orders.microservice.db:
-        container_name: orders.microservice.db
-        image: postgres:17.0-alpine3.20
-        restart: on-failure
-        volumes:
-            - orders.microservice.db:/var/lib/postgresql/data
-    notification.microservice.db:
-        container_name: notification.microservice.db
-        image: postgres:17.0-alpine3.20
-        restart: on-failure
-        volumes:
-            - notification.microservice.db:/var/lib/postgresql/data
-
+            - postgres.db:/var/lib/postgresql/data
+            
     identity.microservice.api:
         image: identity.microservice.api
         container_name: identity.microservice.api
@@ -46,7 +24,7 @@ services:
             context: ../../Microservice/Identity
             dockerfile: ./Identity.Microservice.API/Dockerfile
         depends_on:
-            - identity.microservice.db
+            - postgres.db
             - rabbitmq
     catalog.microservice.api:
         image: catalog.microservice.api
@@ -56,7 +34,7 @@ services:
             context: ../../Microservice/Catalog
             dockerfile: ./Catalog.Microservice.API/Dockerfile
         depends_on:
-            - catalog.microservice.db
+            - postgres.db
             - rabbitmq
     cart.microservice.api:
         image: cart.microservice.api
@@ -66,7 +44,7 @@ services:
             context: ../../Microservice/Cart
             dockerfile: ./Cart.Microservice.API/Dockerfile
         depends_on:
-            - cart.microservice.db
+            - postgres.db
             - rabbitmq
     orders.microservice.api:
         image: orders.microservice.api
@@ -76,7 +54,7 @@ services:
             context: ../../Microservice/Orders
             dockerfile: ./Orders.Microservice.API/Dockerfile
         depends_on:
-            - orders.microservice.db
+            - postgres.db
             - rabbitmq
     notification.microservice.api:
         image: notification.microservice.api
@@ -86,7 +64,7 @@ services:
             context: ../../Microservice/Notification
             dockerfile: ./Notification.Microservice.API/Dockerfile
         depends_on:
-            - notification.microservice.db
+            - postgres.db
             - rabbitmq
 
     asthelp.gateway:
@@ -96,6 +74,8 @@ services:
         build:
             context: ../../Gateway.WebApi
             dockerfile: ./Dockerfile
+        volumes:
+            - ./certs:/app/certs
         depends_on:
             - identity.microservice.api
             - catalog.microservice.api
@@ -112,18 +92,27 @@ services:
         depends_on:
             - asthelp.gateway
 
+    nginx:
+        container_name: nginx
+        build:
+            context: ./nginx_config
+            dockerfile: ./Dockerfile
+        depends_on:
+            - asthelp.gateway
+            - asthelp.webapp
+
+    postgres.backup:
+        image: postgres:17.0-alpine3.20
+        volumes:
+          - ./backup:/backup
+        depends_on:
+          - postgres.db
+        restart: always
+
 volumes:
     rabbitmq_data:
         name: rabbitmq_data   
         driver: local
 
-    identity.microservice.db:
-        name: identity.microservice.db 
-    catalog.microservice.db:
-        name: catalog.microservice.db 
-    cart.microservice.db:
-        name: cart.microservice.db   
-    orders.microservice.db:
-        name: orders.microservice.db  
-    notification.microservice.db:
-        name: notification.microservice.db            
+    postgres.db:
+        name: postgres.db         
