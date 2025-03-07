@@ -74,21 +74,14 @@ services:
         build:
             context: ../../Gateway.WebApi
             dockerfile: ./Dockerfile
+        volumes:
+            - ./certs:/app/certs
         depends_on:
             - identity.microservice.api
             - catalog.microservice.api
             - cart.microservice.api
             - orders.microservice.api
             - notification.microservice.api
-
-    asthelp.webapp:
-        image: asthelp.webapp
-        container_name: asthelp.webapp
-        build:
-            context: ../../AstHelp.Webapp
-            dockerfile: ./Dockerfile
-        depends_on:
-            - asthelp.gateway
 
 volumes:
     rabbitmq_data:

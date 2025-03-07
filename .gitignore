@@ -278,8 +278,9 @@ tools/Cake.CoreCLR
 .vscode
 tools
 .dotnet
-Dockerfile
+# Dockerfile
 
 # .env file contains default environment variables for docker
 .env
 .git/
+/AstHelp.Webapp/Web.config
