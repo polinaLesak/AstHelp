@@ -106,7 +106,7 @@ services:
         volumes:
           - ./backup:/backup
         depends_on:
-          - postgres.db
+          - asthelp.webapp
         restart: always
 
 volumes:
